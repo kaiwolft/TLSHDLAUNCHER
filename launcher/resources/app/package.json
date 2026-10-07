@@ -1,0 +1,7 @@
+{
+  "name": "the-last-story-launcher",
+  "productName": "The Last Story",
+  "version": "0.2.0",
+  "description": "Launcher de The Last Story",
+  "main": "main.js"
+}

@@ -1,0 +1,24 @@
+# nunca subir el juego, Dolphin, el motor Electron ni datos personales
+extraido/
+juego/
+para_claude/
+logs/
+descargas/
+launcher/*.exe
+launcher/*.dll
+launcher/*.pak
+launcher/*.bin
+launcher/*.dat
+launcher/locales/
+launcher/data/chromium/
+launcher/data/config.json
+launcher/data/paths.json
+launcher/data/*.log
+launcher/data/logros/ra_*.json
+launcher/ui/assets/logros/
+*.iso
+*.wbfs
+*.rvz
+*.ciso
+*.wia
+*.gcz

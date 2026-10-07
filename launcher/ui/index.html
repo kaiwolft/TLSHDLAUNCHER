@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>The Last Story HD — Dionixu's Launcher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@font-face{font-family:"TLS Cinzel";src:url(fonts/Cinzel.ttf) format("truetype");font-weight:400 900}
+@font-face{font-family:"TLS Cormorant";src:url(fonts/CormorantGaramond.ttf) format("truetype");font-weight:300 700}
+@font-face{font-family:"TLS Cormorant";src:url(fonts/CormorantGaramond-Italic.ttf) format("truetype");font-weight:300 700;font-style:italic}
+:root{
+  --ink:#2e261c; --ink-2:#3b3126; --ink-soft:#5d4e3a; --line:#8c7656; --line-soft:rgba(140,118,86,.45);
+  --paper:#f1e5cc; --paper-hi:rgba(250,243,228,.55); --panel:rgba(247,239,221,.92);
+  --blue:#3e5873; --blue-d:#34495f; --blue-l:#4b6680; --gold:#c7a96a; --cream:#f8f1e1;
+  --display:"TLS Cinzel","Cinzel","Trajan Pro",Georgia,serif;
+  --body:"TLS Cormorant","Cormorant Garamond",Garamond,Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#0d0a07;user-select:none;-webkit-user-select:none}
+body{display:flex;align-items:center;justify-content:center}
+#stage{width:1280px;height:720px;position:relative;overflow:hidden;flex:none;transform-origin:center center;
+  background:var(--paper) url(assets/parchment.jpg) center/cover;font-family:var(--body);color:var(--ink)}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.abs{position:absolute}
+.drag{position:absolute;left:0;top:0;right:150px;height:46px;z-index:5}
+#dragbar{position:fixed;left:0;top:0;height:40px;z-index:50;-webkit-app-region:drag}
+body.fs #dragbar{display:none}
+body.fs .winbtns{display:none}
+.iconbtn.focus{background:rgba(62,88,115,.16);box-shadow:0 0 0 2px var(--gold) inset}
+#stage.barzone .mi.on{filter:saturate(.55) brightness(.92)}
+#dragbar{position:fixed;left:0;top:0;height:40px;z-index:50;-webkit-app-region:drag}
+.frame1{position:absolute;inset:14px;border:1px solid var(--line);pointer-events:none}
+.frame2{position:absolute;inset:19px;border:1px solid rgba(140,118,86,.55);pointer-events:none}
+.corner{position:absolute;width:44px;height:44px;pointer-events:none}
+.winbtns{position:absolute;top:26px;right:40px;display:flex;gap:6px;z-index:6}
+.iconbtn{width:36px;height:32px;border:0;background:transparent;border-radius:3px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.iconbtn:hover{background:rgba(62,88,115,.14)}
+#art,#artfx{position:absolute;left:448px;top:31px;width:799px;height:662px;pointer-events:none}
+#artfx{display:none}
+#stage.gl #artfx{display:block}
+#stage.gl #art{visibility:hidden}
+#logo{position:absolute;left:62px;top:8px;width:386px;height:263px;pointer-events:none}
+
+/* Menu principal */
+#menu{position:absolute;left:44px;top:298px;width:372px;display:flex;flex-direction:column;gap:9px}
+.mi{position:relative;height:34px;border:0;text-align:left;font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:2.4px;cursor:pointer;
+  margin-left:24px;padding:0 0 0 52px;color:#33291e;background:rgba(250,243,228,.35);border-top:1px solid var(--line);border-bottom:1px solid var(--line);transition:color .15s}
+.mi .orn{position:absolute;top:10px}
+.mi .orn.l{left:8px}.mi .orn.r{right:8px}
+.mi .star{display:none}
+.mi.on{margin-left:0;padding-left:82px;border:0;color:var(--cream);
+  background:linear-gradient(90deg,var(--blue-d) 0%,var(--blue-l) 62%,rgba(75,102,128,0) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(0,0,0,.25)}
+.mi.on .orn{display:none}
+.mi.on .star{display:block;position:absolute;left:8px;top:-5px}
+
+.kicker{font-family:var(--display);font-size:12px;font-weight:600;letter-spacing:2px;color:#33291e;border-bottom:1px solid #a38c69;padding-bottom:4px}
+
+/* Paneles */
+.panel{position:absolute;left:44px;top:262px;padding:18px 22px;border:1px solid var(--line);outline:1px solid var(--line-soft);outline-offset:3px;
+  background:var(--panel);display:none;flex-direction:column;gap:10px}
+.panel.show{display:flex}
+.phead{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.phead h2{margin:0;font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:3px;color:#33291e}
+.back{border:1px solid var(--line);background:transparent;font-family:var(--display);font-size:12px;letter-spacing:1.5px;color:#33291e;padding:6px 12px;cursor:pointer}
+.back:hover{background:rgba(62,88,115,.12)}
+.scroll{overflow-y:auto;padding-right:4px}
+.scroll::-webkit-scrollbar{width:8px}.scroll::-webkit-scrollbar-thumb{background:#b9a47f;border-radius:4px}
+.row{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:12px;padding:6px 6px 8px;border-bottom:1px solid rgba(140,118,86,.35)}
+.row.focus{background:rgba(62,88,115,.08);box-shadow:inset 3px 0 0 var(--blue)}
+.row .lbl{font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:1.2px;color:#33291e}
+.row .hint{display:block;font-size:13px;font-style:italic;color:#6a5a44}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{min-height:32px;padding:4px 14px;border:1px solid #a38c69;background:transparent;color:#33291e;font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer}
+.opt:hover{background:rgba(62,88,115,.12)}
+.opt.on{border-color:var(--blue-d);background:var(--blue);color:var(--cream)}
+.opt:disabled{opacity:.45;cursor:not-allowed}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.tab{flex:1;padding:7px 6px;border:1px solid transparent;background:transparent;font-family:var(--display);font-size:11.5px;font-weight:600;letter-spacing:1.4px;color:#6a5a44;cursor:pointer}
+.tab:hover{color:#33291e;background:rgba(62,88,115,.08)}
+.tab.on{color:var(--cream);background:var(--blue);border-color:var(--blue-d)}
+.tab.focus{box-shadow:0 0 0 2px var(--gold)}
+.grp{font-family:var(--display);font-size:10.5px;font-weight:700;letter-spacing:2.2px;color:var(--blue);padding:8px 6px 2px;border-bottom:1px dashed rgba(140,118,86,.4)}
+.note{margin:0;font-size:13.5px;font-style:italic;color:var(--ink-soft)}
+
+.ach-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
+.ach{display:flex;gap:10px;align-items:center;padding:8px;border:1px solid rgba(140,118,86,.5);background:rgba(255,250,238,.6)}
+.badge{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(140,118,86,.18);border:2px solid #b9a47f}
+.ach.got .badge{background:var(--blue);border-color:var(--gold);box-shadow:0 0 10px 1px rgba(216,180,106,.55)}
+.badge img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.ach:not(.got) .badge img{filter:sepia(.5) saturate(.6) opacity(.75)}
+.ach.got{background:rgba(255,248,226,.85);border-color:rgba(184,150,90,.8)}
+.ach.focus{box-shadow:0 0 0 2px var(--gold)}
+.ach .when{font-size:12.5px;font-style:italic;color:var(--blue);margin-top:2px}
+.ach .mini{height:4px;margin-top:5px;background:rgba(140,118,86,.25)}
+.ach .mini>div{height:100%;background:var(--blue)}
+.ach .prog{font-family:var(--display);font-size:10.5px;letter-spacing:1px;color:#6a5a44;margin-top:2px}
+.ach.new{animation:achNew 1.6s ease-out}
+@keyframes achNew{0%{box-shadow:0 0 0 0 rgba(216,180,106,.9)}100%{box-shadow:0 0 0 14px rgba(216,180,106,0)}}
+.ach .t{font-family:var(--display);font-size:12.5px;font-weight:600}
+.ach .d{font-size:14px;line-height:1.2;color:#4f4232}
+.ach .pts{flex:none;font-family:var(--display);font-size:13px;font-weight:700;color:var(--blue)}
+.bar{height:6px;background:rgba(140,118,86,.25);border:1px solid rgba(140,118,86,.5)}
+.bar>div{height:100%;background:var(--blue);width:0}
+
+.credit{display:flex;flex-direction:column;padding-bottom:8px;border-bottom:1px solid rgba(140,118,86,.35)}
+.credit .r{font-family:var(--display);font-size:11.5px;font-weight:600;letter-spacing:1.6px;color:#6a5a44}
+.credit .w{font-size:17px;font-weight:600}
+
+#bottom{position:absolute;right:40px;bottom:30px;display:flex;gap:4px;padding:4px 8px;border-top:1px solid var(--line)}
+/* ===== Intro estilo FFXIII ===== */
+#motes{position:absolute;inset:0;pointer-events:none;z-index:1}
+#beams{position:absolute;inset:-120px;pointer-events:none;z-index:2;opacity:0;mix-blend-mode:screen;filter:blur(10px);
+  background:repeating-linear-gradient(118deg,rgba(255,248,228,0) 0 90px,rgba(255,248,228,.28) 135px,rgba(255,248,228,0) 190px 340px)}
+#stage.beams-on #beams{animation:beamsIn 5.5s ease-out forwards, beamsDrift 18s 5.5s ease-in-out infinite alternate}
+@keyframes beamsIn{0%{opacity:0;transform:translateX(-260px)}35%{opacity:.95}100%{opacity:.22;transform:translateX(60px)}}
+@keyframes beamsDrift{from{transform:translateX(60px)}to{transform:translateX(-40px)}}
+#dim{position:absolute;inset:0;background:#07060a;opacity:0;pointer-events:none;z-index:60;transition:opacity 2.4s cubic-bezier(.3,.1,.2,1)}
+#stage.boot #dim{opacity:.9;transition:none}
+#stage .rv{transition:opacity .9s ease, transform 1s cubic-bezier(.2,.8,.2,1), filter 1.2s ease}
+#stage.boot .rv{opacity:0}
+#stage.boot #logo{transform:scale(1.04);filter:brightness(2.2) blur(6px)}
+#stage.boot #art,#stage.boot #artfx{transform:scale(1.035)}
+#stage #art,#stage #artfx{transition:transform 7s cubic-bezier(.2,.7,.2,1), opacity 1.2s ease}
+#stage.boot .mi{opacity:0;transform:translateX(-36px)}
+#stage .mi{transition:opacity .55s ease, transform .7s cubic-bezier(.2,.8,.2,1), color .15s}
+#stage.boot #bottom,#stage.boot .winbtns,#stage.boot #hints{opacity:0;transform:translateY(10px)}
+#bottom,.winbtns,#hints{transition:opacity .8s ease, transform .8s ease}
+
+#intro{position:absolute;inset:0;z-index:100;background:#000;overflow:hidden;cursor:pointer}
+#intro.out{background:transparent;transition:background .8s ease}
+#intro.gone{display:none}
+#fx{position:absolute;inset:0;z-index:3;pointer-events:none}
+#splash{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;opacity:0;
+  background:#efe4cc url(assets/parchment.jpg) center/cover;transition:opacity 1.4s ease}
+#splash::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(20,14,6,.55) 100%)}
+#splash img{width:780px;mix-blend-mode:multiply;opacity:0;transform:scale(1.09);filter:blur(16px) brightness(2);
+  transition:opacity 1.8s ease, transform 3.6s cubic-bezier(.15,.7,.2,1), filter 2s ease}
+#intro.p-splash #splash{opacity:1}
+#intro.p-splash #splash img{opacity:1;transform:scale(1);filter:blur(0) brightness(1)}
+#intro.p-hold #splash img{transform:scale(1.035);transition:transform 3s linear}
+#flare{position:absolute;left:50%;top:50%;width:0;height:3px;z-index:4;transform:translate(-50%,-50%);opacity:0;border-radius:50%;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,247,225,.95) 48%,#fff 50%,rgba(255,247,225,.95) 52%,rgba(255,255,255,0));
+  box-shadow:0 0 18px 4px rgba(255,236,190,.55),0 0 60px 10px rgba(255,220,160,.25)}
+#flare.go{animation:flare 1.25s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes flare{0%{width:0;opacity:0}25%{opacity:1}70%{width:1500px;opacity:.85}100%{width:1700px;opacity:0}}
+#flare.v{width:3px;height:0}
+#flare.v.go{animation:flareV 1.1s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes flareV{0%{height:0;opacity:0}30%{opacity:1}100%{height:900px;opacity:0}}
+#flash{position:absolute;inset:0;z-index:5;background:#fffaf0;opacity:0;pointer-events:none}
+#flash.on{opacity:.95;transition:opacity .28s ease-in}
+#flash.off{opacity:0;transition:opacity 1.1s ease-out}
+#skip{position:absolute;right:42px;bottom:30px;z-index:6;font-family:var(--display);font-size:11px;letter-spacing:2.5px;color:rgba(255,245,225,.55);opacity:0;transition:opacity 1s 1s}
+#intro.p-splash #skip{opacity:1;color:rgba(60,46,30,.6)}
+#leave{position:absolute;inset:0;z-index:200;background:#000;opacity:0;pointer-events:none;transition:opacity .7s ease}
+#leave.on{opacity:1;pointer-events:auto}
+#leave.quick{transition:opacity .32s ease-in}
+/* barra de volumen */
+.slider{display:flex;align-items:center;gap:12px;width:100%;max-width:330px}
+.slider .track{position:relative;flex:1;height:10px;border:1px solid #a38c69;background:rgba(255,252,244,.7);box-shadow:inset 0 1px 2px rgba(60,45,25,.18);touch-action:none}
+.slider .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--blue-d),var(--blue-l))}
+.slider .knob{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;transform:rotate(45deg);background:var(--cream);border:1px solid var(--blue-d);box-shadow:0 1px 3px rgba(40,30,15,.35)}
+.slider .ticks{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),rgba(140,118,86,.35) calc(10% - 1px) 10%);pointer-events:none}
+.slider .val{min-width:48px;text-align:right;font-family:var(--display);font-size:14px;font-weight:600;letter-spacing:1px;color:#33291e}
+.row.focus .slider .knob{box-shadow:0 0 0 3px rgba(216,180,106,.6),0 1px 3px rgba(40,30,15,.35)}
+#toast{position:absolute;left:50%;bottom:46px;transform:translateX(-50%);padding:10px 22px;background:var(--blue-d);color:var(--cream);
+  font-family:var(--display);font-size:13px;letter-spacing:1.5px;border:1px solid var(--gold);opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1}
+/* idioma del launcher */
+#langPanel{left:auto;right:40px;top:auto;bottom:74px;width:230px;padding:14px 16px;gap:8px;z-index:20;box-shadow:0 10px 30px rgba(40,30,15,.25)}
+#langList{display:flex;flex-direction:column;gap:4px}
+.langopt{display:flex;align-items:center;justify-content:space-between;height:34px;padding:0 12px;border:1px solid transparent;background:transparent;font-family:var(--display);font-size:14px;font-weight:600;letter-spacing:1.5px;color:#33291e;cursor:pointer;text-align:left}
+.langopt:hover,.langopt.focus{border-color:var(--gold);background:rgba(62,88,115,.08)}
+.langopt.on{background:var(--blue);color:var(--cream);border-color:var(--blue-d)}
+.langopt.on::after{content:"✓";font-size:13px}
+/* controles */
+.opt.key{min-width:150px;font-family:var(--display);font-size:13px;letter-spacing:1px;background:rgba(255,252,244,.8);box-shadow:inset 0 -2px 0 rgba(140,118,86,.35)}
+.opt.key.static{display:inline-flex;align-items:center;justify-content:center;cursor:default}
+.opt.key.wait{border-color:var(--gold);color:var(--blue);font-family:var(--body);font-style:italic;font-size:14px;letter-spacing:0;animation:keyWait 1s ease-in-out infinite}
+@keyframes keyWait{50%{box-shadow:0 0 0 3px rgba(216,180,106,.55)}}
+.ralogin{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;padding:6px 2px}
+.ralogin label{display:flex;flex-direction:column;gap:4px;font-family:var(--display);font-size:11px;letter-spacing:1.5px;color:#5d4e3a}
+.ralogin input{width:220px;height:34px;padding:0 10px;border:1px solid #a38c69;background:rgba(255,252,244,.85);font-family:var(--body);font-size:16px;color:#2e261c;outline:none}
+.ralogin input:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(216,180,106,.5)}
+.ralogin .opt{height:34px}
+.ralogin .note{flex-basis:100%}
+#hints{position:absolute;left:52px;bottom:30px;font-size:13px;font-style:italic;color:var(--ink-soft)}
+/* cursor con la estética del juego (solo launcher y diálogo de salida) */
+html,body,*{cursor:-webkit-image-set(url(assets/cursor/normal.png) 1x,url(assets/cursor/normal@2x.png) 2x) 2 2,default!important}
+button,button *,a,.opt,.tab,.mi,.mi *,.langopt,.langopt *,.iconbtn,.iconbtn *,.back,.ach,.ach *,#intro{cursor:-webkit-image-set(url(assets/cursor/hover.png) 1x,url(assets/cursor/hover@2x.png) 2x) 2 2,pointer!important}
+.opt:disabled,.opt.static{cursor:-webkit-image-set(url(assets/cursor/normal.png) 1x,url(assets/cursor/normal@2x.png) 2x) 2 2,default!important}
+html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
+</style>
+</head>
+<body>
+<div id="dragbar"></div>
+<div id="stage">
+  <img id="art" src="assets/art.png" alt="">
+  <canvas id="artfx" width="1043" height="865"></canvas>
+  <canvas id="motes" width="1280" height="720"></canvas>
+  <div id="beams"></div>
+  <div class="frame1"></div><div class="frame2"></div>
+  <svg class="corner" style="left:0;top:0" viewBox="0 0 44 44" aria-hidden="true"><g fill="none" stroke="#7a6548" stroke-width="1.1"><circle cx="17" cy="17" r="9"/><path d="M17 2 L19.5 14.5 L32 17 L19.5 19.5 L17 32 L14.5 19.5 L2 17 L14.5 14.5 Z"/><path d="M7 7 L27 27 M27 7 L7 27" stroke-width=".6"/></g></svg>
+  <svg class="corner" style="right:0;top:0" viewBox="0 0 44 44" aria-hidden="true"><g fill="none" stroke="#7a6548" stroke-width="1.1"><circle cx="27" cy="17" r="9"/><path d="M27 2 L29.5 14.5 L42 17 L29.5 19.5 L27 32 L24.5 19.5 L12 17 L24.5 14.5 Z"/><path d="M17 7 L37 27 M37 7 L17 27" stroke-width=".6"/></g></svg>
+  <svg class="corner" style="left:0;bottom:0" viewBox="0 0 44 44" aria-hidden="true"><g fill="none" stroke="#7a6548" stroke-width="1.1"><circle cx="17" cy="27" r="9"/><path d="M17 12 L19.5 24.5 L32 27 L19.5 29.5 L17 42 L14.5 29.5 L2 27 L14.5 24.5 Z"/><path d="M7 17 L27 37 M27 17 L7 37" stroke-width=".6"/></g></svg>
+  <svg class="corner" style="right:0;bottom:0" viewBox="0 0 44 44" aria-hidden="true"><g fill="none" stroke="#7a6548" stroke-width="1.1"><circle cx="27" cy="27" r="9"/><path d="M27 12 L29.5 24.5 L42 27 L29.5 29.5 L27 42 L24.5 29.5 L12 27 L24.5 24.5 Z"/><path d="M17 17 L37 37 M37 17 L17 37" stroke-width=".6"/></g></svg>
+
+  <div class="drag" id="drag"></div>
+  <div class="winbtns">
+    <button class="iconbtn" id="bMin" aria-label="Minimizar"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M1 7h12" stroke="#3b3126" stroke-width="1.3"/></svg></button>
+    <button class="iconbtn" id="bClose" aria-label="Cerrar"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12" stroke="#3b3126" stroke-width="1.3"/></svg></button>
+  </div>
+
+  <img id="logo" class="rv" src="assets/logo.png" alt="The Last Story">
+
+  <!-- Principal -->
+  <div id="mainScreen">
+    <nav id="menu" aria-label="Menú principal"></nav>
+  </div>
+
+  <!-- Ajustes -->
+  <section class="panel" id="settings" style="width:660px;height:418px;top:252px" aria-label="Ajustes">
+    <div class="phead"><h2 data-t="settings">AJUSTES</h2><button class="back" data-back data-t="back">VOLVER</button></div>
+    <div class="tabs" id="setTabs" role="tablist"></div>
+    <div class="scroll" id="settingsRows" style="display:flex;flex-direction:column;gap:4px"></div>
+    <p class="note" data-t="setNote"></p>
+  </section>
+
+  <!-- Logros -->
+  <section class="panel" id="logros" style="width:760px;height:436px;top:252px" aria-label="Logros">
+    <div class="phead">
+      <div><h2 data-t="ach">LOGROS</h2><span class="note" data-t="achSub"></span></div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <div style="text-align:right"><div id="achCount" style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--blue)">0 / 109</div><div id="achPts" class="note" style="font-style:normal">0 / 800 puntos</div></div>
+        <button class="back" id="achTest" data-t="achTest" data-tt="achTestTip">VER AVISO</button>
+        <button class="back" data-back data-t="back">VOLVER</button>
+      </div>
+    </div>
+    <div class="bar"><div id="achBar"></div></div>
+    <div class="tabs" id="achTabs" role="tablist"></div>
+    <p class="note" id="achNote" style="display:none"></p>
+    <div class="scroll ach-grid" id="achGrid"></div>
+  </section>
+
+  <!-- Creditos -->
+  <section class="panel" id="credits" style="width:500px;height:430px" aria-label="Créditos">
+    <div class="phead"><h2 data-t="credits">CRÉDITOS</h2><button class="back" data-back data-t="back">VOLVER</button></div>
+    <div class="scroll" id="creditList" style="display:flex;flex-direction:column;gap:10px"></div>
+  </section>
+
+  <div id="hints">Mando: ✚ / stick para moverte · A aceptar · B volver · F11 pantalla completa</div>
+
+  <div id="bottom">
+    <button class="iconbtn" id="bLang" aria-label="Idioma"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2e261c" stroke-width="1.6"><circle cx="12" cy="12" r="9.2"/><ellipse cx="12" cy="12" rx="4.2" ry="9.2"/><path d="M3 12h18M4.6 7h14.8M4.6 17h14.8"/></svg></button>
+    <button class="iconbtn" id="bPad" aria-label="Mando"><svg width="22" height="20" viewBox="0 0 26 20" fill="none" stroke="#2e261c" stroke-width="1.8"><path d="M7 4h12c3 0 5 4 6 9s-1 6-3 5-3-4-5-4H9c-2 0-3 3-5 4s-4 0-3-5 3-9 6-9z"/><path d="M7 8v4M5 10h4"/></svg></button>
+    <button class="iconbtn" id="bFull" aria-label="Pantalla completa (F11)"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#2e261c" stroke-width="1.8"><path d="M2 7V2h5M13 2h5v5M18 13v5h-5M7 18H2v-5"/></svg></button>
+    <button class="iconbtn" id="bMusic" aria-label="Música"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#2e261c" stroke-width="1.8"><path d="M7 15V4l10-2v11"/><circle cx="5" cy="15" r="2.2"/><circle cx="15" cy="13" r="2.2"/></svg></button>
+  </div>
+
+  <div class="panel" id="langPanel" aria-label="Idioma"><div class="kicker" data-t="langTitle">IDIOMA DEL LAUNCHER</div><div id="langList"></div></div>
+  <div id="toast" role="status"></div>
+  <div id="dim"></div>
+  <div id="leave"></div>
+  <div id="intro" aria-label="Introducción">
+    <div id="splash"><img src="assets/hd.jpg" alt="The Last Story HD"></div>
+    <canvas id="fx" width="1280" height="720"></canvas>
+    <div id="flare"></div>
+    <div id="flash"></div>
+    <div id="skip" data-t="skip">PULSA CUALQUIER BOTÓN PARA SALTAR</div>
+  </div>
+</div>
+
+<audio id="music" src="assets/music.mp3" loop preload="auto"></audio>
+
+<script>
+(() => {
+  const host = window.tlsHost || (window.chrome && window.chrome.webview ? window.chrome.webview : null);
+  const $ = (id) => document.getElementById(id);
+  const send = (cmd, extra) => { if (host) host.postMessage(JSON.stringify(Object.assign({ cmd }, extra || {}))); };
+
+  // ---------- escala del escenario 1280x720 a la ventana
+  const fit = () => { const s = Math.min(innerWidth / 1280, innerHeight / 720); $('stage').style.transform = 'scale(' + s + ')';
+    const db = $('dragbar'); db.style.width = Math.max(0, innerWidth - 150 * s) + 'px'; db.style.height = Math.round(46 * s) + 'px';
+  };
+  addEventListener('resize', fit); fit();
+
+  // ---------- idiomas del launcher (es / en / fr)
+  const L = (es, en, fr) => ({ es, en, fr: fr == null ? en : fr });
+  const tx = (o) => (o && typeof o === 'object') ? (o[cfg.ui] != null ? o[cfg.ui] : o.es) : o;
+  const S = {
+    play: L('INICIAR JUEGO', 'START GAME', 'COMMENCER'), settings: L('AJUSTES', 'SETTINGS', 'OPTIONS'), ach: L('LOGROS', 'ACHIEVEMENTS', 'SUCCÈS'),
+    credits: L('CRÉDITOS', 'CREDITS', 'CRÉDITS'), exit: L('SALIR', 'QUIT', 'QUITTER'), back: L('VOLVER', 'BACK', 'RETOUR'),
+    setNote: L('Los cambios se guardan solos y se aplican al iniciar el juego · LB/RB o ◄ ► en las pestañas para cambiar de sección.',
+      'Changes are saved automatically and applied when the game starts · LB/RB or ◄ ► on the tabs to switch section.',
+      'Les modifications sont enregistrées automatiquement et appliquées au lancement du jeu · LB/RB ou ◄ ► sur les onglets pour changer de section.'),
+    achSub: L('Set de RetroAchievements (carlosrhv y Quenthel) · sin conexión', 'RetroAchievements set (carlosrhv & Quenthel) · offline', 'Set RetroAchievements (carlosrhv et Quenthel) · hors ligne'),
+    points: L('puntos', 'points', 'points'), achAll: L('TODOS', 'ALL', 'TOUS'), achGot: L('CONSEGUIDOS', 'UNLOCKED', 'DÉBLOQUÉS'), achTodo: L('PENDIENTES', 'LOCKED', 'VERROUILLÉS'),
+    achTest: L('VER AVISO', 'PREVIEW', 'APERÇU'), achTestTip: L('Muestra cómo se ve el aviso dentro del juego', 'Shows how the in-game notification looks', 'Montre à quoi ressemble la notification en jeu'),
+    achTestText: L('Así se verán tus logros dentro del juego.', 'This is how your achievements will look in game.', 'Voici à quoi ressembleront vos succès en jeu.'),
+    raIntro: L('Para activar los logros, descarga una sola vez el set oficial con tu cuenta de RetroAchievements (gratis). Después funcionan sin internet. Tu contraseña no se guarda.',
+      'To enable achievements, download the official set once with your RetroAchievements account (free). They then work offline. Your password is not stored.',
+      "Pour activer les succès, téléchargez une seule fois le set officiel avec votre compte RetroAchievements (gratuit). Ils fonctionnent ensuite hors ligne. Votre mot de passe n'est pas conservé."),
+    raUser: L('Usuario', 'Username', "Nom d'utilisateur"), raPass: L('Contraseña', 'Password', 'Mot de passe'), raGo: L('DESCARGAR LOGROS', 'DOWNLOAD ACHIEVEMENTS', 'TÉLÉCHARGER LES SUCCÈS'),
+    raLogin: L('Iniciando sesión…', 'Signing in…', 'Connexion…'), raSet: L('Descargando el set…', 'Downloading the set…', 'Téléchargement du set…'),
+    raBadges: L('Descargando iconos {0} / {1}…', 'Downloading badges {0} / {1}…', 'Téléchargement des icônes {0} / {1}…'),
+    raFail: L('No se pudo descargar: {0}', 'Download failed: {0}', 'Échec du téléchargement : {0}'),
+    achMissing: L('Falta descargar el set: ejecuta una vez scripts\\09_DESCARGAR_LOGROS.bat (necesita haber iniciado sesión de RetroAchievements en Dolphin).',
+      'The set has not been downloaded yet: run scripts\\09_DESCARGAR_LOGROS.bat once (requires a RetroAchievements login in Dolphin).',
+      "Le set n'a pas encore été téléchargé : lancez une fois scripts\\09_DESCARGAR_LOGROS.bat (connexion RetroAchievements requise dans Dolphin)."),
+    achNone: L('Aún no has conseguido ningún logro.', "You haven't unlocked any achievements yet.", "Vous n'avez encore débloqué aucun succès."),
+    achAllDone: L('¡Lo has conseguido todo!', 'You got them all!', 'Vous avez tout débloqué !'),
+    skip: L('PULSA CUALQUIER BOTÓN PARA SALTAR', 'PRESS ANY BUTTON TO SKIP', "APPUYEZ SUR UNE TOUCHE POUR PASSER"),
+    hintsPad: L('Mando: ✚ / stick para moverte · A aceptar · B volver · F11 pantalla completa', 'Controller: ✚ / stick to move · A select · B back · F11 fullscreen', 'Manette : ✚ / stick pour se déplacer · A valider · B retour · F11 plein écran'),
+    hintsKb: L('Teclado: flechas para moverte · Enter aceptar · Esc volver · F11 pantalla completa', 'Keyboard: arrows to move · Enter select · Esc back · F11 fullscreen', 'Clavier : flèches pour se déplacer · Entrée valider · Échap retour · F11 plein écran'),
+    langTitle: L('IDIOMA DEL LAUNCHER', 'LAUNCHER LANGUAGE', 'LANGUE DU LAUNCHER'),
+    padOn: L('Mando: {0}', 'Controller: {0}', 'Manette : {0}'), padNone: L('No se detecta ningún mando', 'No controller detected', 'Aucune manette détectée'),
+    kbOn: L('Usando teclado y ratón', 'Using keyboard & mouse', 'Clavier et souris en cours'),
+    musicOn: L('Música activada', 'Music on', 'Musique activée'), musicOff: L('Música desactivada', 'Music off', 'Musique désactivée'),
+    bye: L('Hasta pronto, mercenario.', 'Farewell, mercenary.', 'À bientôt, mercenaire.'),
+    preview: L('Vista previa: aquí se iniciaría el juego', 'Preview: the game would start here', 'Aperçu : le jeu démarrerait ici'),
+    noDolphin: L('No se encuentra Dolphin', 'Dolphin not found', 'Dolphin introuvable'), error: L('Error: ', 'Error: ', 'Erreur : '),
+    fps60: L('60 FPS: guarda tu partida antes de cambiar de modo · algunos jefes van más rápido', '60 FPS: save before switching modes · some bosses run faster', '60 FPS : sauvegardez avant de changer de mode · certains boss vont plus vite'),
+    fps30: L('30 FPS: modo original del juego', '30 FPS: original game mode', '30 FPS : mode original du jeu'),
+    press: L('Pulsa una tecla o botón del ratón… ({0})', 'Press a key or mouse button… ({0})', 'Appuyez sur une touche ou un bouton de souris… ({0})'),
+    pressPad: L('Pulsa un botón del mando… ({0})', 'Press a controller button… ({0})', 'Appuyez sur un bouton de la manette… ({0})'),
+    reserved: L('{0} está reservada (Esc volver al launcher · F9 captura)', '{0} is reserved (Esc back to launcher · F9 screenshot)', '{0} est réservée (Échap retour au launcher · F9 capture)'),
+    swapped: L('Intercambiado con {0}', 'Swapped with {0}', 'Échangé avec {0}'),
+    resetDone: L('Controles restablecidos', 'Controls reset', 'Commandes réinitialisées'),
+    langSet: L('Idioma: Español', 'Language: English', 'Langue : Français'),
+    credits_game: L('JUEGO ORIGINAL', 'ORIGINAL GAME', 'JEU ORIGINAL'), credits_emu: L('EMULACIÓN', 'EMULATION', 'ÉMULATION'), credits_hd: L('TEXTURAS HD', 'HD TEXTURES', 'TEXTURES HD'),
+    credits_btn: L('BOTONES XBOX 360', 'XBOX 360 BUTTONS', 'BOUTONS XBOX 360'), credits_ach: L('SET DE LOGROS', 'ACHIEVEMENT SET', 'SET DE SUCCÈS'),
+    credits_music: L('MÚSICA DEL LAUNCHER', 'LAUNCHER MUSIC', 'MUSIQUE DU LAUNCHER'), credits_proj: L('LAUNCHER Y PROYECTO', 'LAUNCHER & PROJECT', 'LAUNCHER ET PROJET'), credits_tech: L('TECNOLOGÍA', 'TECHNOLOGY', 'TECHNOLOGIE'),
+    credits_music_w: L('Toberu mono — banda sonora de The Last Story', 'Toberu mono — The Last Story soundtrack', 'Toberu mono — bande originale de The Last Story')
+  };
+  const t = (k, ...a) => { let s = tx(S[k]); if (s == null) return k; return s.replace(/\{(\d)\}/g, (_, i) => a[i]); };
+
+  // ---------- estado
+  const DEFAULTS = { voice: 'en', text: 'en', res: '1080', fps: '30', mode: 'full', hd: 'on', buttons: 'auto', vsync: 'on', music: 'on', intro: 'on', sfx: 'on', wind: 'on',
+    gfx_shadows: 'off', gfx_grading: 'off', gfx_dof: 'off', gfx_rays: 'off', gvol: '100', mvol: '70', achievements: 'on', achToast: 'on', achSound: 'on', ui: 'es',
+    kbCam: 'mouse', kbSens: '2', kbInvert: 'off', padInvert: 'off', lastInput: 'pad' };
+  let cfg = Object.assign({}, DEFAULTS);
+  let caps = { gameJpOk: false, fps60Ok: false, musicOk: true, dolphinOk: true, gameEnOk: true };
+  let screen = 'main', sel = 0, rowSel = 0, busy = false, zone = 'menu', barSel = 0, langSel = 0;
+  const BAR = ['bLang', 'bPad', 'bFull', 'bMusic'];
+  const paintBar = () => { BAR.forEach((id, i) => $(id).classList.toggle('focus', zone === 'bar' && i === barSel)); $('stage').classList.toggle('barzone', zone === 'bar'); };
+
+  const toast = (txt, ms) => { const el = $('toast'); el.textContent = txt; el.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), ms || 2800); };
+  let saveT = null;
+  const save = () => { clearTimeout(saveT); saveT = setTimeout(() => send('save', { config: cfg }), 120); };
+
+  // ---------- música
+  const music = $('music');
+  const musicVol = () => 0.65 * Math.max(0, Math.min(100, parseInt(cfg.mvol || '70', 10))) / 100;
+  const syncMusic = () => {
+    if (cfg.music === 'on' && caps.musicOk && screen !== 'playing') { music.volume = musicVol(); music.play().catch(() => {}); }
+    else music.pause();
+  };
+
+  // ---------- efectos de sonido del juego (SE_UICOM)
+  const SFX = {};
+  ['move', 'tick', 'ok', 'back', 'start'].forEach((n) => { SFX[n] = Array.from({ length: 3 }, () => { const a = new Audio('assets/sfx/' + n + '.ogg'); a.preload = 'auto'; return a; }); });
+  const VOL = { move: 0.32, tick: 0.3, ok: 0.38, back: 0.34, start: 0.45 };
+  let sfxI = 0, lastSfx = 0;
+  const sfx = (n) => {
+    if (cfg.sfx === 'off' || !SFX[n] || screen === 'playing') return;
+    const now = performance.now(); if (n === 'move' && now - lastSfx < 45) return; lastSfx = now;
+    const a = SFX[n][sfxI++ % 3]; try { a.currentTime = 0; a.volume = VOL[n]; a.play().catch(() => {}); } catch (e) {}
+  };
+
+  // ---------- salir: fundido a negro breve (música incluida)
+  let quitting = false;
+  const quitApp = () => {
+    if (!host) { toast(t('bye')); return; }
+    if (quitting) return; quitting = true;
+    const lv = $('leave'); lv.classList.add('quick', 'on');
+    const v0 = music.volume; let k = 0;
+    const f = setInterval(() => { k++; music.volume = Math.max(0, v0 * (1 - k / 7)); if (k >= 7) clearInterval(f); }, 45);
+    setTimeout(() => send('close'), 340);
+  };
+
+  // ---------- dispositivo de entrada activo (icono de la barra)
+  const ICON_PAD = '<svg width="22" height="20" viewBox="0 0 26 20" fill="none" stroke="#2e261c" stroke-width="1.8"><path d="M7 4h12c3 0 5 4 6 9s-1 6-3 5-3-4-5-4H9c-2 0-3 3-5 4s-4 0-3-5 3-9 6-9z"/><path d="M7 8v4M5 10h4"/></svg>';
+  const ICON_KB = '<svg width="26" height="20" viewBox="0 0 30 20" fill="none" stroke="#2e261c" stroke-width="1.6"><rect x="1" y="5" width="19" height="11" rx="1.5"/><path d="M4 8.5h1.5M7.5 8.5H9M11 8.5h1.5M14.5 8.5H16M4 12.5h1M6.5 12.5h8M16 12.5h1"/><rect x="22.5" y="5" width="6.5" height="11" rx="3.2"/><path d="M25.75 5v4"/></svg>';
+  let inputDev = 'pad', mouseAt = null;
+  const setInput = (d) => {
+    document.documentElement.classList.toggle('padmode', d === 'pad');   // con mando no se ve el cursor
+    if (d === inputDev) return; inputDev = d;
+    $('bPad').innerHTML = d === 'kb' ? ICON_KB : ICON_PAD;
+    $('bPad').setAttribute('aria-label', d === 'kb' ? 'Teclado y ratón' : 'Mando');
+    $('hints').textContent = t(d === 'kb' ? 'hintsKb' : 'hintsPad');
+    if (cfg.lastInput !== d) { cfg.lastInput = d; save(); }
+  };
+  document.documentElement.classList.add('padmode');
+  addEventListener('mousemove', (e) => { if (!mouseAt) { mouseAt = [e.screenX, e.screenY]; return; } if (Math.abs(e.screenX - mouseAt[0]) + Math.abs(e.screenY - mouseAt[1]) > 12) setInput('kb'); mouseAt = [e.screenX, e.screenY]; }, true);
+  addEventListener('mousedown', () => setInput('kb'), true);
+  addEventListener('wheel', () => setInput('kb'), true);
+
+  // ---------- menú principal
+  const ITEMS = [
+    { k: 'play', run: () => play() },
+    { k: 'settings', run: () => go('settings') },
+    { k: 'ach', run: () => go('logros') },
+    { k: 'credits', run: () => go('credits') },
+    { k: 'exit', run: () => quitApp() }
+  ];
+  const ORN_L = '<svg class="orn l" width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M1 7 L8 3 L11 7 L8 11 Z M11 7 L21 7" fill="none" stroke="#7a6548"/></svg>';
+  const ORN_R = '<svg class="orn r" width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M21 7 L14 3 L11 7 L14 11 Z M11 7 L1 7" fill="none" stroke="#7a6548"/></svg>';
+  const STAR = '<svg class="star" width="62" height="44" viewBox="0 0 62 44" aria-hidden="true"><g fill="#f4ead3" stroke="#5a4a35" stroke-width=".8"><path d="M40 22 L44 17 L62 22 L44 27 Z"/><path d="M0 22 L28 20.5 L40 22 L28 23.5 Z" fill="#5a4a35" stroke="none"/><circle cx="40" cy="22" r="7" fill="none"/><path d="M40 10 L42 20 L52 22 L42 24 L40 34 L38 24 L28 22 L38 20 Z"/></g></svg>';
+  const menu = $('menu');
+  ITEMS.forEach((it, i) => {
+    const b = document.createElement('button');
+    b.className = 'mi'; b.innerHTML = STAR + ORN_L + ORN_R + '<span></span>';
+    b.addEventListener('mouseenter', () => { if (zone === 'bar') { zone = 'menu'; paintBar(); } if (sel !== i) { sel = i; paintMenu(); sfx('move'); } });
+    b.addEventListener('click', () => { sel = i; paintMenu(); sfx(i === 0 ? 'start' : (i === 4 ? 'back' : 'ok')); it.run(); });
+    menu.appendChild(b);
+  });
+  const paintMenu = () => [...menu.children].forEach((b, i) => { b.classList.toggle('on', i === sel); b.querySelector('span').textContent = t(ITEMS[i].k); });
+
+  // ---------- controles: acciones del Classic Controller que usa el juego
+  // c: ruta en WiimoteNew.ini · x: botón equivalente de Xbox (lo que muestran los iconos del juego)
+  const ACTS = {
+    ls_up: { c: 'Left Stick/Up', n: L('AVANZAR', 'MOVE FORWARD', 'AVANCER') },
+    ls_down: { c: 'Left Stick/Down', n: L('RETROCEDER', 'MOVE BACK', 'RECULER') },
+    ls_left: { c: 'Left Stick/Left', n: L('IZQUIERDA', 'MOVE LEFT', 'GAUCHE') },
+    ls_right: { c: 'Left Stick/Right', n: L('DERECHA', 'MOVE RIGHT', 'DROITE') },
+    walk: { c: 'Left Stick/Modifier', n: L('CAMINAR', 'WALK', 'MARCHER'), h: L('Mantener para ir despacio', 'Hold to move slowly', 'Maintenir pour avancer lentement') },
+    rs_up: { c: 'Right Stick/Up', n: L('CÁMARA ARRIBA', 'CAMERA UP', 'CAMÉRA HAUT') },
+    rs_down: { c: 'Right Stick/Down', n: L('CÁMARA ABAJO', 'CAMERA DOWN', 'CAMÉRA BAS') },
+    rs_left: { c: 'Right Stick/Left', n: L('CÁMARA IZQ.', 'CAMERA LEFT', 'CAMÉRA GAUCHE') },
+    rs_right: { c: 'Right Stick/Right', n: L('CÁMARA DER.', 'CAMERA RIGHT', 'CAMÉRA DROITE') },
+    a: { c: 'Buttons/A', x: 'A', h: L('Acción · confirmar', 'Action · confirm', 'Action · valider') },
+    b: { c: 'Buttons/B', x: 'B', h: L('Cancelar · volver', 'Cancel · back', 'Annuler · retour') },
+    x: { c: 'Buttons/X', x: 'X' },
+    y: { c: 'Buttons/Y', x: 'Y' },
+    zl: { c: 'Buttons/ZL', x: 'LB' },
+    zr: { c: 'Buttons/ZR', x: 'RB' },
+    l: { c: 'Triggers/L', x: 'LT' },
+    r: { c: 'Triggers/R', x: 'RT' },
+    plus: { c: 'Buttons/+', x: 'START', h: L('Menú', 'Menu', 'Menu') },
+    minus: { c: 'Buttons/-', x: 'BACK' },
+    du: { c: 'D-Pad/Up', x: '✚ ↑' }, dd: { c: 'D-Pad/Down', x: '✚ ↓' }, dl: { c: 'D-Pad/Left', x: '✚ ←' }, dr: { c: 'D-Pad/Right', x: '✚ →' }
+  };
+  const BTN_IDS = ['a', 'b', 'x', 'y', 'zl', 'zr', 'l', 'r', 'plus', 'minus', 'du', 'dd', 'dl', 'dr'];
+  const PAD_DEF = { a: 'Button A', b: 'Button B', x: 'Button X', y: 'Button Y', zl: 'Shoulder L', zr: 'Shoulder R', l: 'Trigger L', r: 'Trigger R', plus: 'Start', minus: 'Back', du: 'Pad N', dd: 'Pad S', dl: 'Pad W', dr: 'Pad E' };
+  const KB_DEF = { ls_up: 'W', ls_down: 'S', ls_left: 'A', ls_right: 'D', walk: 'LCONTROL', rs_up: 'UP', rs_down: 'DOWN', rs_left: 'LEFT', rs_right: 'RIGHT',
+    a: 'E', b: 'Q', x: 'R', y: 'F', zl: 'LSHIFT', zr: 'SPACE', l: 'Click 1', r: 'Click 0', plus: 'TAB', minus: 'M', du: '1', dd: '2', dl: '3', dr: '4' };
+  const binds = () => {
+    cfg.padBinds = Object.assign({}, PAD_DEF, cfg.padBinds || {});
+    cfg.kbBinds = Object.assign({}, KB_DEF, cfg.kbBinds || {});
+    // configuración anterior (START = Esc, BACK = Tab) -> START = Tab, BACK = M
+    if (cfg.kbBinds.plus === 'ESCAPE' && cfg.kbBinds.minus === 'TAB' && !Object.values(cfg.kbBinds).includes('M')) { cfg.kbBinds.plus = 'TAB'; cfg.kbBinds.minus = 'M'; save(); }
+    for (const k in cfg.kbBinds) if (RESERVED.includes(cfg.kbBinds[k])) {
+      const used = Object.values(cfg.kbBinds);
+      cfg.kbBinds[k] = !used.includes(KB_DEF[k]) ? KB_DEF[k] : '';
+      save();
+    }
+    return { pad: cfg.padBinds, kb: cfg.kbBinds };
+  };
+  // nombres del mando (Gamepad API estándar → XInput de Dolphin)
+  const PAD_IDX = ['Button A', 'Button B', 'Button X', 'Button Y', 'Shoulder L', 'Shoulder R', 'Trigger L', 'Trigger R', 'Back', 'Start', 'Thumb L', 'Thumb R', 'Pad N', 'Pad S', 'Pad W', 'Pad E'];
+  const PAD_SHOW = { 'Button A': 'A', 'Button B': 'B', 'Button X': 'X', 'Button Y': 'Y', 'Shoulder L': 'LB', 'Shoulder R': 'RB', 'Trigger L': 'LT', 'Trigger R': 'RT',
+    Back: 'BACK', Start: 'START', 'Thumb L': 'L3', 'Thumb R': 'R3', 'Pad N': '✚ ↑', 'Pad S': '✚ ↓', 'Pad W': '✚ ←', 'Pad E': '✚ →' };
+  // teclas: KeyboardEvent.code → nombre DirectInput que usa Dolphin
+  const CODE2DI = (code) => {
+    let m;
+    if ((m = /^Key([A-Z])$/.exec(code))) return m[1];
+    if ((m = /^Digit(\d)$/.exec(code))) return m[1];
+    if ((m = /^F(\d{1,2})$/.exec(code))) return 'F' + m[1];
+    if ((m = /^Numpad(\d)$/.exec(code))) return 'NUMPAD' + m[1];
+    return ({ Space: 'SPACE', ShiftLeft: 'LSHIFT', ShiftRight: 'RSHIFT', ControlLeft: 'LCONTROL', ControlRight: 'RCONTROL', AltLeft: 'LMENU', AltRight: 'RMENU',
+      Enter: 'RETURN', NumpadEnter: 'NUMPADENTER', Escape: 'ESCAPE', Tab: 'TAB', Backspace: 'BACK', CapsLock: 'CAPITAL', ArrowUp: 'UP', ArrowDown: 'DOWN',
+      ArrowLeft: 'LEFT', ArrowRight: 'RIGHT', Minus: 'MINUS', Equal: 'EQUALS', BracketLeft: 'LBRACKET', BracketRight: 'RBRACKET', Semicolon: 'SEMICOLON',
+      Quote: 'APOSTROPHE', Backquote: 'GRAVE', Backslash: 'BACKSLASH', IntlBackslash: 'OEM_102', Comma: 'COMMA', Period: 'PERIOD', Slash: 'SLASH',
+      Insert: 'INSERT', Delete: 'DELETE', Home: 'HOME', End: 'END', PageUp: 'PRIOR', PageDown: 'NEXT', NumpadAdd: 'ADD', NumpadSubtract: 'SUBTRACT',
+      NumpadMultiply: 'MULTIPLY', NumpadDivide: 'DIVIDE', NumpadDecimal: 'DECIMAL' })[code] || null;
+  };
+  const KB_SHOW = {
+    SPACE: L('ESPACIO', 'SPACE', 'ESPACE'), LSHIFT: 'SHIFT', RSHIFT: L('SHIFT DER.', 'R-SHIFT', 'MAJ D.'), LCONTROL: 'CTRL', RCONTROL: L('CTRL DER.', 'R-CTRL', 'CTRL D.'),
+    LMENU: 'ALT', RMENU: 'ALT GR', RETURN: L('ENTER', 'ENTER', 'ENTRÉE'), NUMPADENTER: L('ENTER NUM', 'NUM ENTER', 'ENTRÉE NUM'), ESCAPE: L('ESC', 'ESC', 'ÉCHAP'), TAB: 'TAB',
+    BACK: '⌫', CAPITAL: L('BLOQ MAYÚS', 'CAPS LOCK', 'VERR MAJ'), UP: '↑', DOWN: '↓', LEFT: '←', RIGHT: '→', MINUS: '-', EQUALS: '=', LBRACKET: '[', RBRACKET: ']',
+    SEMICOLON: 'Ñ', APOSTROPHE: "'", GRAVE: 'º', BACKSLASH: '\\', OEM_102: '<', COMMA: ',', PERIOD: '.', SLASH: '/', INSERT: 'INS', DELETE: 'SUPR', HOME: L('INICIO', 'HOME', 'DÉBUT'),
+    END: L('FIN', 'END', 'FIN'), PRIOR: L('RE PÁG', 'PG UP', 'PG PRÉC'), NEXT: L('AV PÁG', 'PG DN', 'PG SUIV'), ADD: 'NUM +', SUBTRACT: 'NUM -', MULTIPLY: 'NUM *', DIVIDE: 'NUM /', DECIMAL: 'NUM .',
+    'Click 0': L('CLIC IZQ.', 'LEFT CLICK', 'CLIC GAUCHE'), 'Click 1': L('CLIC DER.', 'RIGHT CLICK', 'CLIC DROIT'), 'Click 2': L('CLIC RUEDA', 'MIDDLE CLICK', 'CLIC MOLETTE'),
+    'Click 3': L('LATERAL 1', 'MOUSE 4', 'SOURIS 4'), 'Click 4': L('LATERAL 2', 'MOUSE 5', 'SOURIS 5'), 'Axis Z+': L('RUEDA ↑', 'WHEEL ↑', 'MOLETTE ↑'), 'Axis Z-': L('RUEDA ↓', 'WHEEL ↓', 'MOLETTE ↓')
+  };
+  const showBind = (dev, v) => !v ? '—' : dev === 'pad' ? (PAD_SHOW[v] || v) : (KB_SHOW[v] ? tx(KB_SHOW[v]) : (/^NUMPAD(\d)$/.test(v) ? 'NUM ' + v.slice(6) : v));
+  const RESERVED = ['ESCAPE', 'F9'];
+  let capture = null;   // { dev, act, until }
+  const startCapture = (dev, act) => {
+    capture = { dev, act, until: performance.now() + 5000 }; sfx('ok'); paintSettings();
+    clearInterval(startCapture._i);
+    startCapture._i = setInterval(() => { if (!capture) { clearInterval(startCapture._i); return; } if (performance.now() > capture.until) { capture = null; sfx('back'); paintSettings(); } else paintSettings(); }, 250);
+  };
+  const finishCapture = (value) => {
+    const { dev, act } = capture; capture = null; clearInterval(startCapture._i);
+    if (dev === 'kb' && RESERVED.includes(value)) { toast(t('reserved', value), 3500); sfx('back'); paintSettings(); return; }
+    const B = binds()[dev];
+    const other = Object.keys(B).find((k) => k !== act && B[k] === value && (dev === 'kb' || BTN_IDS.includes(k)));
+    if (other) { B[other] = B[act]; toast(t('swapped', actName(other)), 2600); }
+    B[act] = value; save(); sfx('tick'); paintSettings();
+  };
+  const actName = (id) => ACTS[id].x ? (ACTS[id].x.length <= 2 ? L('BOTÓN ', 'BUTTON ', 'BOUTON ')[cfg.ui] + ACTS[id].x : ACTS[id].x) : tx(ACTS[id].n);
+  addEventListener('keydown', (e) => {
+    if (!capture || capture.dev !== 'kb') return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    const v = CODE2DI(e.code); if (v) finishCapture(v);
+  }, true);
+  addEventListener('mousedown', (e) => {
+    if (!capture || capture.dev !== 'kb') return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    finishCapture('Click ' + ({ 0: 0, 2: 1, 1: 2, 3: 3, 4: 4 })[e.button]);
+  }, true);
+  addEventListener('wheel', (e) => { if (!capture || capture.dev !== 'kb') return; e.preventDefault(); finishCapture(e.deltaY < 0 ? 'Axis Z+' : 'Axis Z-'); }, { capture: true, passive: false });
+  addEventListener('contextmenu', (e) => e.preventDefault());
+
+  // ---------- ajustes
+  const TABS = [['sound', L('SONIDO', 'SOUND', 'SON')], ['gfx', L('GRÁFICOS', 'GRAPHICS', 'GRAPHISMES')], ['ctl', L('CONTROLES', 'CONTROLS', 'COMMANDES')],
+    ['lang', L('IDIOMA', 'LANGUAGE', 'LANGUE')], ['general', L('GENERAL', 'GENERAL', 'GÉNÉRAL')]];
+  const YN = [['on', L('Sí', 'Yes', 'Oui')], ['off', L('No', 'No', 'Non')]];
+  const NY = [['off', L('No', 'No', 'Non')], ['on', L('Sí', 'Yes', 'Oui')]];
+  const G = { launcher: 'LAUNCHER', game: L('JUEGO', 'GAME', 'JEU'), image: L('IMAGEN', 'DISPLAY', 'IMAGE'), tex: L('TEXTURAS', 'TEXTURES', 'TEXTURES'), fx: L('EFECTOS', 'EFFECTS', 'EFFETS'),
+    audio: 'AUDIO', text: L('TEXTO', 'TEXT', 'TEXTE'), ach: L('LOGROS', 'ACHIEVEMENTS', 'SUCCÈS'), icons: L('ICONOS EN PANTALLA', 'ON-SCREEN PROMPTS', 'ICÔNES À L\'ÉCRAN'),
+    move: L('MOVIMIENTO', 'MOVEMENT', 'DÉPLACEMENT'), cam: L('CÁMARA', 'CAMERA', 'CAMÉRA'), btns: L('BOTONES DEL JUEGO', 'GAME BUTTONS', 'BOUTONS DU JEU'), other: L('OTROS', 'OTHER', 'AUTRES') };
+  const ROWS = [
+    { tab: 'sound', group: G.launcher, key: 'music', label: L('MÚSICA', 'MUSIC', 'MUSIQUE'), hint: L('Tema del launcher', 'Launcher theme', 'Thème du launcher'), opts: YN },
+    { tab: 'sound', type: 'slider', key: 'mvol', label: L('VOLUMEN MÚSICA', 'MUSIC VOLUME', 'VOLUME MUSIQUE'), hint: L('Solo en el launcher', 'Launcher only', 'Launcher uniquement'), min: 0, max: 100, step: 5 },
+    { tab: 'sound', key: 'sfx', label: L('EFECTOS', 'EFFECTS', 'EFFETS'), hint: L('Sonidos al moverte por el menú', 'Menu sounds', 'Sons du menu'), opts: YN },
+    { tab: 'sound', group: G.game, type: 'slider', key: 'gvol', label: L('VOLUMEN', 'VOLUME', 'VOLUME'), hint: L('Volumen general del juego', 'Overall game volume', 'Volume général du jeu'), min: 0, max: 100, step: 5 },
+    { tab: 'gfx', group: G.image, key: 'res', label: L('RESOLUCIÓN', 'RESOLUTION', 'RÉSOLUTION'), hint: L('Render interno', 'Internal render', 'Rendu interne'), opts: [['720', '720p'], ['900', '900p'], ['1080', '1080p']] },
+    { tab: 'gfx', key: 'fps', label: 'FPS', hint: L('60 es experimental', '60 is experimental', '60 est expérimental'), opts: [['30', L('30 (original)', '30 (original)', '30 (original)')], ['60', '60']], lock: (v) => v === '60' && !caps.fps60Ok ? 'en desarrollo' : '' },
+    { tab: 'gfx', key: 'mode', label: L('PANTALLA', 'SCREEN', 'ÉCRAN'), hint: L('Modo del juego', 'Game window mode', 'Mode du jeu'), opts: [['full', L('Completa', 'Fullscreen', 'Plein écran')], ['borderless', L('Sin bordes', 'Borderless', 'Sans bordure')], ['win', L('Ventana', 'Windowed', 'Fenêtré')]] },
+    { tab: 'gfx', key: 'vsync', label: 'V-SYNC', hint: L('Evita cortes de imagen', 'Prevents screen tearing', "Évite les déchirures d'image"), opts: YN },
+    { tab: 'gfx', group: G.tex, key: 'hd', label: L('TEXTURAS HD', 'HD TEXTURES', 'TEXTURES HD'), hint: 'TLS HD GUI Plus', opts: [['on', L('Activadas', 'On', 'Activées')], ['off', L('Originales', 'Original', 'Originales')]] },
+    { tab: 'gfx', group: G.fx, key: 'gfx_shadows', label: L('SOMBRAS HD', 'HD SHADOWS', 'OMBRES HD'), hint: L('Quita las sombras simplificadas', 'Removes simplified shadows', 'Supprime les ombres simplifiées'), opts: NY },
+    { tab: 'gfx', key: 'gfx_grading', label: L('GRÁFICOS MEJORADOS', 'ENHANCED GRAPHICS', 'GRAPHISMES AMÉLIORÉS'), hint: L('Imagen más limpia, sin filtro de color', 'Cleaner image, no color filter', 'Image plus nette, sans filtre de couleur'), opts: NY },
+    { tab: 'gfx', key: 'gfx_dof', label: L('DESENFOQUE', 'DEPTH OF FIELD', 'PROFONDEUR DE CHAMP'), hint: L('Profundidad de campo', 'Background blur', "Flou d'arrière-plan"), opts: [['off', L('Normal', 'Normal', 'Normal')], ['on', L('Reducido', 'Reduced', 'Réduit')]] },
+    { tab: 'gfx', key: 'gfx_rays', label: L('RAYOS DE LUZ', 'LIGHT SHAFTS', 'RAYONS DE LUMIÈRE'), hint: L('Intensidad de los god rays', 'God ray intensity', 'Intensité des god rays'), opts: [['off', L('Normal', 'Normal', 'Normal')], ['on', L('Suaves', 'Soft', 'Doux')]] },
+    { tab: 'lang', group: G.audio, key: 'voice', label: L('VOCES', 'VOICES', 'VOIX'), hint: L('Idioma del doblaje', 'Voice-over language', 'Langue du doublage'), opts: [['en', L('Inglés', 'English', 'Anglais')], ['jp', L('Japonés', 'Japanese', 'Japonais')]], lock: (v) => v === 'jp' && !caps.gameJpOk ? '…' : '' },
+    { tab: 'lang', group: G.text, key: 'text', label: L('JUEGO', 'GAME', 'JEU'), hint: L('Subtítulos y menús del juego', 'In-game text and menus', 'Textes et menus du jeu'), opts: [['en', 'English'], ['es', 'Español'], ['fr', 'Français']] },
+    { tab: 'general', group: G.launcher, key: 'intro', label: 'INTRO', hint: L('Animación al abrir', 'Opening animation', "Animation d'ouverture"), opts: YN },
+    { tab: 'general', key: 'wind', label: L('VIENTO', 'WIND', 'VENT'), hint: L('Movimiento de la ilustración', 'Artwork movement', "Mouvement de l'illustration"), opts: YN },
+    { tab: 'general', group: G.ach, key: 'achievements', label: L('LOGROS', 'ACHIEVEMENTS', 'SUCCÈS'), hint: L('Detectar logros mientras juegas', 'Track achievements while playing', 'Suivre les succès en jeu'), opts: YN },
+    { tab: 'general', key: 'achToast', label: L('AVISO', 'POP-UP', 'NOTIFICATION'), hint: L('Mostrar el logro encima del juego', 'Show unlocks over the game', 'Afficher les succès en jeu'), opts: YN },
+    { tab: 'general', key: 'achSound', label: L('SONIDO DEL AVISO', 'POP-UP SOUND', 'SON DE NOTIFICATION'), hint: L('Campanilla al desbloquear', 'Chime on unlock', 'Carillon au déblocage'), opts: YN },
+  ];
+  // filas de la pestaña CONTROLES (se generan según el dispositivo elegido)
+  let ctlDev = 'pad';
+  const ctlRows = () => {
+    const R = [
+      { tab: 'ctl', type: 'dev', label: L('DISPOSITIVO', 'DEVICE', 'PÉRIPHÉRIQUE'), hint: L('Ambos funcionan a la vez', 'Both work at the same time', 'Les deux fonctionnent en même temps'),
+        opts: [['pad', L('Mando', 'Controller', 'Manette')], ['kb', L('Teclado y ratón', 'Keyboard & mouse', 'Clavier et souris')]] },
+      { tab: 'ctl', group: G.icons, key: 'buttons', label: L('ICONOS', 'PROMPTS', 'ICÔNES'), hint: L('Botones que muestra el juego', 'Buttons shown in game', 'Boutons affichés en jeu'),
+        opts: [['auto', L('Automático', 'Automatic', 'Automatique')], ['xbox', 'Xbox 360'], ['kb', L('Teclado', 'Keyboard', 'Clavier')], ['wii', 'Wii']] }
+    ];
+    const bind = (id, group) => R.push({ tab: 'ctl', type: 'bind', dev: ctlDev, act: id, group,
+      label: ACTS[id].x ? (ACTS[id].x.length <= 2 ? L('BOTÓN ', 'BUTTON ', 'BOUTON ') : '') : ACTS[id].n, hint: ACTS[id].h || '' });
+    if (ctlDev === 'kb') {
+      ['ls_up', 'ls_down', 'ls_left', 'ls_right', 'walk'].forEach((id, i) => bind(id, i ? null : G.move));
+      R.push({ tab: 'ctl', group: G.cam, key: 'kbCam', label: L('CÁMARA', 'CAMERA', 'CAMÉRA'), hint: L('Cómo mueves la cámara', 'How you move the camera', 'Contrôle de la caméra'), opts: [['mouse', L('Ratón', 'Mouse', 'Souris')], ['keys', L('Teclas', 'Keys', 'Touches')]] });
+      if (cfg.kbCam === 'mouse') {
+        R.push({ tab: 'ctl', key: 'kbSens', label: L('SENSIBILIDAD', 'SENSITIVITY', 'SENSIBILITÉ'), hint: L('Velocidad del ratón', 'Mouse speed', 'Vitesse de la souris'), opts: [['1', '1'], ['2', '2'], ['3', '3'], ['4', '4'], ['5', '5']] });
+        R.push({ tab: 'ctl', key: 'kbInvert', label: L('INVERTIR Y', 'INVERT Y', 'INVERSER Y'), hint: L('Eje vertical del ratón', 'Vertical mouse axis', 'Axe vertical de la souris'), opts: NY });
+      } else ['rs_up', 'rs_down', 'rs_left', 'rs_right'].forEach((id) => bind(id));
+      BTN_IDS.forEach((id, i) => bind(id, i ? null : G.btns));
+      R.push({ tab: 'ctl', group: G.other, type: 'info', label: L('VOLVER AL LAUNCHER', 'BACK TO LAUNCHER', 'RETOUR AU LAUNCHER'), hint: L('Durante el juego', 'While playing', 'Pendant le jeu'), value: 'Esc' });
+    } else {
+      BTN_IDS.forEach((id, i) => bind(id, i ? null : G.btns));
+      R.push({ tab: 'ctl', group: G.cam, key: 'padInvert', label: L('INVERTIR Y', 'INVERT Y', 'INVERSER Y'), hint: L('Eje vertical del stick derecho', 'Right stick vertical axis', 'Axe vertical du stick droit'), opts: NY });
+      R.push({ tab: 'ctl', group: G.other, type: 'info', label: L('VOLVER AL LAUNCHER', 'BACK TO LAUNCHER', 'RETOUR AU LAUNCHER'), hint: L('Durante el juego', 'While playing', 'Pendant le jeu'), value: 'L3 + R3' });
+    }
+    R.push({ tab: 'ctl', type: 'action', label: L('RESTABLECER', 'RESET', 'RÉINITIALISER'), hint: L('Controles por defecto de este dispositivo', 'Default controls for this device', 'Commandes par défaut de ce périphérique'),
+      btn: L('Restablecer', 'Reset', 'Réinitialiser'), run: () => { if (ctlDev === 'kb') { cfg.kbBinds = Object.assign({}, KB_DEF); cfg.kbCam = 'mouse'; cfg.kbSens = '2'; cfg.kbInvert = 'off'; } else { cfg.padBinds = Object.assign({}, PAD_DEF); cfg.padInvert = 'off'; } save(); toast(t('resetDone')); paintSettings(); } });
+    return R;
+  };
+  let tab = 'sound';
+  const vis = () => tab === 'ctl' ? ctlRows() : ROWS.filter((r) => r.tab === tab);
+  const setOpt = (row, v) => {
+    if (row.type === 'dev') { if (ctlDev !== v) { ctlDev = v; sfx('tick'); paintSettings(); } return; }
+    const why = row.lock ? row.lock(v) : '';
+    if (why) { toast(tx(row.label) + ': ' + why); return; }
+    cfg[row.key] = v; save(); paintSettings(); sfx('tick');
+    if (row.key === 'wind') windToggle();
+    if (row.key === 'fps') toast(t(v === '60' ? 'fps60' : 'fps30'), 5200);
+    if (row.key === 'music') syncMusic();
+    if (row.key === 'ui') applyLang();
+  };
+  const applySlider = (row) => {
+    if (row.key === 'mvol') { if (cfg.music !== 'on' && +cfg.mvol > 0) { cfg.music = 'on'; } music.volume = musicVol(); syncMusic(); }
+  };
+  const stepSlider = (row, d) => {
+    const v = Math.max(row.min, Math.min(row.max, parseInt(cfg[row.key] || DEFAULTS[row.key], 10) + d * row.step));
+    if (String(v) === cfg[row.key]) return;
+    cfg[row.key] = String(v); applySlider(row); save(); sfx('tick'); paintSettings();
+  };
+  const activate = (row) => {
+    if (row.type === 'bind') startCapture(row.dev, row.act);
+    else if (row.type === 'action') { sfx('ok'); row.run(); }
+  };
+  const paintSettings = () => {
+    const tabsEl = $('setTabs'); tabsEl.innerHTML = '';
+    TABS.forEach(([id, label]) => {
+      const b = document.createElement('button'); b.className = 'tab' + (id === tab ? ' on' : '') + (rowSel < 0 && id === tab && screen === 'settings' ? ' focus' : '');
+      b.textContent = tx(label); b.addEventListener('click', () => { if (tab !== id) { tab = id; rowSel = 0; capture = null; sfx('tick'); paintSettings(); } });
+      tabsEl.appendChild(b);
+    });
+    const box = $('settingsRows'); box.innerHTML = '';
+    const B = binds();
+    let focusEl = null;
+    vis().forEach((row, ri) => {
+      if (row.group) { const g = document.createElement('div'); g.className = 'grp'; g.textContent = tx(row.group); box.appendChild(g); }
+      const r = document.createElement('div'); r.className = 'row' + (ri === rowSel && screen === 'settings' ? ' focus' : '');
+      let label = tx(row.label);
+      if (row.type === 'bind' && ACTS[row.act].x) label = (ACTS[row.act].x.length <= 2 ? label : '') + ACTS[row.act].x;
+      r.innerHTML = '<div><span class="lbl"></span><span class="hint"></span></div><div class="opts"></div>';
+      r.querySelector('.lbl').textContent = label; r.querySelector('.hint').textContent = tx(row.hint);
+      const opts = r.querySelector('.opts');
+      if (row.type === 'bind') {
+        const b = document.createElement('button'); const live = capture && capture.dev === row.dev && capture.act === row.act;
+        b.className = 'opt key' + (live ? ' wait' : '');
+        b.textContent = live ? t(row.dev === 'kb' ? 'press' : 'pressPad', Math.max(1, Math.ceil((capture.until - performance.now()) / 1000))) : showBind(row.dev, B[row.dev][row.act]);
+        b.addEventListener('click', (e) => { if (capture) return; rowSel = ri; activate(row); e.stopPropagation(); });
+        opts.appendChild(b);
+      } else if (row.type === 'action') {
+        const b = document.createElement('button'); b.className = 'opt'; b.textContent = tx(row.btn);
+        b.addEventListener('click', () => { rowSel = ri; activate(row); }); opts.appendChild(b);
+      } else if (row.type === 'slider') {
+        const v = parseInt(cfg[row.key] || DEFAULTS[row.key], 10);
+        const sl = document.createElement('div'); sl.className = 'slider';
+        sl.innerHTML = '<div class="track"><div class="ticks"></div><div class="fill"></div><div class="knob"></div></div><span class="val"></span>';
+        const tr = sl.querySelector('.track');
+        const show = (x) => { sl.querySelector('.fill').style.width = x + '%'; sl.querySelector('.knob').style.left = x + '%'; sl.querySelector('.val').textContent = x + '%'; };
+        show(v);
+        const at = (e) => { const r = tr.getBoundingClientRect(); return Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (row.max / row.step)) * row.step; };
+        tr.addEventListener('pointerdown', (e) => {
+          rowSel = ri; tr.setPointerCapture(e.pointerId);
+          const move = (ev) => { const x = at(ev); if (String(x) !== cfg[row.key]) { cfg[row.key] = String(x); show(x); applySlider(row); } };
+          move(e);
+          const up = () => { tr.removeEventListener('pointermove', move); tr.removeEventListener('pointerup', up); save(); paintSettings(); };
+          tr.addEventListener('pointermove', move); tr.addEventListener('pointerup', up);
+        });
+        opts.appendChild(sl);
+      } else if (row.type === 'info') {
+        const s = document.createElement('span'); s.className = 'opt key static'; s.textContent = row.value; opts.appendChild(s);
+      } else {
+        const cur = row.type === 'dev' ? ctlDev : cfg[row.key];
+        row.opts.forEach(([v, l]) => {
+          const b = document.createElement('button'); const why = row.lock ? row.lock(v) : '';
+          b.className = 'opt' + (cur === v ? ' on' : ''); b.textContent = tx(l) + (why ? ' · ' + why : '');
+          b.setAttribute('aria-pressed', cur === v); if (why) b.disabled = true;
+          b.addEventListener('click', () => { rowSel = ri; setOpt(row, v); });
+          opts.appendChild(b);
+        });
+      }
+      box.appendChild(r); if (ri === rowSel) focusEl = r;
+    });
+    if (focusEl) focusEl.scrollIntoView({ block: 'nearest' }); else box.scrollTop = 0;
+  };
+  const switchTab = (d) => { const i = TABS.findIndex((x) => x[0] === tab); const n = (i + d + TABS.length) % TABS.length; tab = TABS[n][0]; capture = null; sfx('tick'); paintSettings(); };
+
+  // ---------- logros (set de RetroAchievements, evaluado sin conexión)
+  let LG = null;                         // { game, list, unlocked, progress, tr }
+  let achFilter = 'all', achSel = -1, achFresh = null, raBusy = false;
+  const ACH_TABS = [['all', 'achAll'], ['got', 'achGot'], ['todo', 'achTodo']];
+  const LOCK = '<svg width="18" height="18" viewBox="0 0 18 18" aria-label="Bloqueado"><rect x="3.5" y="8" width="11" height="8" fill="none" stroke="#7a6548" stroke-width="1.3"/><path d="M6 8V5.5a3 3 0 0 1 6 0V8" fill="none" stroke="#7a6548" stroke-width="1.3"/></svg>';
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const achTx = (a) => { const tr = LG && LG.tr && LG.tr[cfg.ui] && LG.tr[cfg.ui][a.id]; return tr ? { t: tr[0] || a.title, d: tr[1] || a.description } : { t: a.title, d: a.description }; };
+  const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString(cfg.ui === 'en' ? 'en-US' : cfg.ui === 'fr' ? 'fr-FR' : 'es-MX', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
+  const achList = () => {
+    if (!LG) return [];
+    const got = (a) => !!LG.unlocked[a.id];
+    const l = LG.list.filter((a) => achFilter === 'all' || (achFilter === 'got') === got(a));
+    return l.slice().sort((a, b) => (got(b) - got(a)) || (got(a) ? String(LG.unlocked[b.id]).localeCompare(String(LG.unlocked[a.id])) : 0));
+  };
+  const paintAch = () => {
+    const tabs = $('achTabs'); tabs.innerHTML = '';
+    ACH_TABS.forEach(([id, k]) => {
+      const b = document.createElement('button'); b.className = 'tab' + (id === achFilter ? ' on' : '');
+      b.textContent = t(k); b.addEventListener('click', () => { if (achFilter !== id) { achFilter = id; achSel = -1; sfx('tick'); paintAch(); } });
+      tabs.appendChild(b);
+    });
+    const note = $('achNote');
+    if (!LG) {
+      $('achCount').textContent = '— / 109'; $('achPts').textContent = '— / 800 ' + t('points'); $('achBar').style.width = '0';
+      note.style.display = ''; note.textContent = t('raIntro');
+      $('achGrid').innerHTML = '<form class="ralogin" id="raForm" autocomplete="off"><label><span>' + esc(t('raUser')) + '</span><input id="raU" spellcheck="false"></label>' +
+        '<label><span>' + esc(t('raPass')) + '</span><input id="raP" type="password"></label><button class="opt on" id="raGo" type="submit">' + esc(t('raGo')) + '</button>' +
+        '<p class="note" id="raMsg"></p></form>';
+      $('raForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const u = $('raU').value.trim(), pw = $('raP').value;
+        if (!u || !pw || raBusy) return;
+        raBusy = true; $('raGo').disabled = true; $('raMsg').textContent = t('raLogin'); sfx('ok');
+        send('raLogin', { user: u, pass: pw }); $('raP').value = '';
+      });
+      return;
+    }
+    note.style.display = 'none';
+    const total = LG.list.length, ptsAll = LG.list.reduce((s, a) => s + a.points, 0);
+    const got = LG.list.filter((a) => LG.unlocked[a.id]);
+    const pts = got.reduce((s, a) => s + a.points, 0);
+    $('achCount').textContent = got.length + ' / ' + total;
+    $('achPts').textContent = pts + ' / ' + ptsAll + ' ' + t('points');
+    $('achBar').style.width = (total ? (got.length * 100 / total) : 0) + '%';
+    const items = achList();
+    $('achGrid').innerHTML = items.map((a, i) => {
+      const on = !!LG.unlocked[a.id], tr = achTx(a), pr = LG.progress[a.id];
+      const img = a.badge ? '<img src="assets/logros/' + esc(a.badge) + (on ? '' : '_lock') + '.png" alt="" onerror="this.remove()">' : LOCK;
+      const extra = on ? '<div class="when">' + fmtDate(LG.unlocked[a.id]) + '</div>'
+        : (pr && pr[1] > 1 ? '<div class="mini"><div style="width:' + Math.min(100, pr[0] * 100 / pr[1]) + '%"></div></div><div class="prog">' + pr[0] + ' / ' + pr[1] + '</div>' : '');
+      return '<div class="ach' + (on ? ' got' : '') + (i === achSel ? ' focus' : '') + (achFresh === a.id ? ' new' : '') + '" data-i="' + i + '"><div class="badge">' + img + '</div><div style="flex:1;min-width:0"><div class="t">' + esc(tr.t) + '</div><div class="d">' + esc(tr.d) + '</div>' + extra + '</div><div class="pts">' + a.points + '</div></div>';
+    }).join('') || '<p class="note">' + t(achFilter === 'got' ? 'achNone' : 'achAllDone') + '</p>';
+    achFresh = null;
+    const f = $('achGrid').querySelector('.ach.focus'); if (f) f.scrollIntoView({ block: 'nearest' });
+  };
+  const achMove = (d) => {
+    const n = achList().length; if (!n) return;
+    achSel = achSel < 0 ? 0 : Math.max(0, Math.min(n - 1, achSel + d)); sfx('move'); paintAch();
+  };
+
+  // ---------- créditos
+  const paintCredits = () => {
+    const CREDITS = [
+      ['credits_game', 'Mistwalker · AQ Interactive · Nintendo'],
+      ['credits_emu', 'Dolphin Emulator'],
+      ['credits_hd', 'TLS HD GUI Plus — Matrix2525'],
+      ['credits_btn', 'The Last Story – XBox360 Edition'],
+      ['credits_ach', 'carlosrhv · Quenthel — RetroAchievements'],
+      ['credits_music', t('credits_music_w')],
+      ['credits_proj', "Dionixu's Launcher"],
+      ['credits_tech', 'Electron · rcheevos (RetroAchievements) · Dolphin Emulator (GPLv2)']
+    ];
+    $('creditList').innerHTML = CREDITS.map(([r, w]) => '<div class="credit"><span class="r">' + esc(t(r)) + '</span><span class="w">' + esc(w) + '</span></div>').join('');
+  };
+
+  // ---------- idioma del launcher: textos fijos
+  const LANGS = [['en', 'English'], ['es', 'Español'], ['fr', 'Français']];
+  const applyLang = () => {
+    document.documentElement.lang = cfg.ui;
+    document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
+    document.querySelectorAll('[data-tt]').forEach((el) => { el.title = t(el.dataset.tt); });
+    $('hints').textContent = t(inputDev === 'kb' ? 'hintsKb' : 'hintsPad');
+    paintMenu(); paintSettings(); paintCredits(); paintLang();
+    if (screen === 'logros') paintAch();
+  };
+  const paintLang = () => {
+    const box = $('langList'); box.innerHTML = '';
+    LANGS.forEach(([id, name], i) => {
+      const b = document.createElement('button'); b.className = 'langopt' + (cfg.ui === id ? ' on' : '') + (screen === 'langpick' && i === langSel ? ' focus' : '');
+      b.innerHTML = '<span></span>'; b.querySelector('span').textContent = name;
+      b.addEventListener('mouseenter', () => { if (langSel !== i) { langSel = i; sfx('move'); paintLang(); } });
+      b.addEventListener('click', () => pickLang(id));
+      box.appendChild(b);
+    });
+  };
+  const pickLang = (id) => { const changed = cfg.ui !== id; cfg.ui = id; save(); sfx('ok'); applyLang(); closeLang(); if (changed) toast(t('langSet')); };
+  const openLang = () => { screen = 'langpick'; langSel = Math.max(0, LANGS.findIndex((l) => l[0] === cfg.ui)); $('langPanel').classList.add('show'); paintLang(); };
+  const closeLang = () => { $('langPanel').classList.remove('show'); if (screen === 'langpick') { screen = 'main'; zone = 'bar'; barSel = 0; paintBar(); } };
+
+  // ---------- navegación
+  const go = (s) => {
+    screen = (screen === 'intro' && !introDone) ? 'intro' : s;
+    $('mainScreen').style.display = s === 'main' ? '' : 'none';
+    ['settings', 'logros', 'credits'].forEach((id) => $(id).classList.toggle('show', id === s));
+    $('langPanel').classList.remove('show');
+    zone = 'menu'; paintBar(); capture = null;
+    if (s === 'settings') { rowSel = -1; paintSettings(); }
+    if (s === 'logros') { achSel = -1; paintAch(); }
+  };
+  document.querySelectorAll('[data-back]').forEach((b) => b.addEventListener('click', () => { sfx('back'); go('main'); }));
+  $('bLang').addEventListener('click', () => { if (screen === 'langpick') closeLang(); else { go('main'); zone = 'bar'; barSel = 0; paintBar(); openLang(); } });
+  $('achTest').addEventListener('click', () => { sfx('ok'); send('toastTest', { text: t('achTestText') }); });
+  $('bPad').addEventListener('click', () => toast(inputDev === 'kb' ? t('kbOn') : (padName ? t('padOn', padName) : t('padNone'))));
+  BAR.forEach((id, i) => $(id).addEventListener('mouseenter', () => { if (screen === 'langpick') return; zone = 'bar'; barSel = i; paintBar(); }));
+  $('bMusic').addEventListener('click', () => { cfg.music = cfg.music === 'on' ? 'off' : 'on'; save(); syncMusic(); toast(t(cfg.music === 'on' ? 'musicOn' : 'musicOff')); });
+  $('bMin').addEventListener('click', () => send('minimize'));
+  $('bFull').addEventListener('click', () => send('toggleFull'));
+  $('bClose').addEventListener('click', () => quitApp());
+  $('drag').addEventListener('mousedown', (e) => { if (e.button === 0 && !window.tlsHost) send('drag'); });
+  addEventListener('mousedown', (e) => { if (screen === 'langpick' && !e.target.closest('#langPanel') && !e.target.closest('#bLang')) closeLang(); });
+
+  // ---------- iconos de teclado para el juego (se dibujan con las teclas elegidas)
+  const iconSet = () => cfg.buttons === 'auto' ? (cfg.lastInput === 'kb' ? 'kb' : 'xbox') : (cfg.buttons || 'xbox');
+  const loadImg = (src) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
+  const KEYFONT = '"Segoe UI","Arial",sans-serif';
+  const keyLabel = (v) => {
+    const s = KB_SHOW[v]; let l = s ? tx(s) : (/^NUMPAD(\d)$/.test(v) ? 'NUM ' + v.slice(6) : v);
+    return l.replace('CLIC ', '').replace('CLICK', '').trim();
+  };
+  const isMouse = (v) => /^Click \d$|^Axis Z/.test(v);
+  // ratón de 5 botones: dibuja el contorno y resalta el botón usado
+  const drawMouse = (g, cx, cy, h, v, mode) => {
+    const w = h * 0.62, x = cx - w / 2, y = cy - h / 2, r = w / 2;
+    const shape = () => { g.beginPath(); g.moveTo(x, y + r); g.arc(cx, y + r, r, Math.PI, 0); g.lineTo(x + w, y + h - r); g.arc(cx, y + h - r, r, 0, Math.PI); g.closePath(); };
+    const fillPart = (path) => { g.save(); shape(); g.clip(); g.beginPath(); path(); g.fill(); g.restore(); };
+    const hi = mode === 'glyph' ? '#ffffff' : '#e8a33a';
+    g.lineWidth = Math.max(2, h * 0.055);
+    if (mode !== 'glyph') { g.fillStyle = '#f2f2f2'; shape(); g.fill(); }
+    g.fillStyle = hi;
+    const split = y + h * 0.42;
+    if (v === 'Click 0') fillPart(() => g.rect(x, y, w / 2, split - y));
+    if (v === 'Click 1') fillPart(() => g.rect(cx, y, w / 2, split - y));
+    if (v === 'Click 2' || /^Axis Z/.test(v)) { g.beginPath(); g.roundRect(cx - w * 0.09, y + h * 0.12, w * 0.18, h * 0.22, w * 0.09); g.fill(); }
+    if (v === 'Click 3' || v === 'Click 4') { g.beginPath(); g.roundRect(x - w * 0.02, y + h * (v === 'Click 3' ? 0.52 : 0.68), w * 0.16, h * 0.12, 3); g.fill(); }
+    g.strokeStyle = mode === 'glyph' ? '#ffffff' : '#2b2b2b';
+    shape(); g.stroke();
+    g.beginPath(); g.moveTo(cx, y); g.lineTo(cx, split); g.moveTo(x, split); g.lineTo(x + w, split); g.stroke();
+    if (/^Axis Z/.test(v)) { g.fillStyle = mode === 'glyph' ? '#fff' : '#e8a33a'; g.font = 'bold ' + Math.round(h * 0.2) + 'px ' + KEYFONT; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(v === 'Axis Z+' ? '▲' : '▼', x + w + 2, y + h * 0.22); }
+  };
+  const fitText = (g, s, maxW, size) => { let f = size; do { g.font = '700 ' + f + 'px ' + KEYFONT; if (g.measureText(s).width <= maxW) break; f -= 2; } while (f > 10); return f; };
+  // celda del atlas de letras (el juego la tiñe: solo blanco)
+  const glyphCell = (g, cx, cy, cs, v) => {
+    if (isMouse(v)) { drawMouse(g, cx, cy, cs * 0.82, v, 'glyph'); return; }
+    const s = keyLabel(v); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    fitText(g, s, cs * 0.92, s.length <= 1 ? Math.round(cs * 0.82) : s.length <= 3 ? Math.round(cs * 0.5) : Math.round(cs * 0.36));
+    g.fillText(s, cx, cy + cs * 0.03);
+  };
+  // celda de botón a color: tecla física o ratón
+  const capCell = (g, cx, cy, cs, v) => {
+    if (isMouse(v)) { drawMouse(g, cx, cy, cs * 0.8, v, 'cap'); return; }
+    const s = keyLabel(v); const w = cs * 0.76, h = cs * 0.74, x = cx - w / 2, y = cy - h / 2, rr = cs * 0.22;
+    const grd = g.createLinearGradient(0, y, 0, y + h); grd.addColorStop(0, '#fbfbfb'); grd.addColorStop(1, '#c9c9c9');
+    g.fillStyle = '#5a5a5a'; g.beginPath(); g.roundRect(x, y + h * 0.08, w, h * 0.92, rr); g.fill();
+    g.fillStyle = grd; g.beginPath(); g.roundRect(x, y, w, h * 0.92, rr); g.fill();
+    g.strokeStyle = '#2b2b2b'; g.lineWidth = Math.max(2, cs * 0.03); g.beginPath(); g.roundRect(x, y, w, h * 0.92, rr); g.stroke();
+    g.fillStyle = '#1e1e1e'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    fitText(g, s, w * 0.8, s.length <= 1 ? Math.round(cs * 0.5) : s.length <= 3 ? Math.round(cs * 0.3) : Math.round(cs * 0.22));
+    g.fillText(s, cx, y + h * 0.46);
+  };
+  const makeKbTextures = async () => {
+    const K = binds().kb; const out = {};
+    const base = async (file, size) => { const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); const im = await loadImg('assets/teclado/' + file); if (im) g.drawImage(im, 0, 0, size, size); return [c, g]; };
+    // atlas de letras 4x4 (celdas por botón del Classic Controller)
+    {
+      const [c, g] = await base('tex1_128x128_d00268462c0c911d_14.png', 512); const cs = 128;
+      const CELL = { a: [0, 2], b: [1, 1], x: [2, 3], y: [2, 2], zl: [3, 2], zr: [1, 2], l: [0, 3], r: [1, 3], plus: [2, 1], minus: [2, 0] };
+      for (const id in CELL) { const [cx, cy] = CELL[id]; g.fillStyle = '#000'; g.fillRect(cx * cs, cy * cs, cs, cs); glyphCell(g, cx * cs + cs / 2, cy * cs + cs / 2, cs, K[id]); }
+      out['tex1_128x128_d00268462c0c911d_14.png'] = c.toDataURL('image/png');
+    }
+    // atlas de botones a color 4x4
+    {
+      const [c, g] = await base('tex1_256x256_8797276bca6f38d0_14.png', 512); const cs = 128;
+      const CELL = { a: [0, 0], b: [1, 0], x: [2, 0], y: [3, 0], l: [0, 1], r: [1, 1], zl: [2, 1], zr: [3, 1], plus: [2, 3], minus: [3, 3] };
+      for (const id in CELL) { const [cx, cy] = CELL[id]; g.fillStyle = '#000'; g.fillRect(cx * cs, cy * cs, cs, cs); capCell(g, cx * cs + cs / 2, cy * cs + cs / 2, cs, K[id]); }
+      out['tex1_256x256_8797276bca6f38d0_14.png'] = c.toDataURL('image/png');
+    }
+    // icono suelto del botón de menú (+)
+    {
+      const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+      capCell(g, 64, 64, 128, K.plus);
+      out['tex1_64x64_dcb1ee81007c92c6_14.png'] = c.toDataURL('image/png');
+    }
+    return out;
+  };
+
+  // ---------- iniciar juego
+  const play = async () => {
+    if (busy) return;
+    if (!host) { toast(t('preview')); return; }
+    if (!caps.dolphinOk) { toast(t('noDolphin')); return; }
+    busy = true;
+    $('leave').classList.add('on');
+    const v0 = music.volume; let k = 0;
+    const fade = setInterval(() => { k++; music.volume = Math.max(0, v0 * (1 - k / 14)); if (k >= 14) { clearInterval(fade); music.pause(); music.volume = v0; } }, 50);
+    binds();
+    const set = iconSet();
+    let kbTex = null;
+    if (set === 'kb') { try { kbTex = await makeKbTextures(); } catch (e) { console.warn('texturas de teclado', e); } }
+    setTimeout(() => send('play', { config: cfg, iconSet: set, kbTex }), 750);
+    setTimeout(() => { busy = false; }, 4000);
+  };
+
+  // ---------- mensajes del host
+  if (host) host.addEventListener('message', (ev) => {
+    let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+    if (m.type === 'state') {
+      document.body.classList.toggle('fs', !!m.data.fullscreen);
+      caps = Object.assign(caps, m.data);
+      LG = m.data.logros || null;
+      cfg = Object.assign({}, DEFAULTS, m.data.config || {});
+      if (cfg.buttons === 'xbox' && !(m.data.config || {}).buttonsV2) { cfg.buttons = 'auto'; }
+      cfg.buttonsV2 = true;
+      if (cfg.voice === 'jp' && !caps.gameJpOk) cfg.voice = 'en';
+      if (cfg.fps === '60' && !caps.fps60Ok) cfg.fps = '30';
+      binds(); applyLang(); syncMusic();
+      if (cfg.intro === 'off') finishIntro();
+    } else if (m.type === 'fullscreen') { document.body.classList.toggle('fs', !!m.data); setTimeout(fit, 50); }
+    else if (m.type === 'gameStarted') { screen = 'playing'; syncMusic(); }
+    else if (m.type === 'raProgress') { const el = $('raMsg'); if (el) el.textContent = m.data.step === 'login' ? t('raLogin') : m.data.step === 'set' ? t('raSet') : t('raBadges', m.data.done, m.data.total); }
+    else if (m.type === 'raDone') { raBusy = false; if (!m.data.ok) { const el = $('raMsg'); if (el) el.textContent = t('raFail', m.data.error || '?'); const b = $('raGo'); if (b) b.disabled = false; } else if (screen === 'logros') setTimeout(paintAch, 50); }
+    else if (m.type === 'cfgPatch') { Object.assign(cfg, m.data || {}); if (screen === 'settings') paintSettings(); }
+    else if (m.type === 'logro') { if (LG) { LG.unlocked[m.data.id] = m.data.date; delete LG.progress[m.data.id]; achFresh = m.data.id; } }
+    else if (m.type === 'gameClosed') { busy = false; go('main'); syncMusic(); setTimeout(() => $('leave').classList.remove('on'), 150); }
+    else if (m.type === 'error') { busy = false; $('leave').classList.remove('on'); syncMusic(); toast(t('error') + m.data, 6000); }
+  });
+
+  // ---------- mando (Gamepad API) y teclado
+  let padName = '', prev = {}, repeatAt = {}, padPrevRaw = [];
+  const press = (k) => {
+    if (screen === 'intro') { if (k === 'a' || k === 'b') finishIntro(); return; }
+    if (screen === 'langpick') {
+      if (k === 'up' || k === 'left') { langSel = (langSel + LANGS.length - 1) % LANGS.length; sfx('move'); paintLang(); }
+      if (k === 'down' || k === 'right') { langSel = (langSel + 1) % LANGS.length; sfx('move'); paintLang(); }
+      if (k === 'a') pickLang(LANGS[langSel][0]);
+      if (k === 'b') { sfx('back'); closeLang(); }
+      return;
+    }
+    if (screen === 'main') {
+      if (zone === 'bar') {
+        if (k === 'left' && barSel > 0) { barSel--; paintBar(); sfx('move'); }
+        if (k === 'right' && barSel < BAR.length - 1) { barSel++; paintBar(); sfx('move'); }
+        if (k === 'up' || k === 'b') { zone = 'menu'; paintBar(); sfx('move'); }
+        if (k === 'a') { sfx('ok'); $(BAR[barSel]).click(); }
+        return;
+      }
+      if (k === 'up') { sel = (sel + ITEMS.length - 1) % ITEMS.length; paintMenu(); sfx('move'); }
+      if (k === 'down') {
+        if (sel === ITEMS.length - 1) { zone = 'bar'; barSel = 0; paintBar(); sfx('move'); return; }
+        sel = sel + 1; paintMenu(); sfx('move');
+      }
+      if (k === 'right') { zone = 'bar'; barSel = 0; paintBar(); sfx('move'); }
+      if (k === 'a') { sfx(sel === 0 ? 'start' : (sel === 4 ? 'back' : 'ok')); ITEMS[sel].run(); }
+    } else if (screen === 'settings') {
+      if (capture) return;
+      const R = vis();
+      if (k === 'lb' || k === 'rb') { switchTab(k === 'lb' ? -1 : 1); rowSel = -1; paintSettings(); return; }
+      if (rowSel < 0) {
+        if (k === 'left' || k === 'right') { switchTab(k === 'left' ? -1 : 1); rowSel = -1; paintSettings(); }
+        if (k === 'down' || k === 'a') { rowSel = 0; sfx('move'); paintSettings(); }
+      } else {
+        const row = R[rowSel];
+        if (k === 'up') { rowSel--; sfx('move'); paintSettings(); }
+        if (k === 'down' && rowSel < R.length - 1) { rowSel++; sfx('move'); paintSettings(); }
+        if ((k === 'left' || k === 'right') && row.type === 'slider') stepSlider(row, k === 'left' ? -1 : 1);
+        if ((k === 'left' || k === 'right') && row.opts) {
+          const vals = row.opts.map((o) => o[0]);
+          let i = vals.indexOf(row.type === 'dev' ? ctlDev : cfg[row.key]);
+          for (let n = 0; n < vals.length; n++) {
+            i = (i + (k === 'left' ? vals.length - 1 : 1)) % vals.length;
+            if (!(row.lock && row.lock(vals[i]))) { setOpt(row, vals[i]); break; }
+          }
+        }
+        if (k === 'a' && (row.type === 'bind' || row.type === 'action')) { activate(row); return; }
+      }
+      if (k === 'b') { sfx('back'); go('main'); }
+    } else if (screen === 'logros') {
+      if (k === 'b') { sfx('back'); go('main'); }
+      if (k === 'lb' || k === 'rb') { const i = ACH_TABS.findIndex((x) => x[0] === achFilter); achFilter = ACH_TABS[(i + (k === 'lb' ? 2 : 1)) % 3][0]; achSel = -1; sfx('tick'); paintAch(); }
+      if (k === 'up') achMove(-2);
+      if (k === 'down') achMove(2);
+      if (k === 'left') achMove(-1);
+      if (k === 'right') achMove(1);
+    } else if (screen === 'credits') {
+      if (k === 'b' || k === 'a') { sfx('back'); go('main'); }
+      if (k === 'up' || k === 'down') $('creditList').scrollBy(0, k === 'up' ? -60 : 60);
+    }
+  };
+  addEventListener('keydown', (e) => {
+    setInput('kb');
+    if (e.key === 'F11' || (e.altKey && e.key === 'Enter')) { e.preventDefault(); return; }
+    if (e.target && e.target.tagName === 'INPUT' && e.key !== 'Escape') return;   // escribiendo en un campo de texto
+    const map = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', Enter: 'a', Escape: 'b', Backspace: 'b', q: 'lb', e: 'rb', PageUp: 'lb', PageDown: 'rb' };
+    if (screen === 'intro') { e.preventDefault(); finishIntro(); return; }
+    if (map[e.key] && screen !== 'playing') { e.preventDefault(); press(map[e.key]); }
+  });
+  const poll = (tm) => {
+    const pads = navigator.getGamepads ? [...navigator.getGamepads()].filter(Boolean) : [];
+    const p = pads[0];
+    padName = p ? p.id.replace(/\(.*?\)/g, '').trim() : '';
+    if (p && screen !== 'playing' && document.hasFocus()) {
+      const ax = p.axes[0] || 0, ay = p.axes[1] || 0, B = (i) => p.buttons[i] && p.buttons[i].pressed;
+      const raw = p.buttons.map((b) => b.pressed || b.value > 0.5);
+      const any = raw.some((v, i) => v && !padPrevRaw[i]) || Math.abs(ax) > 0.6 || Math.abs(ay) > 0.6;
+      if (any) setInput('pad');
+      if (capture && capture.dev === 'pad') {
+        const i = raw.findIndex((v, j) => v && !padPrevRaw[j] && j < PAD_IDX.length);
+        if (i >= 0) finishCapture(PAD_IDX[i]);
+        padPrevRaw = raw; prev = { a: true, b: true }; requestAnimationFrame(poll); return;
+      }
+      padPrevRaw = raw;
+      const now = { up: B(12) || ay < -0.6, down: B(13) || ay > 0.6, left: B(14) || ax < -0.6, right: B(15) || ax > 0.6, a: B(0), b: B(1), lb: B(4), rb: B(5) };
+      if (capture) { prev = now; requestAnimationFrame(poll); return; }
+      for (const k in now) {
+        if (now[k] && !prev[k]) { press(k); repeatAt[k] = tm + 420; }
+        else if (now[k] && ['up', 'down', 'left', 'right'].includes(k) && tm > repeatAt[k]) { press(k); repeatAt[k] = tm + 140; }
+      }
+      prev = now;
+    }
+    requestAnimationFrame(poll);
+  };
+  requestAnimationFrame(poll);
+
+  // ---------- partículas (motas de luz)
+  const makeMotes = (canvas, count, warm) => {
+    const ctx = canvas.getContext('2d'); const W = canvas.width, H = canvas.height;
+    const P = Array.from({ length: count }, () => spawn(true));
+    function spawn(any) {
+      return { x: Math.random() * W, y: any ? Math.random() * H : H + 20, r: 0.6 + Math.random() * 2.6,
+        vy: 0.15 + Math.random() * 0.55, vx: (Math.random() - 0.5) * 0.25, ph: Math.random() * 6.28,
+        tw: 0.6 + Math.random() * 1.8, a: 0.25 + Math.random() * 0.75 };
+    }
+    let alpha = 0, target = 1, alive = true;
+    const step = () => {
+      if (!alive) return;
+      alpha += (target - alpha) * 0.03;
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      for (const p of P) {
+        p.y -= p.vy; p.x += p.vx + Math.sin(p.ph) * 0.18; p.ph += 0.01 * p.tw;
+        if (p.y < -20) Object.assign(p, spawn(false));
+        const a = alpha * p.a * (0.55 + 0.45 * Math.sin(p.ph * 3));
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+        g.addColorStop(0, warm ? 'rgba(255,240,205,' + a + ')' : 'rgba(255,255,255,' + a + ')');
+        g.addColorStop(0.35, warm ? 'rgba(255,214,150,' + a * 0.35 + ')' : 'rgba(200,225,255,' + a * 0.3 + ')');
+        g.addColorStop(1, 'rgba(255,200,120,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 6, 0, 6.283); ctx.fill();
+      }
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    return { fade: (t) => { target = t; }, stop: () => { alive = false; ctx.clearRect(0, 0, W, H); } };
+  };
+
+  // ---------- intro: créditos HD → destello → revelado del menú
+  const stage = $('stage'), intro = $('intro');
+  const later = []; const at = (ms, fn) => later.push(setTimeout(fn, ms));
+  let introDone = false, fx = null, motes = null;
+  const revealMenu = (fast) => {
+    stage.classList.add('beams-on');
+    stage.classList.remove('boot');
+    [...menu.children].forEach((b, i) => { b.style.transitionDelay = fast ? '0s' : (0.55 + i * 0.09) + 's'; });
+    $('logo').style.transitionDelay = fast ? '0s' : '0.25s';
+    ['bottom', 'hints'].forEach((id) => { $(id).style.transitionDelay = fast ? '0s' : '1.1s'; });
+    document.querySelector('.winbtns').style.transitionDelay = fast ? '0s' : '1.1s';
+    setTimeout(() => {
+      [...menu.children].forEach((b) => { b.style.transitionDelay = ''; });
+      ['logo', 'bottom', 'hints'].forEach((id) => { $(id).style.transitionDelay = ''; });
+      document.querySelector('.winbtns').style.transitionDelay = '';
+    }, 2500);
+  };
+  const finishIntro = () => {
+    if (introDone) return; introDone = true;
+    later.forEach(clearTimeout);
+    if (fx) fx.stop();
+    intro.classList.add('gone');
+    $('flash').className = '';
+    revealMenu(true);
+    screen = 'main'; go('main');
+  };
+  const runIntro = () => {
+    screen = 'intro';
+    stage.classList.add('boot');
+    fx = makeMotes($('fx'), 90, true);
+    at(250, () => $('flare').classList.add('go'));
+    at(700, () => intro.classList.add('p-splash'));
+    at(2900, () => intro.classList.add('p-hold'));
+    at(5600, () => { fx.fade(0); $('flash').className = 'on'; });
+    at(5950, () => {
+      intro.classList.add('out'); $('splash').style.opacity = '0'; $('splash').style.transition = 'none';
+      $('flash').className = 'off';
+      revealMenu(false);
+    });
+    at(7400, () => { if (!introDone) { introDone = true; fx.stop(); intro.classList.add('gone'); screen = 'main'; go('main'); } });
+  };
+  intro.addEventListener('click', finishIntro);
+  motes = makeMotes($('motes'), 28, true);
+
+  // ---------- viento: desplazamiento sutil de cabello, capas y cintas (WebGL)
+  let windOn = () => {}, windToggle = () => {};
+  (() => {
+    const cv = $('artfx'); const gl = cv.getContext('webgl', { premultipliedAlpha: true, alpha: true });
+    if (!gl) return;
+    const VS = 'attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}';
+    const FS = `precision mediump float;varying vec2 uv;uniform sampler2D img,msk;uniform float t,amp;
+      void main(){
+        float m=texture2D(msk,uv).r;
+        float gust=.7+.3*sin(t*.37)+.15*sin(t*.91+1.3);
+        float w=sin(t*1.55+uv.y*8.5+uv.x*2.5)*.55+sin(t*2.6+uv.y*15.+uv.x*6.)*.28+sin(t*.8+uv.y*3.)*.35;
+        float v=cos(t*1.9+uv.x*10.+uv.y*4.)*.25;
+        vec2 d=vec2(w,v)*m*amp*gust*vec2(.0062,.0021);
+        gl_FragColor=texture2D(img,uv-d);
+      }`;
+    const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(o); return o; };
+    let prog;
+    try { prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog); } catch (e) { console.warn('viento', e); return; }
+    gl.useProgram(prog);
+    const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+    const tex = (unit, img) => { const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach((k) => gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE));
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); };
+    const load = (src) => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
+    const uT = gl.getUniformLocation(prog, 't'), uA = gl.getUniformLocation(prog, 'amp');
+    Promise.all([load('assets/art.png'), load('assets/art_wind.png')]).then(([art, msk]) => {
+      tex(0, art); tex(1, msk);
+      gl.uniform1i(gl.getUniformLocation(prog, 'img'), 0); gl.uniform1i(gl.getUniformLocation(prog, 'msk'), 1);
+      gl.viewport(0, 0, cv.width, cv.height);
+      let amp = 0, t0 = performance.now(), running = false;
+      const frame = (now) => {
+        const target = cfg.wind === 'off' ? 0 : 1; amp += (target - amp) * 0.04;
+        if (screen !== 'playing' && !document.hidden) {
+          gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+          gl.uniform1f(uT, (now - t0) / 1000); gl.uniform1f(uA, amp); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        }
+        requestAnimationFrame(frame);
+      };
+      stage.classList.add('gl'); requestAnimationFrame(frame);
+    }).catch((e) => console.warn('viento: no se cargaron las imágenes', e));
+  })();
+
+  // ---------- arranque
+  paintMenu(); go('main'); runIntro();
+  syncMusic();
+  const kick = () => { syncMusic(); removeEventListener('pointerdown', kick); removeEventListener('keydown', kick); };
+  addEventListener('pointerdown', kick); addEventListener('keydown', kick);
+  if (host) send('init'); else applyLang();
+})();
+</script>
+</body>
+</html>

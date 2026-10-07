@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Dionixu's Launcher — The Last Story HD</title>
+<style>
+@font-face{font-family:"TLS Cinzel";src:url(fonts/Cinzel.ttf) format("truetype");font-weight:400 900}
+@font-face{font-family:"TLS Cormorant";src:url(fonts/CormorantGaramond.ttf) format("truetype");font-weight:300 700}
+@font-face{font-family:"TLS Cormorant";src:url(fonts/CormorantGaramond-Italic.ttf) format("truetype");font-weight:300 700;font-style:italic}
+:root{--ink:#2e261c;--ink-soft:#5d4e3a;--line:#8c7656;--line-soft:rgba(140,118,86,.45);--paper:#f1e5cc;--panel:rgba(247,239,221,.93);
+  --blue:#3e5873;--blue-d:#34495f;--blue-l:#4b6680;--gold:#c7a96a;--cream:#f8f1e1;--ok:#3f6b46;--bad:#8a3b2e;
+  --display:"TLS Cinzel","Cinzel","Trajan Pro",Georgia,serif;--body:"TLS Cormorant","Cormorant Garamond",Garamond,Georgia,serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;user-select:none;background:var(--paper) url(assets/parchment.jpg) center/cover;font-family:var(--body);color:var(--ink)}
+html,body,*{cursor:-webkit-image-set(url(assets/cursor/normal.png) 1x,url(assets/cursor/normal@2x.png) 2x) 2 2,default!important}
+button,button *,label.chk,label.chk *,.lang{cursor:-webkit-image-set(url(assets/cursor/hover.png) 1x,url(assets/cursor/hover@2x.png) 2x) 2 2,pointer!important}
+button{font:inherit;color:inherit}
+.frame1{position:fixed;inset:10px;border:1px solid var(--line);pointer-events:none}
+.frame2{position:fixed;inset:15px;border:1px solid rgba(140,118,86,.55);pointer-events:none}
+#drag{position:fixed;left:0;top:0;right:110px;height:42px;-webkit-app-region:drag;z-index:5}
+.winbtns{position:fixed;top:20px;right:28px;display:flex;gap:4px;z-index:6}
+.iconbtn{width:34px;height:30px;border:0;background:transparent;border-radius:3px;display:flex;align-items:center;justify-content:center}
+.iconbtn:hover{background:rgba(62,88,115,.14)}
+#art{position:fixed;right:-40px;bottom:-10px;height:640px;opacity:.5;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 35%)}
+#logo{position:fixed;left:44px;top:22px;width:168px;pointer-events:none}
+#brand{position:fixed;left:228px;top:58px;font-family:var(--display);font-size:13px;letter-spacing:3px;color:#6a5a44}
+#brand b{display:block;font-size:20px;letter-spacing:2.5px;color:#33291e;font-weight:600}
+/* panel de pasos */
+#panel{position:fixed;left:40px;top:186px;width:660px;height:410px;padding:22px 26px;background:var(--panel);border:1px solid var(--line);outline:1px solid var(--line-soft);outline-offset:3px;display:flex;flex-direction:column;gap:12px}
+#steps{position:fixed;left:40px;top:152px;display:flex;gap:6px}
+.dot{font-family:var(--display);font-size:10.5px;letter-spacing:1.6px;color:#8b7a60;padding:4px 10px;border-bottom:2px solid transparent}
+.dot.on{color:var(--blue);border-color:var(--blue)}
+.dot.done{color:#6a5a44}
+h2{margin:0;font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:3px;color:#33291e}
+.sub{margin:0;font-size:16px;font-style:italic;color:var(--ink-soft)}
+.scroll{flex:1;overflow-y:auto;padding-right:6px}
+.scroll::-webkit-scrollbar{width:8px}.scroll::-webkit-scrollbar-thumb{background:#b9a47f;border-radius:4px}
+.legal{font-size:16.5px;line-height:1.38;color:#3b3126}
+.legal h3{margin:4px 0 6px;font-family:var(--display);font-size:13px;letter-spacing:2px;color:var(--bad)}
+.legal ul{margin:6px 0 10px;padding-left:22px}
+.legal .warn{border-left:3px solid var(--bad);background:rgba(138,59,46,.07);padding:8px 12px;margin:10px 0}
+.foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:8px;border-top:1px solid rgba(140,118,86,.4)}
+.btn{min-width:150px;height:40px;padding:0 18px;border:1px solid var(--line);background:rgba(250,243,228,.6);font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:2.4px;color:#33291e}
+.btn:hover{background:rgba(62,88,115,.12)}
+.btn.main{color:var(--cream);background:linear-gradient(180deg,var(--blue-l),var(--blue-d));border-color:#2a3b4d;box-shadow:0 0 0 1px rgba(216,180,106,.6)}
+.btn.main:hover{box-shadow:0 0 0 2px rgba(216,180,106,.9),0 0 18px 3px rgba(255,214,140,.35)}
+.btn:disabled{opacity:.45;pointer-events:none}
+label.chk{display:flex;align-items:center;gap:10px;font-size:17px;color:#33291e}
+label.chk input{width:18px;height:18px;accent-color:var(--blue)}
+.langs{display:flex;gap:14px;margin-top:6px}
+.lang{flex:1;height:96px;border:1px solid var(--line);background:rgba(250,243,228,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-family:var(--display);font-size:18px;letter-spacing:2px;color:#33291e}
+.lang small{font-family:var(--body);font-size:14px;font-style:italic;letter-spacing:0;color:#6a5a44}
+.lang:hover,.lang.on{border-color:var(--blue-d);box-shadow:0 0 0 2px rgba(216,180,106,.8)}
+.lang.on{background:linear-gradient(180deg,var(--blue-l),var(--blue-d));color:var(--cream)} .lang.on small{color:#e6dcc4}
+.field{display:grid;grid-template-columns:170px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(140,118,86,.3)}
+.field .lbl{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:1.4px;color:#33291e}
+.field .lbl small{display:block;font-family:var(--body);font-size:13.5px;font-style:italic;font-weight:400;letter-spacing:0;color:#6a5a44}
+.path{min-height:34px;padding:6px 10px;border:1px solid #a38c69;background:rgba(255,252,244,.8);font-size:15px;word-break:break-all;color:#3b3126}
+.path.empty{color:#9a8a70;font-style:italic}
+.state{grid-column:2/4;font-family:var(--display);font-size:11px;letter-spacing:1.4px;margin-top:-4px}
+.state.ok{color:var(--ok)} .state.bad{color:var(--bad)} .state.wait{color:#8b7a60}
+.small{font-size:14.5px;color:#5d4e3a;font-style:italic;margin:4px 0}
+.bar{height:14px;border:1px solid #a38c69;background:rgba(255,252,244,.8);position:relative;overflow:hidden}
+.bar>div{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--blue-d),var(--blue-l));transition:width .6s ease}
+.bar>div::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);background-size:250% 100%;animation:sheen 1.8s ease-in-out infinite}
+@keyframes sheen{from{background-position:120% 0}to{background-position:-120% 0}}
+#stepTxt{font-family:var(--display);font-size:14px;letter-spacing:1.6px;color:#33291e}
+#logBox{flex:1;overflow-y:auto;font-family:Consolas,"DejaVu Sans Mono",monospace;font-size:11.5px;line-height:1.45;color:#5d4e3a;background:rgba(255,252,244,.5);border:1px solid rgba(140,118,86,.4);padding:8px}
+.big{font-family:var(--display);font-size:26px;letter-spacing:3px;color:#33291e;text-align:center;margin-top:24px}
+.center{text-align:center}
+.err{color:var(--bad);font-size:16px}
+.view{display:none;flex:1;flex-direction:column;gap:12px;min-height:0}
+.view.on{display:flex;animation:viewIn .3s ease}
+@keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<img id="art" src="assets/art.png" alt="">
+<div class="frame1"></div><div class="frame2"></div>
+<div id="drag"></div>
+<div class="winbtns">
+  <button class="iconbtn" id="bMin" aria-label="—"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M1 7h12" stroke="#3b3126" stroke-width="1.3"/></svg></button>
+  <button class="iconbtn" id="bClose" aria-label="×"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12" stroke="#3b3126" stroke-width="1.3"/></svg></button>
+</div>
+<img id="logo" src="assets/logo.png" alt="The Last Story">
+<div id="brand"><b>DIONIXU'S LAUNCHER</b><span id="tSub">INSTALADOR · THE LAST STORY HD</span></div>
+<div id="steps"></div>
+
+<div id="panel">
+  <!-- 0 idioma -->
+  <section class="view on" data-v="lang">
+    <h2 data-t="langTitle"></h2>
+    <p class="sub" data-t="langSub"></p>
+    <div class="langs">
+      <button class="lang" data-l="en">English<small>Install in English</small></button>
+      <button class="lang" data-l="es">Español<small>Instalar en español</small></button>
+      <button class="lang" data-l="fr">Français<small>Installer en français</small></button>
+    </div>
+    <div style="flex:1"></div>
+    <div class="foot"><span class="small" id="pfNote"></span><button class="btn main" data-next data-t="next"></button></div>
+  </section>
+  <!-- 1 aviso legal -->
+  <section class="view" data-v="legal">
+    <h2 data-t="legalTitle"></h2>
+    <div class="scroll legal" id="legalTxt"></div>
+    <label class="chk"><input type="checkbox" id="accept"><span data-t="accept"></span></label>
+    <div class="foot"><button class="btn" data-back data-t="back"></button><button class="btn main" data-next id="legalNext" data-t="next" disabled></button></div>
+  </section>
+  <!-- 2 archivos -->
+  <section class="view" data-v="files">
+    <h2 data-t="filesTitle"></h2>
+    <p class="sub" data-t="filesSub"></p>
+    <div class="scroll" id="fields"></div>
+    <div class="foot"><button class="btn" data-back data-t="back"></button><button class="btn main" data-next id="filesNext" data-t="next" disabled></button></div>
+  </section>
+  <!-- 3 destino -->
+  <section class="view" data-v="dest">
+    <h2 data-t="destTitle"></h2>
+    <p class="sub" data-t="destSub"></p>
+    <div class="field"><span class="lbl" data-t="destLbl"></span><div class="path" id="destPath"></div><button class="btn" id="destPick" data-t="browse"></button></div>
+    <p class="small" data-t="space"></p>
+    <label class="chk"><input type="checkbox" id="optDesk" checked><span data-t="optDesk"></span></label>
+    <label class="chk"><input type="checkbox" id="optMenu" checked><span data-t="optMenu"></span></label>
+    <div style="flex:1"></div>
+    <div class="foot"><button class="btn" data-back data-t="back"></button><button class="btn main" id="goInstall" data-t="install"></button></div>
+  </section>
+  <!-- 4 instalando -->
+  <section class="view" data-v="run">
+    <h2 data-t="runTitle"></h2>
+    <div id="stepTxt"></div>
+    <div class="bar"><div id="barFill"></div></div>
+    <div id="logBox"></div>
+    <div class="foot"><span class="small" data-t="runNote"></span><span id="pct" style="font-family:var(--display);letter-spacing:1px">0%</span></div>
+  </section>
+  <!-- 5 listo / error -->
+  <section class="view" data-v="done">
+    <div class="big" data-t="doneTitle"></div>
+    <p class="sub center" data-t="doneSub"></p>
+    <p class="center small" id="countdown"></p>
+    <div style="flex:1"></div>
+    <div class="foot"><button class="btn" id="openFolder" data-t="openFolder"></button><button class="btn main" id="launchNow" data-t="launch"></button></div>
+  </section>
+  <section class="view" data-v="fail">
+    <h2 data-t="failTitle"></h2>
+    <p class="err" id="failTxt"></p>
+    <p class="small" data-t="failSub"></p>
+    <div style="flex:1"></div>
+    <div class="foot"><button class="btn" id="failBack" data-t="back"></button><button class="btn" id="failClose" data-t="close"></button></div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const host = window.tlsHost;
+  const $ = (id) => document.getElementById(id);
+  const send = (cmd, extra) => host && host.postMessage(JSON.stringify(Object.assign({ cmd }, extra || {})));
+  const sfx = {}; ['move', 'ok', 'back', 'start'].forEach((n) => { sfx[n] = new Audio('assets/sfx/' + n + '.ogg'); sfx[n].volume = .3; });
+  const play = (n) => { try { sfx[n].currentTime = 0; sfx[n].play().catch(() => {}); } catch (e) {} };
+
+  // ------------------------------------------------------------ textos
+  const S = {
+    es: {
+      sub: 'INSTALADOR · THE LAST STORY HD', steps: ['IDIOMA', 'AVISO', 'ARCHIVOS', 'DESTINO', 'INSTALACIÓN'],
+      langTitle: 'IDIOMA', langSub: 'Elige el idioma del instalador y del launcher. Podrás cambiarlo después con el icono del planeta.',
+      next: 'SIGUIENTE', back: 'ATRÁS', browse: 'EXAMINAR', install: 'INSTALAR', close: 'CERRAR',
+      legalTitle: 'AVISO IMPORTANTE', accept: 'He leído el aviso. Tengo mis propias copias originales de The Last Story (EE. UU. y Japón).',
+      legal: `<h3>ESTE INSTALADOR NO INCLUYE EL JUEGO</h3>
+<p>Para instalar <b>The Last Story HD</b> necesitas <b>tus propias copias originales y legales</b> de:</p>
+<ul><li><b>The Last Story — versión americana</b> (NTSC-U, ID <b>SLSEXJ</b>): es el juego que se ejecuta.</li>
+<li><b>The Last Story — versión japonesa</b> (NTSC-J, ID <b>SLSJ01</b>): se usa solo para las voces japonesas.</li></ul>
+<p>Las imágenes deben venir de <b>tus discos</b> (por ejemplo, copiadas con tu propia Wii y CleanRip). Se aceptan RVZ, ISO, WBFS, WIA y GCZ.</p>
+<div class="warn"><b>Solo funciona con tu copia oficial.</b> El instalador comprueba que ambas imágenes coincidan exactamente con los discos originales sin modificar. Si no coinciden, la instalación se detiene.</div>
+<div class="warn"><b>No a la piratería.</b> Dionixu's Launcher no fomenta, no acepta y no da soporte a la piratería. No descargues ni compartas imágenes de juegos. Necesitas tu copia oficial.</div>
+<p>The Last Story © Nintendo / Mistwalker. Este proyecto es un trabajo de aficionados sin ánimo de lucro y no está afiliado ni respaldado por Nintendo ni por Mistwalker. Usa Dolphin Emulator (GPLv2).</p>`,
+      filesTitle: 'TUS COPIAS ORIGINALES', filesSub: 'Elige las imágenes de tus discos. Se comprueba el ID de cada una al momento.',
+      fUS: 'VERSIÓN AMERICANA', fUSs: 'NTSC-U · SLSEXJ', fJP: 'VERSIÓN JAPONESA', fJPs: 'NTSC-J · SLSJ01 (voces)', fDol: 'TU DOLPHIN', fDols: 'Linux: paquete, AppImage o Flatpak', fTool: 'DOLPHINTOOL', fTools: 'dolphin-tool (para leer los discos)',
+      none: 'Sin seleccionar', checking: 'COMPROBANDO…', okId: '✓ {0} DETECTADO', badId: '✗ {0} — NO ES LA VERSIÓN CORRECTA', noTool: 'Elige primero tu DolphinTool', toolOk: '✓ LISTO', toolBad: '✗ NO RESPONDE',
+      dolHint: 'Detectado: {0}', dolNone: 'Instala Dolphin (sudo apt install dolphin-emu, o el Flatpak org.DolphinEmu.dolphin-emu) y elígelo aquí.',
+      destTitle: 'CARPETA DE INSTALACIÓN', destSub: 'Dónde se instalará el juego. Puedes moverla después.', destLbl: 'CARPETA',
+      space: 'Necesita unos 11,5 GB libres durante la instalación (unos 7 GB al terminar).', optDesk: 'Crear acceso directo en el escritorio', optMenu: 'Añadir al menú de inicio / aplicaciones',
+      runTitle: 'INSTALANDO', runNote: 'No cierres el instalador. Puede tardar entre 5 y 15 minutos.',
+      st: { check: 'Comprobando tus copias…', extractUS: 'Extrayendo la versión americana…', verifyUS: 'Verificando la copia americana…', extractJP: 'Extrayendo la versión japonesa…',
+        verifyJP: 'Verificando la copia japonesa…', voices: 'Preparando las voces japonesas…', patch: 'Aplicando el parche de sonido…', launcher: 'Instalando Dionixu\'s Launcher…',
+        textures: 'Instalando texturas HD y botones…', shortcuts: 'Creando accesos directos…', done: '¡Instalación completa!' },
+      doneTitle: '¡LISTO!', doneSub: 'The Last Story HD está instalado. El launcher se abrirá en una ventana.', countdown: 'Abriendo en {0}…', launch: 'ABRIR AHORA', openFolder: 'ABRIR CARPETA',
+      failTitle: 'NO SE PUDO INSTALAR', failSub: 'No se ha modificado nada fuera de la carpeta de instalación. Revisa el aviso y vuelve a intentarlo.',
+      e: { id: 'La imagen {0} no es la versión correcta (ID {1}).', verify: 'La copia {0} no coincide con el disco original sin modificar. Solo se admite tu copia oficial.',
+        space: 'No hay espacio suficiente: se necesitan unos {0} GB libres.', extract: 'DolphinTool no pudo leer la imagen: {0}', patch: 'No se pudo aplicar el parche de sonido.', payload: 'Faltan archivos del instalador (carpeta payload).' },
+      us: 'americana', jp: 'japonesa', pfWin: 'Windows · Dolphin incluido', pfLin: 'Linux (Debian/Ubuntu) · usa tu propio Dolphin'
+    },
+    en: {
+      sub: 'INSTALLER · THE LAST STORY HD', steps: ['LANGUAGE', 'NOTICE', 'FILES', 'FOLDER', 'INSTALL'],
+      langTitle: 'LANGUAGE', langSub: 'Choose the language for the installer and the launcher. You can change it later with the globe icon.',
+      next: 'NEXT', back: 'BACK', browse: 'BROWSE', install: 'INSTALL', close: 'CLOSE',
+      legalTitle: 'IMPORTANT NOTICE', accept: 'I have read the notice. I own original copies of The Last Story (USA and Japan).',
+      legal: `<h3>THIS INSTALLER DOES NOT INCLUDE THE GAME</h3>
+<p>To install <b>The Last Story HD</b> you need <b>your own original, legal copies</b> of:</p>
+<ul><li><b>The Last Story — US version</b> (NTSC-U, ID <b>SLSEXJ</b>): the game that runs.</li>
+<li><b>The Last Story — Japanese version</b> (NTSC-J, ID <b>SLSJ01</b>): used only for the Japanese voices.</li></ul>
+<p>The images must come from <b>your discs</b> (for example, dumped with your own Wii and CleanRip). RVZ, ISO, WBFS, WIA and GCZ are accepted.</p>
+<div class="warn"><b>It only works with your official copy.</b> The installer checks that both images exactly match the original, unmodified discs. If they don't, installation stops.</div>
+<div class="warn"><b>No piracy.</b> Dionixu's Launcher does not encourage, accept or support piracy. Do not download or share game images. You need your official copy.</div>
+<p>The Last Story © Nintendo / Mistwalker. This is a non-profit fan project, not affiliated with or endorsed by Nintendo or Mistwalker. Uses Dolphin Emulator (GPLv2).</p>`,
+      filesTitle: 'YOUR ORIGINAL COPIES', filesSub: 'Choose the images of your discs. Each one is checked right away.',
+      fUS: 'US VERSION', fUSs: 'NTSC-U · SLSEXJ', fJP: 'JAPANESE VERSION', fJPs: 'NTSC-J · SLSJ01 (voices)', fDol: 'YOUR DOLPHIN', fDols: 'Linux: package, AppImage or Flatpak', fTool: 'DOLPHINTOOL', fTools: 'dolphin-tool (reads the discs)',
+      none: 'Not selected', checking: 'CHECKING…', okId: '✓ {0} DETECTED', badId: '✗ {0} — WRONG VERSION', noTool: 'Choose your DolphinTool first', toolOk: '✓ READY', toolBad: '✗ NOT RESPONDING',
+      dolHint: 'Detected: {0}', dolNone: 'Install Dolphin (sudo apt install dolphin-emu, or the org.DolphinEmu.dolphin-emu Flatpak) and choose it here.',
+      destTitle: 'INSTALL FOLDER', destSub: 'Where the game will be installed. You can move it later.', destLbl: 'FOLDER',
+      space: 'Needs about 11.5 GB free during installation (about 7 GB when finished).', optDesk: 'Create a desktop shortcut', optMenu: 'Add to the start / applications menu',
+      runTitle: 'INSTALLING', runNote: 'Do not close the installer. This may take 5 to 15 minutes.',
+      st: { check: 'Checking your copies…', extractUS: 'Extracting the US version…', verifyUS: 'Verifying the US copy…', extractJP: 'Extracting the Japanese version…',
+        verifyJP: 'Verifying the Japanese copy…', voices: 'Preparing the Japanese voices…', patch: 'Applying the sound patch…', launcher: "Installing Dionixu's Launcher…",
+        textures: 'Installing HD textures and buttons…', shortcuts: 'Creating shortcuts…', done: 'Installation complete!' },
+      doneTitle: 'ALL SET!', doneSub: 'The Last Story HD is installed. The launcher will open in a window.', countdown: 'Opening in {0}…', launch: 'OPEN NOW', openFolder: 'OPEN FOLDER',
+      failTitle: 'INSTALLATION FAILED', failSub: 'Nothing outside the install folder was changed. Check the notice and try again.',
+      e: { id: 'The {0} image is not the right version (ID {1}).', verify: 'The {0} copy does not match the original, unmodified disc. Only your official copy is supported.',
+        space: 'Not enough space: about {0} GB free is needed.', extract: 'DolphinTool could not read the image: {0}', patch: 'The sound patch could not be applied.', payload: 'Installer files are missing (payload folder).' },
+      us: 'US', jp: 'Japanese', pfWin: 'Windows · Dolphin included', pfLin: 'Linux (Debian/Ubuntu) · uses your own Dolphin'
+    },
+    fr: {
+      sub: 'INSTALLATEUR · THE LAST STORY HD', steps: ['LANGUE', 'AVERTISSEMENT', 'FICHIERS', 'DOSSIER', 'INSTALLATION'],
+      langTitle: 'LANGUE', langSub: "Choisissez la langue de l'installateur et du launcher. Vous pourrez la changer ensuite avec l'icône du globe.",
+      next: 'SUIVANT', back: 'RETOUR', browse: 'PARCOURIR', install: 'INSTALLER', close: 'FERMER',
+      legalTitle: 'AVERTISSEMENT IMPORTANT', accept: "J'ai lu l'avertissement. Je possède mes propres copies originales de The Last Story (États-Unis et Japon).",
+      legal: `<h3>CET INSTALLATEUR N'INCLUT PAS LE JEU</h3>
+<p>Pour installer <b>The Last Story HD</b>, vous avez besoin de <b>vos propres copies originales et légales</b> de :</p>
+<ul><li><b>The Last Story — version américaine</b> (NTSC-U, ID <b>SLSEXJ</b>) : le jeu qui est lancé.</li>
+<li><b>The Last Story — version japonaise</b> (NTSC-J, ID <b>SLSJ01</b>) : utilisée uniquement pour les voix japonaises.</li></ul>
+<p>Les images doivent provenir de <b>vos disques</b> (par exemple, copiées avec votre propre Wii et CleanRip). RVZ, ISO, WBFS, WIA et GCZ sont acceptés.</p>
+<div class="warn"><b>Fonctionne uniquement avec votre copie officielle.</b> L'installateur vérifie que les deux images correspondent exactement aux disques originaux non modifiés. Sinon, l'installation s'arrête.</div>
+<div class="warn"><b>Non au piratage.</b> Dionixu's Launcher n'encourage, n'accepte et ne prend pas en charge le piratage. Ne téléchargez pas et ne partagez pas d'images de jeux. Il vous faut votre copie officielle.</div>
+<p>The Last Story © Nintendo / Mistwalker. Projet de fans à but non lucratif, non affilié à Nintendo ni à Mistwalker et non approuvé par eux. Utilise Dolphin Emulator (GPLv2).</p>`,
+      filesTitle: 'VOS COPIES ORIGINALES', filesSub: 'Choisissez les images de vos disques. Chacune est vérifiée immédiatement.',
+      fUS: 'VERSION AMÉRICAINE', fUSs: 'NTSC-U · SLSEXJ', fJP: 'VERSION JAPONAISE', fJPs: 'NTSC-J · SLSJ01 (voix)', fDol: 'VOTRE DOLPHIN', fDols: 'Linux : paquet, AppImage ou Flatpak', fTool: 'DOLPHINTOOL', fTools: 'dolphin-tool (lit les disques)',
+      none: 'Non sélectionné', checking: 'VÉRIFICATION…', okId: '✓ {0} DÉTECTÉ', badId: '✗ {0} — MAUVAISE VERSION', noTool: "Choisissez d'abord votre DolphinTool", toolOk: '✓ PRÊT', toolBad: '✗ NE RÉPOND PAS',
+      dolHint: 'Détecté : {0}', dolNone: 'Installez Dolphin (sudo apt install dolphin-emu, ou le Flatpak org.DolphinEmu.dolphin-emu) et choisissez-le ici.',
+      destTitle: "DOSSIER D'INSTALLATION", destSub: 'Où le jeu sera installé. Vous pourrez le déplacer ensuite.', destLbl: 'DOSSIER',
+      space: "Nécessite environ 11,5 Go libres pendant l'installation (environ 7 Go à la fin).", optDesk: 'Créer un raccourci sur le bureau', optMenu: 'Ajouter au menu démarrer / applications',
+      runTitle: 'INSTALLATION', runNote: "Ne fermez pas l'installateur. Cela peut prendre 5 à 15 minutes.",
+      st: { check: 'Vérification de vos copies…', extractUS: 'Extraction de la version américaine…', verifyUS: 'Vérification de la copie américaine…', extractJP: 'Extraction de la version japonaise…',
+        verifyJP: 'Vérification de la copie japonaise…', voices: 'Préparation des voix japonaises…', patch: 'Application du patch audio…', launcher: "Installation de Dionixu's Launcher…",
+        textures: 'Installation des textures HD et des boutons…', shortcuts: 'Création des raccourcis…', done: 'Installation terminée !' },
+      doneTitle: 'TERMINÉ !', doneSub: 'The Last Story HD est installé. Le launcher va s\'ouvrir dans une fenêtre.', countdown: 'Ouverture dans {0}…', launch: 'OUVRIR', openFolder: 'OUVRIR LE DOSSIER',
+      failTitle: "L'INSTALLATION A ÉCHOUÉ", failSub: "Rien n'a été modifié en dehors du dossier d'installation. Relisez l'avertissement et réessayez.",
+      e: { id: "L'image {0} n'est pas la bonne version (ID {1}).", verify: 'La copie {0} ne correspond pas au disque original non modifié. Seule votre copie officielle est acceptée.',
+        space: "Espace insuffisant : environ {0} Go libres sont nécessaires.", extract: "DolphinTool n'a pas pu lire l'image : {0}", patch: "Le patch audio n'a pas pu être appliqué.", payload: "Des fichiers de l'installateur sont manquants (dossier payload)." },
+      us: 'américaine', jp: 'japonaise', pfWin: 'Windows · Dolphin inclus', pfLin: 'Linux (Debian/Ubuntu) · utilise votre propre Dolphin'
+    }
+  };
+  let lang = (navigator.language || 'es').slice(0, 2); if (!S[lang]) lang = 'es';
+  const t = (k, ...a) => { const v = k.split('.').reduce((o, x) => o && o[x], S[lang]); return String(v == null ? k : v).replace(/\{(\d)\}/g, (_, i) => a[i]); };
+
+  // ------------------------------------------------------------ estado
+  const V = ['lang', 'legal', 'files', 'dest', 'run', 'done', 'fail'];
+  let view = 'lang', st = { platform: 'win32', defaultDir: '', dolphins: [] };
+  const sel = { us: '', jp: '', usId: null, jpId: null, dolphin: '', tool: '', toolOk: false, dir: '' };
+  const isLinux = () => st.platform === 'linux';
+  const show = (v) => {
+    view = v;
+    document.querySelectorAll('.view').forEach((el) => el.classList.toggle('on', el.dataset.v === v));
+    paintSteps();
+  };
+  const paintSteps = () => {
+    const i = Math.min(4, V.indexOf(view));
+    $('steps').innerHTML = t('steps').split ? '' : '';
+    $('steps').innerHTML = S[lang].steps.map((s, k) => '<span class="dot' + (k === i ? ' on' : k < i ? ' done' : '') + '">' + s + '</span>').join('');
+  };
+  const applyLang = () => {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
+    $('legalTxt').innerHTML = S[lang].legal;
+    $('tSub').textContent = t('sub');
+    $('pfNote').textContent = isLinux() ? t('pfLin') : t('pfWin');
+    document.querySelectorAll('.lang').forEach((b) => b.classList.toggle('on', b.dataset.l === lang));
+    paintFields(); paintSteps(); $('destPath').textContent = sel.dir;
+  };
+
+  // ------------------------------------------------------------ archivos
+  const paintFields = () => {
+    const rows = [['us', t('fUS'), t('fUSs')], ['jp', t('fJP'), t('fJPs')]];
+    if (isLinux()) rows.push(['dolphin', t('fDol'), t('fDols')], ['tool', t('fTool'), t('fTools')]);
+    $('fields').innerHTML = rows.map(([k, l, s]) => {
+      const p = sel[k];
+      let state = '', cls = 'wait';
+      if (k === 'us' || k === 'jp') {
+        const id = sel[k + 'Id'];
+        if (p && id === undefined) state = t('checking');
+        else if (p && id) { const ok = id === (k === 'us' ? 'SLSEXJ' : 'SLSJ01'); cls = ok ? 'ok' : 'bad'; state = ok ? t('okId', id) : t('badId', id); }
+        else if (p && id === null) { cls = 'bad'; state = isLinux() && !sel.toolOk ? t('noTool') : t('badId', '?'); }
+      } else if (k === 'dolphin') { state = sel.dolphin ? '' : t('dolNone'); cls = sel.dolphin ? 'ok' : 'bad'; }
+      else if (k === 'tool') { if (sel.tool) { cls = sel.toolOk ? 'ok' : 'bad'; state = sel.toolOk ? t('toolOk') : t('toolBad'); } }
+      const shown = p && p.startsWith('flatpak:') ? 'Flatpak · ' + p.slice(8) : p;
+      return '<div class="field"><span class="lbl">' + l + '<small>' + s + '</small></span><div class="path' + (p ? '' : ' empty') + '">' + (shown || t('none')) +
+        '</div><button class="btn" data-pick="' + k + '">' + t('browse') + '</button>' + (state ? '<div class="state ' + cls + '">' + state + '</div>' : '') + '</div>';
+    }).join('');
+    document.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click', () => { play('ok'); send('pick', { kind: b.dataset.pick }); }));
+    const ok = sel.usId === 'SLSEXJ' && sel.jpId === 'SLSJ01' && (!isLinux() || (sel.dolphin && sel.toolOk));
+    $('filesNext').disabled = !ok;
+  };
+  const check = (k) => { if (!sel[k]) return; sel[k + 'Id'] = undefined; paintFields(); send('check', { kind: k, path: sel[k], tool: sel.tool }); };
+
+  // ------------------------------------------------------------ navegación
+  document.querySelectorAll('.lang').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.l; play('move'); applyLang(); }));
+  document.querySelectorAll('[data-next]').forEach((b) => b.addEventListener('click', () => { play('ok'); show(V[V.indexOf(view) + 1]); }));
+  document.querySelectorAll('[data-back]').forEach((b) => b.addEventListener('click', () => { play('back'); show(V[V.indexOf(view) - 1]); }));
+  $('accept').addEventListener('change', (e) => { $('legalNext').disabled = !e.target.checked; play('move'); });
+  $('destPick').addEventListener('click', () => { play('ok'); send('pick', { kind: 'dir', current: sel.dir }); });
+  $('goInstall').addEventListener('click', () => {
+    play('start'); show('run'); $('logBox').textContent = '';
+    send('install', { opts: { lang, us: sel.us, jp: sel.jp, dir: sel.dir, dolphin: sel.dolphin, tool: sel.tool, desktop: $('optDesk').checked, menu: $('optMenu').checked } });
+  });
+  $('launchNow').addEventListener('click', () => { play('start'); send('launch'); });
+  $('openFolder').addEventListener('click', () => send('openFolder'));
+  $('failBack').addEventListener('click', () => { play('back'); show('files'); });
+  $('failClose').addEventListener('click', () => send('close'));
+  $('bMin').addEventListener('click', () => send('minimize'));
+  $('bClose').addEventListener('click', () => send('close'));
+
+  // ------------------------------------------------------------ mensajes
+  const errText = (msg) => {
+    const [k, a, b] = String(msg || '').split(':');
+    if (k === 'id') return t('e.id', t(a), b); if (k === 'verify') return t('e.verify', t(a)); if (k === 'space') return t('e.space', a);
+    if (k === 'extract') return t('e.extract', String(msg).slice(8)); if (k === 'patch') return t('e.patch'); if (k === 'payload') return t('e.payload');
+    return msg;
+  };
+  if (host) host.addEventListener('message', (ev) => {
+    let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+    const d = m.data;
+    if (m.type === 'state') {
+      st = d; sel.dir = d.defaultDir;
+      if (isLinux() && d.dolphins && d.dolphins[0]) { sel.dolphin = d.dolphins[0].path; sel.tool = d.dolphins[0].tool || ''; if (sel.tool) send('checkTool', { tool: sel.tool }); }
+      applyLang();
+    } else if (m.type === 'picked') {
+      if (d.kind === 'dir') { sel.dir = d.path.replace(/[\\/]$/, '') + (/(The Last Story HD)$/i.test(d.path) ? '' : (isLinux() ? '/' : '\\') + 'The Last Story HD'); $('destPath').textContent = sel.dir; }
+      else if (d.kind === 'us' || d.kind === 'jp') { sel[d.kind] = d.path; check(d.kind); }
+      else if (d.kind === 'dolphin') {
+        sel.dolphin = d.path;
+        if (!sel.tool) { const guess = d.path.replace(/dolphin-emu[^/]*$/i, 'dolphin-tool'); if (guess !== d.path) { sel.tool = guess; send('checkTool', { tool: sel.tool }); } }
+        paintFields();
+      } else if (d.kind === 'tool') { sel.tool = d.path; sel.toolOk = false; paintFields(); send('checkTool', { tool: sel.tool }); }
+    } else if (m.type === 'checked') { if (sel[d.kind] === d.path) { sel[d.kind + 'Id'] = d.id || null; paintFields(); } }
+    else if (m.type === 'toolChecked') { sel.toolOk = !!d.ok; paintFields(); if (sel.toolOk) { if (sel.us) check('us'); if (sel.jp) check('jp'); } }
+    else if (m.type === 'prog') { $('stepTxt').textContent = t('st.' + d.key); $('barFill').style.width = d.pct + '%'; $('pct').textContent = Math.round(d.pct) + '%'; }
+    else if (m.type === 'log') { const b = $('logBox'); b.textContent += d + '\n'; b.scrollTop = b.scrollHeight; }
+    else if (m.type === 'done') {
+      play('start'); show('done');
+      let n = 5; $('countdown').textContent = t('countdown', n);
+      const iv = setInterval(() => { n--; $('countdown').textContent = t('countdown', n); if (n <= 0) { clearInterval(iv); send('launch'); } }, 1000);
+    } else if (m.type === 'fail') { play('back'); $('failTxt').textContent = errText(d.error); show('fail'); }
+  });
+  applyLang();
+  if (host) send('init');
+})();
+</script>
+</body>
+</html>

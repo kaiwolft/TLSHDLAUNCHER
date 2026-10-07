@@ -1,0 +1,118 @@
+THE LAST STORY HD - Dionixu's Launcher
+======================================
+
+AVISO LEGAL - LEE ANTES DE INSTALAR
+  * Este instalador NO incluye el juego. Solo contiene el launcher, las mejoras y las herramientas.
+  * Necesitas DOS copias ORIGINALES de The Last Story para Wii, extraidas por ti de tus propios discos:
+      - Version americana (NTSC-U, ID SLSEXJ)  -> juego, textos y voces en ingles
+      - Version japonesa  (NTSC-J, ID SLSJ01)  -> voces japonesas
+  * El instalador comprueba ambas copias (ID y huellas MD5) y SOLO funcionara con tu copia oficial.
+    Una copia modificada, incompleta o de otra region sera rechazada.
+  * No se acepta ni se fomenta la pirateria. Necesitas tu copia oficial. No descargues el juego de internet.
+  * Proyecto de aficionados sin fines de lucro, sin relacion con Nintendo, Mistwalker ni AQ Interactive.
+
+INSTALACION EN LINUX (Debian 12, Ubuntu 22.04, Linux Mint 21 o mas nuevos; 64 bits, sesion X11 o Wayland con XWayland)
+  Que necesitas:
+    - Unos 13 GB libres.
+    - Tus dos copias del juego (.iso, .wbfs, .rvz o .ciso): version americana y japonesa.
+    - Tu propio Dolphin para Linux (no se incluye). Cualquiera de estas opciones:
+        sudo apt install dolphin-emu                      (incluye dolphin-tool)
+        flatpak install flathub org.DolphinEmu.dolphin-emu
+        o un Dolphin compilado por ti (elige el ejecutable y dolphin-tool en el instalador)
+    - Opcional, para el volumen en vivo del menu de pausa: sudo apt install pulseaudio-utils   (pactl)
+  Pasos:
+    1. Copia esta carpeta completa a tu equipo (por ejemplo a tu carpeta personal).
+    2. Abre una terminal en esta carpeta y ejecuta:   bash instalar.sh
+       Si faltan bibliotecas, el script te dice que comando apt usar.
+    3. Elige el idioma y acepta el aviso legal.
+    4. Elige tu Dolphin (se detecta solo si esta instalado) y tus dos copias del juego.
+    5. Elige la carpeta de instalacion (por defecto: ~/Games/The Last Story HD) y los accesos directos
+       (menu de aplicaciones y escritorio).
+    6. Pulsa INSTALAR. Al terminar, el launcher se abre solo en una ventana.
+  Que funciona en Linux:
+    - Puente del mando: L3 + R3 y Esc abren el menu de pausa, foco de ventanas, ventana sin bordes y volumen en vivo.
+    - Motor de logros sin conexion y 60 FPS adaptativo (lee la memoria de Dolphin; no necesita permisos especiales).
+    - Mando: cualquier mando compatible con SDL (Xbox, PlayStation, 8BitDo...). Teclado y raton en X11/XWayland.
+  Configuracion de Dolphin: se usa una carpeta propia (dolphin-user dentro de la instalacion);
+  tu configuracion normal de Dolphin no se toca.
+  Desinstalar: borra la carpeta de instalacion y ~/.local/share/applications/the-last-story-hd.desktop.
+
+------------------------------------------------------------------------------
+
+LEGAL NOTICE - READ BEFORE INSTALLING
+  * This installer does NOT include the game. It only contains the launcher, the enhancements and the tools.
+  * You need TWO ORIGINAL copies of The Last Story for Wii, dumped by you from your own discs:
+      - North American version (NTSC-U, ID SLSEXJ) -> game, English text and voices
+      - Japanese version       (NTSC-J, ID SLSJ01) -> Japanese voices
+  * The installer checks both copies (ID and MD5 fingerprints) and will ONLY work with your official copy.
+    A modified, incomplete or wrong-region copy will be rejected.
+  * Piracy is not accepted or encouraged. You need your official copy. Do not download the game from the internet.
+  * Non-profit fan project, not affiliated with Nintendo, Mistwalker or AQ Interactive.
+
+INSTALLING ON LINUX (Debian 12, Ubuntu 22.04, Linux Mint 21 or newer; 64-bit, X11 session or Wayland with XWayland)
+  You need:
+    - About 13 GB free.
+    - Your two game copies (.iso, .wbfs, .rvz or .ciso): North American and Japanese versions.
+    - Your own Dolphin for Linux (not included). Any of these:
+        sudo apt install dolphin-emu                      (includes dolphin-tool)
+        flatpak install flathub org.DolphinEmu.dolphin-emu
+        or a Dolphin you built yourself (pick the executable and dolphin-tool in the installer)
+    - Optional, for live volume in the pause menu: sudo apt install pulseaudio-utils   (pactl)
+  Steps:
+    1. Copy this whole folder to your computer (for example to your home folder).
+    2. Open a terminal in this folder and run:   bash instalar.sh
+       If libraries are missing, the script tells you which apt command to use.
+    3. Pick the language and accept the legal notice.
+    4. Pick your Dolphin (auto-detected when installed) and your two game copies.
+    5. Pick the install folder (default: ~/Games/The Last Story HD) and the shortcuts (app menu and desktop).
+    6. Press INSTALL. When it finishes, the launcher opens in a window.
+  Works on Linux: gamepad bridge (L3 + R3 and Esc open the pause menu, window focus, borderless window, live volume),
+  offline achievements and adaptive 60 FPS, any SDL gamepad, keyboard and mouse on X11/XWayland.
+  Dolphin uses its own folder (dolphin-user inside the install); your normal Dolphin settings are untouched.
+  Uninstall: delete the install folder and ~/.local/share/applications/the-last-story-hd.desktop.
+
+------------------------------------------------------------------------------
+
+AVERTISSEMENT LEGAL - A LIRE AVANT L'INSTALLATION
+  * Cet installateur ne contient PAS le jeu. Il contient uniquement le launcher, les ameliorations et les outils.
+  * Il te faut DEUX copies ORIGINALES de The Last Story sur Wii, extraites par toi de tes propres disques :
+      - Version americaine (NTSC-U, ID SLSEXJ) -> jeu, textes et voix en anglais
+      - Version japonaise  (NTSC-J, ID SLSJ01) -> voix japonaises
+  * L'installateur verifie les deux copies (ID et empreintes MD5) et fonctionnera UNIQUEMENT avec ta copie officielle.
+    Une copie modifiee, incomplete ou d'une autre region sera refusee.
+  * Le piratage n'est ni accepte ni encourage. Il te faut ta copie officielle. Ne telecharge pas le jeu sur internet.
+  * Projet de fans a but non lucratif, sans lien avec Nintendo, Mistwalker ou AQ Interactive.
+
+INSTALLATION SOUS LINUX (Debian 12, Ubuntu 22.04, Linux Mint 21 ou plus recent ; 64 bits, session X11 ou Wayland avec XWayland)
+  Il te faut :
+    - Environ 13 Go libres.
+    - Tes deux copies du jeu (.iso, .wbfs, .rvz ou .ciso) : versions americaine et japonaise.
+    - Ton propre Dolphin pour Linux (non inclus). Au choix :
+        sudo apt install dolphin-emu                      (inclut dolphin-tool)
+        flatpak install flathub org.DolphinEmu.dolphin-emu
+        ou un Dolphin compile par toi (choisis l'executable et dolphin-tool dans l'installateur)
+    - Optionnel, pour le volume en direct du menu pause : sudo apt install pulseaudio-utils   (pactl)
+  Etapes :
+    1. Copie ce dossier complet sur ton ordinateur (par exemple dans ton dossier personnel).
+    2. Ouvre un terminal dans ce dossier et lance :   bash instalar.sh
+       S'il manque des bibliotheques, le script indique la commande apt a utiliser.
+    3. Choisis la langue et accepte l'avertissement legal.
+    4. Choisis ton Dolphin (detecte automatiquement s'il est installe) et tes deux copies du jeu.
+    5. Choisis le dossier d'installation (par defaut : ~/Games/The Last Story HD) et les raccourcis.
+    6. Appuie sur INSTALLER. A la fin, le launcher s'ouvre dans une fenetre.
+  Fonctionne sous Linux : pont manette (L3 + R3 et Echap ouvrent le menu pause, focus des fenetres, fenetre sans bordure,
+  volume en direct), succes hors ligne et 60 FPS adaptatif, toute manette SDL, clavier et souris sous X11/XWayland.
+  Dolphin utilise son propre dossier (dolphin-user dans l'installation) ; ta configuration habituelle n'est pas modifiee.
+  Desinstaller : supprime le dossier d'installation et ~/.local/share/applications/the-last-story-hd.desktop.
+
+------------------------------------------------------------------------------
+
+CREDITOS / CREDITS / CREDITS
+  Proyecto / Project / Projet : Dionixu's Launcher
+  Desarrollado con la ayuda de / Built with the help of / Developpe avec l'aide de : Claude (Anthropic)
+  Texturas HD / HD textures   : pack HD de Matrix2525
+  Botones Xbox / Xbox buttons : pack de botones Xbox (adaptado)
+  Dolphin Emulator (GPLv2) - dolphin-emu.org
+  Electron (MIT) - electronjs.org
+  rcheevos / RetroAchievements (MIT) - set de logros por carlosrhv y Quenthel
+  The Last Story (c) Nintendo / Mistwalker / AQ Interactive

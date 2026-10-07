@@ -1,0 +1,97 @@
+THE LAST STORY HD - Dionixu's Launcher
+======================================
+
+AVISO LEGAL - LEE ANTES DE INSTALAR
+  * Este instalador NO incluye el juego. Solo contiene el launcher, las mejoras y las herramientas.
+  * Necesitas DOS copias ORIGINALES de The Last Story para Wii, extraidas por ti de tus propios discos:
+      - Version americana (NTSC-U, ID SLSEXJ)  -> juego, textos y voces en ingles
+      - Version japonesa  (NTSC-J, ID SLSJ01)  -> voces japonesas
+  * El instalador comprueba ambas copias (ID y huellas MD5) y SOLO funcionara con tu copia oficial.
+    Una copia modificada, incompleta o de otra region sera rechazada.
+  * No se acepta ni se fomenta la pirateria. Necesitas tu copia oficial. No descargues el juego de internet.
+  * Proyecto de aficionados sin fines de lucro, sin relacion con Nintendo, Mistwalker ni AQ Interactive.
+
+INSTALACION EN WINDOWS (10 u 11, 64 bits)
+  Que necesitas:
+    - Unos 13 GB libres en el disco donde instales.
+    - Tus dos copias del juego en formato .iso, .wbfs, .rvz o .ciso (version americana y japonesa).
+  Pasos:
+    1. Copia esta carpeta completa a tu PC (no ejecutes el instalador desde un .zip).
+    2. Abre "Instalar The Last Story HD.exe".
+       Si Windows SmartScreen avisa: "Mas informacion" -> "Ejecutar de todas formas".
+    3. Elige el idioma (Espanol / English / Francais) y acepta el aviso legal.
+    4. Elige tu copia americana (SLSEXJ) y tu copia japonesa (SLSJ01). Se comprueban en el momento.
+    5. Elige la carpeta de instalacion (por defecto: Documentos\The Last Story HD) y los accesos directos.
+    6. Pulsa INSTALAR. Tarda de 5 a 15 minutos. Al terminar, el launcher se abre solo en una ventana.
+  Que se instala:
+    launcher\  launcher (ajustes, controles, logros, idioma)
+    dolphin\   Dolphin portable con texturas HD y botones (tus partidas se guardan en dolphin\User)
+    juego\     US_INGLES (voces en ingles) y US_VOZ_JP (voces japonesas; los archivos comunes no ocupan doble)
+  Durante el juego: L3 + R3 (mando) o Esc (teclado) abre el menu de pausa (volumen y volver al launcher).
+  Desinstalar: borra la carpeta de instalacion y los accesos directos.
+
+------------------------------------------------------------------------------
+
+LEGAL NOTICE - READ BEFORE INSTALLING
+  * This installer does NOT include the game. It only contains the launcher, the enhancements and the tools.
+  * You need TWO ORIGINAL copies of The Last Story for Wii, dumped by you from your own discs:
+      - North American version (NTSC-U, ID SLSEXJ) -> game, English text and voices
+      - Japanese version       (NTSC-J, ID SLSJ01) -> Japanese voices
+  * The installer checks both copies (ID and MD5 fingerprints) and will ONLY work with your official copy.
+    A modified, incomplete or wrong-region copy will be rejected.
+  * Piracy is not accepted or encouraged. You need your official copy. Do not download the game from the internet.
+  * Non-profit fan project, not affiliated with Nintendo, Mistwalker or AQ Interactive.
+
+INSTALLING ON WINDOWS (10 or 11, 64-bit)
+  You need:
+    - About 13 GB free on the target drive.
+    - Your two game copies as .iso, .wbfs, .rvz or .ciso (North American and Japanese versions).
+  Steps:
+    1. Copy this whole folder to your PC (do not run the installer from inside a .zip).
+    2. Open "Instalar The Last Story HD.exe".
+       If Windows SmartScreen warns you: "More info" -> "Run anyway".
+    3. Pick the language (Espanol / English / Francais) and accept the legal notice.
+    4. Pick your North American copy (SLSEXJ) and your Japanese copy (SLSJ01). They are checked right away.
+    5. Pick the install folder (default: Documents\The Last Story HD) and the shortcuts.
+    6. Press INSTALL. It takes 5 to 15 minutes. When it finishes, the launcher opens in a window.
+  In game: L3 + R3 (gamepad) or Esc (keyboard) opens the pause menu (volume and back to the launcher).
+  Uninstall: delete the install folder and the shortcuts.
+
+------------------------------------------------------------------------------
+
+AVERTISSEMENT LEGAL - A LIRE AVANT L'INSTALLATION
+  * Cet installateur ne contient PAS le jeu. Il contient uniquement le launcher, les ameliorations et les outils.
+  * Il te faut DEUX copies ORIGINALES de The Last Story sur Wii, extraites par toi de tes propres disques :
+      - Version americaine (NTSC-U, ID SLSEXJ) -> jeu, textes et voix en anglais
+      - Version japonaise  (NTSC-J, ID SLSJ01) -> voix japonaises
+  * L'installateur verifie les deux copies (ID et empreintes MD5) et fonctionnera UNIQUEMENT avec ta copie officielle.
+    Une copie modifiee, incomplete ou d'une autre region sera refusee.
+  * Le piratage n'est ni accepte ni encourage. Il te faut ta copie officielle. Ne telecharge pas le jeu sur internet.
+  * Projet de fans a but non lucratif, sans lien avec Nintendo, Mistwalker ou AQ Interactive.
+
+INSTALLATION SOUS WINDOWS (10 ou 11, 64 bits)
+  Il te faut :
+    - Environ 13 Go libres sur le disque d'installation.
+    - Tes deux copies du jeu en .iso, .wbfs, .rvz ou .ciso (versions americaine et japonaise).
+  Etapes :
+    1. Copie ce dossier complet sur ton PC (ne lance pas l'installateur depuis un .zip).
+    2. Ouvre "Instalar The Last Story HD.exe".
+       Si Windows SmartScreen t'avertit : "Informations complementaires" -> "Executer quand meme".
+    3. Choisis la langue (Espanol / English / Francais) et accepte l'avertissement legal.
+    4. Choisis ta copie americaine (SLSEXJ) et ta copie japonaise (SLSJ01). Elles sont verifiees aussitot.
+    5. Choisis le dossier d'installation (par defaut : Documents\The Last Story HD) et les raccourcis.
+    6. Appuie sur INSTALLER. Cela prend 5 a 15 minutes. A la fin, le launcher s'ouvre dans une fenetre.
+  En jeu : L3 + R3 (manette) ou Echap (clavier) ouvre le menu pause (volume et retour au launcher).
+  Desinstaller : supprime le dossier d'installation et les raccourcis.
+
+------------------------------------------------------------------------------
+
+CREDITOS / CREDITS / CREDITS
+  Proyecto / Project / Projet : Dionixu's Launcher
+  Desarrollado con la ayuda de / Built with the help of / Developpe avec l'aide de : Claude (Anthropic)
+  Texturas HD / HD textures   : pack HD de Matrix2525
+  Botones Xbox / Xbox buttons : pack de botones Xbox (adaptado)
+  Dolphin Emulator (GPLv2) - dolphin-emu.org
+  Electron (MIT) - electronjs.org
+  rcheevos / RetroAchievements (MIT) - set de logros por carlosrhv y Quenthel
+  The Last Story (c) Nintendo / Mistwalker / AQ Interactive
