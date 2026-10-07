@@ -1,5 +1,5 @@
 # The Last Story HD - Dionixu's Launcher
-# Crea los instaladores SIN el juego en Documentos\The Last Story HD PC\INSTALADOR\Windows y \Linux
+# Crea los instaladores SIN el juego en <carpeta del proyecto>\INSTALADOR\Windows y \Linux
 #   Windows: Electron del launcher + app del instalador + payload (launcher, Dolphin portable sin datos personales, texturas, parche)
 #   Linux:   Electron para Linux (se descarga una vez de GitHub y se verifica) + payload (launcher, puente y motor Linux, texturas, parche)
 # Nunca se copian: el juego, partidas, configuracion personal, sesion de RetroAchievements ni el set de logros descargado.
@@ -10,7 +10,7 @@ $ProgressPreference = 'SilentlyContinue'
 $proj   = Split-Path -Parent $PSScriptRoot                       # ...\TLS Juego beta
 $dolSrc = Join-Path (Split-Path -Parent $proj) 'dolphin-2609-x64\Dolphin-x64'
 $docs   = [Environment]::GetFolderPath('MyDocuments')
-$out    = Join-Path $docs 'The Last Story HD PC\INSTALADOR'
+$out    = Join-Path (Split-Path -Parent $proj) 'INSTALADOR'          # F:\The last Story Proyect\INSTALADOR
 $wDir   = Join-Path $out 'Windows'
 $lDir   = Join-Path $out 'Linux'
 $cache  = Join-Path $proj 'descargas'
