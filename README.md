@@ -2,6 +2,8 @@
 
 > I made this cuz it was my childhood dream.
 
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Inv%C3%ADtame%20un%20caf%C3%A9-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/dionixu838824)
+
 Launcher e instaladores para Windows y Linux que convierten **tu copia original** de *The Last Story* (Wii) en una experiencia de PC: texturas HD, 60 FPS adaptativos, voces japonesas, logros sin conexión, controles configurables y menú de pausa.
 
 **Español** · [English](#english) · [Français](#français)
@@ -54,6 +56,10 @@ El script crea `Documentos\The Last Story HD PC\INSTALADOR\Windows` y `\Linux`.
 | `herramientas/` | Código fuente en C de los motores y scripts de análisis |
 | `scripts/` | Pasos reproducibles: extraer, preparar, parche de voces, logros, empaquetado e instaladores |
 
+## ☕ Apoya el proyecto
+
+Si te gustó y quieres apoyarme, puedes invitarme un café en Ko-fi: **https://ko-fi.com/dionixu838824**
+
 ## Créditos
 
 - **Proyecto:** Dionixu's Launcher, por Dionixu ([@kaiwolft](https://github.com/kaiwolft)).
@@ -89,6 +95,8 @@ Launcher and Windows/Linux installers that turn **your original copy** of *The L
 
 To build the installers, run `scripts\12_CREAR_INSTALADORES.bat` on Windows. Then follow `instalador/docs/INSTRUCCIONES_*.txt`.
 
+☕ **Buy me a coffee:** https://ko-fi.com/dionixu838824
+
 **Credits:** Dionixu's Launcher by Dionixu. **Built with the help of Claude (Anthropic).** HD pack by Matrix2525. Also Dolphin, Electron and rcheevos/RetroAchievements. *The Last Story* © Nintendo / Mistwalker / AQ Interactive.
 
 ## Français
@@ -108,5 +116,7 @@ Launcher et installateurs Windows/Linux qui transforment **ta copie originale** 
 - Il te faut tes **copies originales américaine (`SLSEXJ`) et japonaise (`SLSJ01`)**.
 - L'installateur les vérifie et **fonctionne uniquement avec ta copie officielle**.
 - **Le piratage n'est ni accepté ni encouragé.**
+
+☕ **Offre-moi un café :** https://ko-fi.com/dionixu838824
 
 **Crédits :** Dionixu's Launcher par Dionixu. **Développé avec l'aide de Claude (Anthropic).** Pack HD de Matrix2525. Aussi Dolphin, Electron et rcheevos/RetroAchievements.
