@@ -338,7 +338,7 @@ html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
   // ---------- estado
   const DEFAULTS = { voice: 'en', text: 'en', res: '1080', fps: '30', mode: 'full', hd: 'on', buttons: 'auto', vsync: 'on', music: 'on', intro: 'on', sfx: 'on', wind: 'on',
     gfx_shadows: 'off', gfx_grading: 'off', gfx_dof: 'off', gfx_rays: 'off', gvol: '100', mvol: '70', achievements: 'on', achToast: 'on', achSound: 'on', ui: 'es',
-    kbCam: 'mouse', kbSens: '2', kbInvert: 'off', padInvert: 'off', lastInput: 'pad' };
+    kbCam: 'mouse', kbSens: '2', kbSensV: '40', kbInvert: 'off', padInvert: 'off', lastInput: 'pad' };
   let cfg = Object.assign({}, DEFAULTS);
   let caps = { gameJpOk: false, fps60Ok: false, musicOk: true, dolphinOk: true, gameEnOk: true };
   let screen = 'main', sel = 0, rowSel = 0, busy = false, zone = 'menu', barSel = 0, langSel = 0;
@@ -559,7 +559,7 @@ html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
       ['ls_up', 'ls_down', 'ls_left', 'ls_right', 'walk'].forEach((id, i) => bind(id, i ? null : G.move));
       R.push({ tab: 'ctl', group: G.cam, key: 'kbCam', label: L('CÁMARA', 'CAMERA', 'CAMÉRA'), hint: L('Cómo mueves la cámara', 'How you move the camera', 'Contrôle de la caméra'), opts: [['mouse', L('Ratón', 'Mouse', 'Souris')], ['keys', L('Teclas', 'Keys', 'Touches')]] });
       if (cfg.kbCam === 'mouse') {
-        R.push({ tab: 'ctl', key: 'kbSens', label: L('SENSIBILIDAD', 'SENSITIVITY', 'SENSIBILITÉ'), hint: L('Velocidad del ratón', 'Mouse speed', 'Vitesse de la souris'), opts: [['1', '1'], ['2', '2'], ['3', '3'], ['4', '4'], ['5', '5']] });
+        R.push({ tab: 'ctl', type: 'slider', key: 'kbSensV', label: L('SENSIBILIDAD', 'SENSITIVITY', 'SENSIBILITÉ'), hint: L('Velocidad del ratón', 'Mouse speed', 'Vitesse de la souris'), min: 5, max: 100, step: 5 });
         R.push({ tab: 'ctl', key: 'kbInvert', label: L('INVERTIR Y', 'INVERT Y', 'INVERSER Y'), hint: L('Eje vertical del ratón', 'Vertical mouse axis', 'Axe vertical de la souris'), opts: NY });
       } else ['rs_up', 'rs_down', 'rs_left', 'rs_right'].forEach((id) => bind(id));
       BTN_IDS.forEach((id, i) => bind(id, i ? null : G.btns));
@@ -570,7 +570,7 @@ html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
       R.push({ tab: 'ctl', group: G.other, type: 'info', label: L('VOLVER AL LAUNCHER', 'BACK TO LAUNCHER', 'RETOUR AU LAUNCHER'), hint: L('Durante el juego', 'While playing', 'Pendant le jeu'), value: 'L3 + R3' });
     }
     R.push({ tab: 'ctl', type: 'action', label: L('RESTABLECER', 'RESET', 'RÉINITIALISER'), hint: L('Controles por defecto de este dispositivo', 'Default controls for this device', 'Commandes par défaut de ce périphérique'),
-      btn: L('Restablecer', 'Reset', 'Réinitialiser'), run: () => { if (ctlDev === 'kb') { cfg.kbBinds = Object.assign({}, KB_DEF); cfg.kbCam = 'mouse'; cfg.kbSens = '2'; cfg.kbInvert = 'off'; } else { cfg.padBinds = Object.assign({}, PAD_DEF); cfg.padInvert = 'off'; } save(); toast(t('resetDone')); paintSettings(); } });
+      btn: L('Restablecer', 'Reset', 'Réinitialiser'), run: () => { if (ctlDev === 'kb') { cfg.kbBinds = Object.assign({}, KB_DEF); cfg.kbCam = 'mouse'; cfg.kbSens = '2'; cfg.kbSensV = '40'; cfg.kbInvert = 'off'; } else { cfg.padBinds = Object.assign({}, PAD_DEF); cfg.padInvert = 'off'; } save(); toast(t('resetDone')); paintSettings(); } });
     return R;
   };
   let tab = 'sound';
@@ -627,11 +627,12 @@ html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
       } else if (row.type === 'slider') {
         const v = parseInt(cfg[row.key] || DEFAULTS[row.key], 10);
         const sl = document.createElement('div'); sl.className = 'slider';
+        const lo = row.min || 0; const pct = (x) => Math.round((x - lo) * 100 / (row.max - lo));
         sl.innerHTML = '<div class="track"><div class="ticks"></div><div class="fill"></div><div class="knob"></div></div><span class="val"></span>';
         const tr = sl.querySelector('.track');
-        const show = (x) => { sl.querySelector('.fill').style.width = x + '%'; sl.querySelector('.knob').style.left = x + '%'; sl.querySelector('.val').textContent = x + '%'; };
+        const show = (x) => { const q = pct(x); sl.querySelector('.fill').style.width = q + '%'; sl.querySelector('.knob').style.left = q + '%'; sl.querySelector('.val').textContent = x + '%'; };
         show(v);
-        const at = (e) => { const r = tr.getBoundingClientRect(); return Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (row.max / row.step)) * row.step; };
+        const at = (e) => { const r = tr.getBoundingClientRect(); return lo + Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * ((row.max - lo) / row.step)) * row.step; };
         tr.addEventListener('pointerdown', (e) => {
           rowSel = ri; tr.setPointerCapture(e.pointerId);
           const move = (ev) => { const x = at(ev); if (String(x) !== cfg[row.key]) { cfg[row.key] = String(x); show(x); applySlider(row); } };
@@ -878,6 +879,7 @@ html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
       caps = Object.assign(caps, m.data);
       LG = m.data.logros || null;
       cfg = Object.assign({}, DEFAULTS, m.data.config || {});
+      if (!(m.data.config || {}).kbSensV && (m.data.config || {}).kbSens) cfg.kbSensV = { 1: '25', 2: '40', 3: '50', 4: '65', 5: '85' }[cfg.kbSens] || '40';   // de los 5 niveles a la barra
       if (cfg.buttons === 'xbox' && !(m.data.config || {}).buttonsV2) { cfg.buttons = 'auto'; }
       cfg.buttonsV2 = true;
       if (cfg.voice === 'jp' && !caps.gameJpOk) cfg.voice = 'en';

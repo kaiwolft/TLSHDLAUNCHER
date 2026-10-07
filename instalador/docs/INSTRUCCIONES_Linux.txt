@@ -15,10 +15,12 @@ INSTALACION EN LINUX (Debian 12, Ubuntu 22.04, Linux Mint 21 o mas nuevos; 64 bi
   Que necesitas:
     - Unos 13 GB libres.
     - Tus dos copias del juego (.iso, .wbfs, .rvz o .ciso): version americana y japonesa.
-    - Tu propio Dolphin para Linux (no se incluye). Cualquiera de estas opciones:
-        sudo apt install dolphin-emu                      (incluye dolphin-tool)
+    - Tu propio Dolphin para Linux (no se incluye). Recomendado: Flatpak (version actual de Dolphin):
+        sudo apt install flatpak
+        flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
         flatpak install flathub org.DolphinEmu.dolphin-emu
-        o un Dolphin compilado por ti (elige el ejecutable y dolphin-tool en el instalador)
+      Tambien sirve un Dolphin compilado por ti (2412 o mas nuevo; elige dolphin-emu y dolphin-tool en el instalador).
+      El paquete 'dolphin-emu' de apt en Debian/Ubuntu suele ser muy antiguo y no se recomienda.
     - Opcional, para el volumen en vivo del menu de pausa: sudo apt install pulseaudio-utils   (pactl)
   Pasos:
     1. Copia esta carpeta completa a tu equipo (por ejemplo a tu carpeta personal).
@@ -53,10 +55,12 @@ INSTALLING ON LINUX (Debian 12, Ubuntu 22.04, Linux Mint 21 or newer; 64-bit, X1
   You need:
     - About 13 GB free.
     - Your two game copies (.iso, .wbfs, .rvz or .ciso): North American and Japanese versions.
-    - Your own Dolphin for Linux (not included). Any of these:
-        sudo apt install dolphin-emu                      (includes dolphin-tool)
+    - Your own Dolphin for Linux (not included). Recommended: Flatpak (current Dolphin):
+        sudo apt install flatpak
+        flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
         flatpak install flathub org.DolphinEmu.dolphin-emu
-        or a Dolphin you built yourself (pick the executable and dolphin-tool in the installer)
+      A Dolphin you built yourself also works (2412 or newer; pick dolphin-emu and dolphin-tool in the installer).
+      The 'dolphin-emu' apt package on Debian/Ubuntu is usually very old and not recommended.
     - Optional, for live volume in the pause menu: sudo apt install pulseaudio-utils   (pactl)
   Steps:
     1. Copy this whole folder to your computer (for example to your home folder).
@@ -87,10 +91,12 @@ INSTALLATION SOUS LINUX (Debian 12, Ubuntu 22.04, Linux Mint 21 ou plus recent ;
   Il te faut :
     - Environ 13 Go libres.
     - Tes deux copies du jeu (.iso, .wbfs, .rvz ou .ciso) : versions americaine et japonaise.
-    - Ton propre Dolphin pour Linux (non inclus). Au choix :
-        sudo apt install dolphin-emu                      (inclut dolphin-tool)
+    - Ton propre Dolphin pour Linux (non inclus). Recommande : Flatpak (version actuelle de Dolphin) :
+        sudo apt install flatpak
+        flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
         flatpak install flathub org.DolphinEmu.dolphin-emu
-        ou un Dolphin compile par toi (choisis l'executable et dolphin-tool dans l'installateur)
+      Un Dolphin compile par toi fonctionne aussi (2412 ou plus recent ; choisis dolphin-emu et dolphin-tool).
+      Le paquet apt 'dolphin-emu' de Debian/Ubuntu est souvent tres ancien et deconseille.
     - Optionnel, pour le volume en direct du menu pause : sudo apt install pulseaudio-utils   (pactl)
   Etapes :
     1. Copie ce dossier complet sur ton ordinateur (par exemple dans ton dossier personnel).

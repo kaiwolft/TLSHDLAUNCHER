@@ -87,11 +87,12 @@ const run = (cmd, args, opts = {}) => new Promise((ok) => {
 // ---------------------------------------------------------------- Dolphin / DolphinTool
 // Windows: Dolphin incluido en el instalador.  Linux: el del usuario (paquete, AppImage o Flatpak).
 function linuxDetect() {
+  // primero Flatpak (Dolphin al día); el paquete de la distribución puede ser muy antiguo (Debian/Ubuntu traen 5.0)
   const found = [];
-  const bin = which('dolphin-emu');
-  if (bin) found.push({ kind: 'bin', path: bin, tool: which('dolphin-tool') || (exists(path.join(path.dirname(bin), 'dolphin-tool')) ? path.join(path.dirname(bin), 'dolphin-tool') : null) });
   for (const base of ['/var/lib/flatpak/app/org.DolphinEmu.dolphin-emu', path.join(os.homedir(), '.local/share/flatpak/app/org.DolphinEmu.dolphin-emu')])
     if (exists(base)) { found.push({ kind: 'flatpak', path: 'flatpak:org.DolphinEmu.dolphin-emu', tool: 'flatpak:org.DolphinEmu.dolphin-emu' }); break; }
+  const bin = which('dolphin-emu');
+  if (bin) found.push({ kind: 'bin', path: bin, tool: which('dolphin-tool') || (exists(path.join(path.dirname(bin), 'dolphin-tool')) ? path.join(path.dirname(bin), 'dolphin-tool') : null) });
   return found;
 }
 // comando para DolphinTool: { cmd, pre }  (en Flatpak con acceso a las carpetas necesarias)

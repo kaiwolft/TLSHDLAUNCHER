@@ -27,8 +27,10 @@ fi
 
 # Dolphin (lo aporta el usuario): solo se avisa, el instalador permite elegirlo
 if ! command -v dolphin-emu >/dev/null 2>&1 && ! flatpak info org.DolphinEmu.dolphin-emu >/dev/null 2>&1; then
-  echo "Nota: no se encontro Dolphin. Instalalo con 'sudo apt install dolphin-emu' (incluye dolphin-tool)"
-  echo "      o con Flatpak: flatpak install flathub org.DolphinEmu.dolphin-emu  - o eligelo en el instalador."
+  echo "Nota: no se encontro Dolphin. Recomendado (version actual):"
+  echo "      sudo apt install flatpak && flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo"
+  echo "      flatpak install flathub org.DolphinEmu.dolphin-emu"
+  echo "      (el paquete 'dolphin-emu' de apt suele ser muy antiguo) - o eligelo en el instalador."
 fi
 command -v pactl >/dev/null 2>&1 || echo "Nota: sin 'pactl' el volumen del menu de pausa se aplica al iniciar el juego (sudo apt install pulseaudio-utils)."
 

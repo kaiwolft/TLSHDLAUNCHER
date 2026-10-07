@@ -70,7 +70,7 @@ const userPath = (...p) => path.join(USER, ...p);
 function dolphinCommand() {
   const d = paths.dolphinExe;
   if (IS_LINUX && d.startsWith('flatpak:'))
-    return { cmd: 'flatpak', pre: ['run', '--filesystem=' + paths.root, d.slice(8)], ok: true };
+    return { cmd: 'flatpak', pre: ['run', '--filesystem=' + paths.root, '--env=QT_QPA_PLATFORM=xcb', d.slice(8)], ok: true };
   if (IS_LINUX && !d.includes('/')) {   // comando del PATH
     const found = (process.env.PATH || '').split(':').some((dir) => dir && exists(path.join(dir, d)));
     return { cmd: d, pre: [], ok: found };
@@ -201,9 +201,9 @@ const helper = (name) => {   // binarios propios junto a main.js (en Linux se as
 };
 function startAch(pid) {
   stopAch();
-  // el mismo programa evalúa los logros y mantiene el 60 FPS adaptativo
+  // 60 FPS fijos: el modo adaptativo (cambiar a 30 en caídas) quedó desactivado; tls_logros solo evalúa logros
   const wantAch = cfg.achievements !== 'off' && !!loadSet();
-  const adapt = cfg.fps === '60';
+  const adapt = false;
   if (!wantAch && !adapt) return;
   const exe = helper('tls_logros');
   if (!exists(exe)) { log('Falta ' + exe); return; }
@@ -295,7 +295,9 @@ function writeControls() {
   set('Left Stick/Modifier', or(pad('Thumb L'), kb(K.walk)));
   set('Left Stick/Dead Zone', '0.');
   const pi = cfg.padInvert === 'on', ki = cfg.kbInvert === 'on';
-  const k = MOUSE_SENS[cfg.kbSens || '2'] || 0.06;
+  // barra 5-100 % (40 = el nivel 2 de antes); curva suave: más precisión en valores bajos
+  const sv = parseInt(cfg.kbSensV || { 1: 25, 2: 40, 3: 50, 4: 65, 5: 85 }[cfg.kbSens || '2'] || 40, 10);
+  const k = +(0.005 + 0.25 * Math.pow(Math.max(5, Math.min(100, sv)) / 100, 1.6)).toFixed(4);
   const mouse = (ax) => '`' + KBDEV + ':RelativeMouse ' + ax + '` * ' + k;
   const cam = cfg.kbCam !== 'keys';
   set('Right Stick/Up', or(pad('Right Y' + (pi ? '-' : '+'), true), cam ? mouse(ki ? 'Y+' : 'Y-') : kb(K.rs_up)));
@@ -363,7 +365,13 @@ const GECKO_EXTRA = {
 function writeGameSettings() {
   const dir = userPath('GameSettings');
   fs.mkdirSync(dir, { recursive: true });
+  const sixty = cfg.fps === '60';
   const lines = ["# Generado por Dionixu's Launcher",
+    '# Reloj de la CPU emulada (los ajustes por juego mandan sobre Dolphin.ini)',
+    '[Core]',
+    'OverclockEnable = ' + (sixty ? 'True' : 'False'),
+    'Overclock = ' + (sixty ? (cfg.oc || '1.5') : '1'),
+    'FastDiscSpeed = ' + (sixty ? 'True' : 'False'),
     '[OnFrame]',
     '# Pantalla de la correa del mando (StrapTask): siempre oculta.',
     '# 1) el constructor empieza en el estado 2 (desvanecer y salir) en vez del 1 (aparecer)',
@@ -577,13 +585,19 @@ function play(iconSet, kbTex) {
     // ratón como cámara: cursor oculto y encerrado en la ventana del juego (CursorVisibility 0 = nunca, 2 = al moverse)
     Interface: { PauseOnFocusLost: 'True', ConfirmStop: 'False', LockCursor: mouseCam ? 'True' : 'False', CursorVisibility: mouseCam ? 0 : 2,
       OnScreenDisplayMessages: 'False' },   // sin avisos de Dolphin arriba a la izquierda
-    Input: { BackgroundInput: 'False' }
+    Input: { BackgroundInput: 'False' },
+    // 60 FPS: el juego hace el doble de trabajo por segundo y la CPU emulada del Wii se queda corta (derrumbes, jefes, muchos
+    // efectos) -> se sube su reloj. Con el doble núcleo, HLE de audio y disco rápido se evitan tirones al cargar cinemáticas.
+    Core: { CPUThread: 'True', DSPHLE: 'True', SyncGPU: 'False', FastDiscSpeed: cfg.fps === '60' ? 'True' : 'False',
+      OverclockEnable: cfg.fps === '60' ? 'True' : 'False', Overclock: cfg.fps === '60' ? (cfg.oc || '1.5') : '1' }
   });
   // Los logros los evalúa el launcher sin conexión: se apaga el cliente en línea de Dolphin para no duplicar avisos
   setIni(userPath('Config', 'RetroAchievements.ini'), { Achievements: { Enabled: 'False' } });
   log('Iniciando: ' + dc.cmd + ' ' + args.join(' '));
   win.setAlwaysOnTop(true, 'screen-saver');
-  game = spawn(dc.cmd, args, { cwd: IS_WIN ? path.dirname(paths.dolphinExe) : ROOT, stdio: 'ignore' });
+  // Linux: Dolphin por X11/XWayland para que el puente vea la ventana (foco, Esc, sin bordes)
+  game = spawn(dc.cmd, args, { cwd: IS_WIN ? path.dirname(paths.dolphinExe) : ROOT, stdio: 'ignore',
+    env: IS_WIN ? process.env : Object.assign({}, process.env, { QT_QPA_PLATFORM: 'xcb' }) });
   startBridge();
   bridgeCmd('GAMEPID ' + game.pid);
   setGameVolume(cfg.gvol || '100');
