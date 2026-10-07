@@ -1,0 +1,32 @@
+THE LAST STORY HD - Dionixu's Launcher
+Instalador portable para Linux (AppImage)
+=========================================
+
+1. En Windows: doble clic en UNIR_APPIMAGE.bat (une las partes y comprueba el archivo).
+2. Copia "TLSHD-Instalador-Linux-x86_64.AppImage" a tu equipo Linux (USB, red, etc.).
+3. En Linux: clic derecho > Propiedades > Permisos > "Permitir ejecutar como programa"
+   (o en una terminal:  chmod +x TLSHD-Instalador-Linux-x86_64.AppImage )
+4. Doble clic en el AppImage. Se abre el instalador; sigue los pasos.
+
+Necesitas:
+  - Debian 12, Ubuntu 22.04, Linux Mint 21 o mas nuevos (64 bits).
+  - Tu propio Dolphin (recomendado Flatpak):
+      sudo apt install flatpak
+      flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      flatpak install flathub org.DolphinEmu.dolphin-emu
+  - Tus copias ORIGINALES del juego: version americana (SLSEXJ) y japonesa (SLSJ01).
+    No incluye el juego. Solo funciona con tu copia oficial. No se acepta ni se fomenta la pirateria.
+
+Si al abrirlo no pasa nada o dice algo de FUSE:
+  sudo apt install fuse3        (o en sistemas antiguos: sudo apt install libfuse2)
+  o abrelo sin FUSE desde una terminal:
+  ./TLSHD-Instalador-Linux-x86_64.AppImage --appimage-extract-and-run
+
+Si faltan bibliotecas, el instalador te dice cuales y el comando apt para instalarlas.
+
+------------------------------------------------------------------
+Portable Linux installer (AppImage): make it executable (chmod +x) and double-click it.
+Requires your own Dolphin (Flatpak recommended) and your ORIGINAL US (SLSEXJ) and JP (SLSJ01) copies.
+No FUSE? Run it with --appimage-extract-and-run.
+
+Creditos: Dionixu's Launcher - desarrollado con la ayuda de Claude (Anthropic). Ver INSTRUCCIONES.txt.

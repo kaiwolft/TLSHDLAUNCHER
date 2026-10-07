@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Instalador The Last Story HD
+Comment=Dionixu's Launcher - TLSHD Launcher
+Exec=AppRun
+Icon=tlshd-instalador
+Categories=Game;
+Terminal=false

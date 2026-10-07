@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Instalador de The Last Story HD - Dionixu's Launcher (AppImage portable para Linux)
+HERE="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+RT="$HERE/runtime"
+
+msg() {   # muestra un aviso en ventana si hay alguna herramienta disponible, si no en la terminal
+  local t="$1"
+  echo "$t" >&2
+  if command -v zenity >/dev/null 2>&1; then zenity --warning --no-wrap --title="The Last Story HD" --text="$t" 2>/dev/null
+  elif command -v kdialog >/dev/null 2>&1; then kdialog --title "The Last Story HD" --sorry "$t" 2>/dev/null
+  elif command -v notify-send >/dev/null 2>&1; then notify-send "The Last Story HD" "$t" 2>/dev/null
+  elif command -v xmessage >/dev/null 2>&1; then xmessage -center "$t" 2>/dev/null
+  fi
+}
+
+# glibc 2.34 o superior (Debian 12, Ubuntu 22.04, Mint 21 o mas nuevos)
+GV="$(ldd --version 2>/dev/null | head -1 | grep -oE '[0-9]+\.[0-9]+$')"
+if [ -n "$GV" ] && [ "$(printf '%s\n' 2.34 "$GV" | sort -V | head -1)" != "2.34" ]; then
+  msg "Tu sistema tiene glibc $GV. Se necesita 2.34 o superior (Debian 12, Ubuntu 22.04, Mint 21 o mas nuevos)."
+  exit 1
+fi
+
+# bibliotecas del sistema que necesita la interfaz
+MISSING="$(ldd "$RT/electron" 2>/dev/null | grep 'not found' | awk '{print $1}' | tr '\n' ' ')"
+if [ -n "$MISSING" ]; then
+  msg "Faltan bibliotecas del sistema: $MISSING
+
+Instalalas en una terminal con:
+sudo apt install libnss3 libgtk-3-0 libgbm1 libxss1 libxtst6 libasound2
+(en Ubuntu 24.04 o mas nuevo: libgtk-3-0t64 y libasound2t64)"
+  exit 1
+fi
+
+# la interfaz va por X11/XWayland y sin el sandbox de Chromium (no funciona dentro de un AppImage)
+export ELECTRON_OZONE_PLATFORM_HINT=x11
+exec "$RT/electron" --no-sandbox "$@"
