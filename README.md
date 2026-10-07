@@ -77,7 +77,18 @@ Si te gustó y quieres apoyarme, puedes invitarme un café en Ko-fi: **https://k
 - **rcheevos / RetroAchievements** (MIT). Set de logros por carlosrhv y Quenthel.
 - **Código Gecko de 60 FPS:** Dolphin Wiki. Mejoras visuales: sergx12.
 - **Fuentes:** Cinzel y Cormorant Garamond (SIL OFL).
+- **Música del launcher:** «Toberu mono».
+  - Compositor: Nobuo Uematsu.
+  - Voz: Kanon.
+  - Arreglo: Yoshitaka Suzuki.
+  - Fuente: *The Last Story Original Soundtrack* (Dog Ear Records, DERP-10012/4).
+- **Sonidos del menú:** efectos de sonido de *The Last Story*.
 - *The Last Story* © Nintendo / Mistwalker / AQ Interactive.
+
+> **Derechos:**
+> - Es un homenaje de fans sin fines de lucro.
+> - La música, los sonidos, el arte, los logotipos y las marcas pertenecen a sus respectivos dueños. Se usan sin intención de infringir.
+> - Si eres titular de algún contenido y quieres que se retire, abre un *issue* en este repositorio o escribe por Ko-fi y se quitará de inmediato.
 
 ---
 
@@ -103,7 +114,7 @@ To build the installers, run `scripts\12_CREAR_INSTALADORES.bat` on Windows. The
 
 ☕ **Buy me a coffee:** https://ko-fi.com/dionixu838824
 
-**Credits:** Dionixu's Launcher by Dionixu. **Built with the help of Claude (Anthropic).** HD pack by Matrix2525. Also Dolphin, Electron and rcheevos/RetroAchievements. *The Last Story* © Nintendo / Mistwalker / AQ Interactive.
+**Credits:** Dionixu's Launcher by Dionixu. **Built with the help of Claude (Anthropic).** HD pack by Matrix2525. Launcher music: “Toberu mono” by Nobuo Uematsu (vocals: Kanon, arrangement: Yoshitaka Suzuki), from *The Last Story Original Soundtrack* (Dog Ear Records). Also Dolphin, Electron and rcheevos/RetroAchievements. *The Last Story* © Nintendo / Mistwalker / AQ Interactive. Non-profit fan tribute: all music, sounds, artwork and trademarks belong to their owners, and rights holders can request removal through an issue.
 
 ## Français
 
@@ -125,4 +136,4 @@ Launcher et installateurs Windows/Linux qui transforment **ta copie originale** 
 
 ☕ **Offre-moi un café :** https://ko-fi.com/dionixu838824
 
-**Crédits :** Dionixu's Launcher par Dionixu. **Développé avec l'aide de Claude (Anthropic).** Pack HD de Matrix2525. Aussi Dolphin, Electron et rcheevos/RetroAchievements.
+**Crédits :** Dionixu's Launcher par Dionixu. **Développé avec l'aide de Claude (Anthropic).** Pack HD de Matrix2525. Musique du launcher : « Toberu mono » de Nobuo Uematsu (voix : Kanon, arrangement : Yoshitaka Suzuki), tirée de *The Last Story Original Soundtrack* (Dog Ear Records). Aussi Dolphin, Electron et rcheevos/RetroAchievements. Hommage de fans à but non lucratif : la musique, les sons, les illustrations et les marques appartiennent à leurs propriétaires.

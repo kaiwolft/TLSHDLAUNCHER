@@ -121,4 +121,11 @@ CREDITOS / CREDITS / CREDITS
   Dolphin Emulator (GPLv2) - dolphin-emu.org
   Electron (MIT) - electronjs.org
   rcheevos / RetroAchievements (MIT) - set de logros por carlosrhv y Quenthel
+  Musica del launcher / Launcher music / Musique : "Toberu mono" - Nobuo Uematsu (compositor/composer),
+      Kanon (voz/vocals/voix), Yoshitaka Suzuki (arreglo/arrangement) - The Last Story Original Soundtrack (Dog Ear Records)
+  Sonidos del menu / Menu sounds / Sons du menu : efectos de The Last Story / The Last Story sound effects
   The Last Story (c) Nintendo / Mistwalker / AQ Interactive
+
+  Homenaje de fans sin fines de lucro: la musica, los sonidos, el arte y las marcas pertenecen a sus duenos.
+  Non-profit fan tribute: music, sounds, artwork and trademarks belong to their respective owners.
+  Hommage de fans a but non lucratif : musique, sons, illustrations et marques appartiennent a leurs proprietaires.

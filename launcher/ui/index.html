@@ -107,6 +107,7 @@ body.fs .winbtns{display:none}
 .credit{display:flex;flex-direction:column;padding-bottom:8px;border-bottom:1px solid rgba(140,118,86,.35)}
 .credit .r{font-family:var(--display);font-size:11.5px;font-weight:600;letter-spacing:1.6px;color:#6a5a44}
 .credit .w{font-size:17px;font-weight:600}
+.credit .w.fine{font-size:14px;font-weight:400;font-style:italic;line-height:1.35}
 
 #bottom{position:absolute;right:40px;bottom:30px;display:flex;gap:4px;padding:4px 8px;border-top:1px solid var(--line)}
 /* ===== Intro estilo FFXIII ===== */
@@ -331,7 +332,15 @@ html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
     credits_game: L('JUEGO ORIGINAL', 'ORIGINAL GAME', 'JEU ORIGINAL'), credits_emu: L('EMULACIÓN', 'EMULATION', 'ÉMULATION'), credits_hd: L('TEXTURAS HD', 'HD TEXTURES', 'TEXTURES HD'),
     credits_btn: L('BOTONES XBOX 360', 'XBOX 360 BUTTONS', 'BOUTONS XBOX 360'), credits_ach: L('SET DE LOGROS', 'ACHIEVEMENT SET', 'SET DE SUCCÈS'),
     credits_music: L('MÚSICA DEL LAUNCHER', 'LAUNCHER MUSIC', 'MUSIQUE DU LAUNCHER'), credits_proj: L('LAUNCHER Y PROYECTO', 'LAUNCHER & PROJECT', 'LAUNCHER ET PROJET'), credits_tech: L('TECNOLOGÍA', 'TECHNOLOGY', 'TECHNOLOGIE'),
-    credits_music_w: L('Toberu mono — banda sonora de The Last Story', 'Toberu mono — The Last Story soundtrack', 'Toberu mono — bande originale de The Last Story')
+    credits_music_w: L('«Toberu mono» — Nobuo Uematsu (compositor) · Kanon (voz) · Yoshitaka Suzuki (arreglo). The Last Story Original Soundtrack, Dog Ear Records',
+      '“Toberu mono” — Nobuo Uematsu (composer) · Kanon (vocals) · Yoshitaka Suzuki (arrangement). The Last Story Original Soundtrack, Dog Ear Records',
+      '« Toberu mono » — Nobuo Uematsu (compositeur) · Kanon (voix) · Yoshitaka Suzuki (arrangement). The Last Story Original Soundtrack, Dog Ear Records'),
+    credits_sfx: L('SONIDOS DEL MENÚ', 'MENU SOUNDS', 'SONS DU MENU'),
+    credits_sfx_w: L('Efectos de sonido de The Last Story © Nintendo / Mistwalker / AQ Interactive', 'Sound effects from The Last Story © Nintendo / Mistwalker / AQ Interactive', 'Effets sonores de The Last Story © Nintendo / Mistwalker / AQ Interactive'),
+    credits_rights: L('DERECHOS', 'RIGHTS', 'DROITS'),
+    credits_rights_w: L('Homenaje de fans sin fines de lucro. La música, los sonidos, el arte y las marcas pertenecen a sus respectivos dueños; si eres titular y quieres que se retire algo, abre un aviso en el repositorio y se quitará.',
+      'Non-profit fan tribute. Music, sounds, artwork and trademarks belong to their respective owners; rights holders can request removal through the repository and it will be taken down.',
+      'Hommage de fans à but non lucratif. La musique, les sons, les illustrations et les marques appartiennent à leurs propriétaires ; les ayants droit peuvent demander un retrait via le dépôt.')
   };
   const t = (k, ...a) => { let s = tx(S[k]); if (s == null) return k; return s.replace(/\{(\d)\}/g, (_, i) => a[i]); };
 
@@ -728,10 +737,12 @@ html.padmode,html.padmode *,html.padmode #intro{cursor:none!important}
       ['credits_btn', 'The Last Story – XBox360 Edition'],
       ['credits_ach', 'carlosrhv · Quenthel — RetroAchievements'],
       ['credits_music', t('credits_music_w')],
+      ['credits_sfx', t('credits_sfx_w')],
       ['credits_proj', "Dionixu's Launcher"],
-      ['credits_tech', 'Electron · rcheevos (RetroAchievements) · Dolphin Emulator (GPLv2)']
+      ['credits_tech', 'Electron · rcheevos (RetroAchievements) · Dolphin Emulator (GPLv2)'],
+      ['credits_rights', t('credits_rights_w')]
     ];
-    $('creditList').innerHTML = CREDITS.map(([r, w]) => '<div class="credit"><span class="r">' + esc(t(r)) + '</span><span class="w">' + esc(w) + '</span></div>').join('');
+    $('creditList').innerHTML = CREDITS.map(([r, w]) => '<div class="credit"><span class="r">' + esc(t(r)) + '</span><span class="w' + (r === 'credits_rights' ? ' fine' : '') + '">' + esc(w) + '</span></div>').join('');
   };
 
   // ---------- idioma del launcher: textos fijos
