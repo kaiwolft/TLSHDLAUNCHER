@@ -1,4 +1,4 @@
-# The Last Story HD — Dionixu's Launcher
+# TLSHD Launcher — The Last Story HD (Dionixu's Launcher)
 
 > I made this cuz it was my childhood dream.
 
@@ -30,6 +30,12 @@ Launcher e instaladores para Windows y Linux que convierten **tu copia original*
 - Configuración de mando y de teclado y ratón.
 - Menú de pausa con L3 + R3 o Esc, con volumen del juego en vivo y opción de volver al launcher.
 - Ventana sin bordes, cursor personalizado y sin la pantalla de la correa del Wiimote.
+
+## Descargas
+
+Los instaladores están en **Releases**:
+- `TLSHD LAUNCHER WINDOWS.rar`: Windows 10/11.
+- `TLSHD LAUNCHER LINUX.rar`: Debian 12, Ubuntu 22.04, Mint 21 o más nuevos.
 
 ## Instalación
 
