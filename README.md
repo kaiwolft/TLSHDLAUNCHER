@@ -70,6 +70,7 @@ Si te gustó y quieres apoyarme, puedes invitarme un café en Ko-fi: **https://k
 
 - **Proyecto:** Dionixu's Launcher, por Dionixu ([@kaiwolft](https://github.com/kaiwolft)).
 - **Desarrollado con la ayuda de Claude** (Anthropic), que escribió el código junto a Dionixu: launcher, instaladores, motores de logros y 60 FPS, y el puente de Linux.
+- **Porting Linux y correcciones de controles:** daetrox ([@daetrox](https://github.com/daetrox)) — Diagnóstico y corrección de problemas de visualización Wayland/X11, mapeo de mandos genéricos (DirectInput), detección de teclado y estabilidad de foco en Dolphin.
 - **Texturas HD:** pack HD de Matrix2525.
 - **Botones Xbox:** pack de botones Xbox, adaptado.
 - **Dolphin Emulator** (GPLv2): [dolphin-emu.org](https://dolphin-emu.org).
@@ -114,7 +115,7 @@ To build the installers, run `scripts\12_CREAR_INSTALADORES.bat` on Windows. The
 
 ☕ **Buy me a coffee:** https://ko-fi.com/dionixu838824
 
-**Credits:** Dionixu's Launcher by Dionixu. **Built with the help of Claude (Anthropic).** HD pack by Matrix2525. Launcher music: “Toberu mono” by Nobuo Uematsu (vocals: Kanon, arrangement: Yoshitaka Suzuki), from *The Last Story Original Soundtrack* (Dog Ear Records). Also Dolphin, Electron and rcheevos/RetroAchievements. *The Last Story* © Nintendo / Mistwalker / AQ Interactive. Non-profit fan tribute: all music, sounds, artwork and trademarks belong to their owners, and rights holders can request removal through an issue.
+**Credits:** Dionixu's Launcher by Dionixu. **Built with the help of Claude (Anthropic).** **Linux porting & controller fixes:** daetrox ([@daetrox](https://github.com/daetrox)). HD pack by Matrix2525. Launcher music: “Toberu mono” by Nobuo Uematsu (vocals: Kanon, arrangement: Yoshitaka Suzuki), from *The Last Story Original Soundtrack* (Dog Ear Records). Also Dolphin, Electron and rcheevos/RetroAchievements. *The Last Story* © Nintendo / Mistwalker / AQ Interactive. Non-profit fan tribute: all music, sounds, artwork and trademarks belong to their owners, and rights holders can request removal through an issue.
 
 ## Français
 
@@ -136,4 +137,4 @@ Launcher et installateurs Windows/Linux qui transforment **ta copie originale** 
 
 ☕ **Offre-moi un café :** https://ko-fi.com/dionixu838824
 
-**Crédits :** Dionixu's Launcher par Dionixu. **Développé avec l'aide de Claude (Anthropic).** Pack HD de Matrix2525. Musique du launcher : « Toberu mono » de Nobuo Uematsu (voix : Kanon, arrangement : Yoshitaka Suzuki), tirée de *The Last Story Original Soundtrack* (Dog Ear Records). Aussi Dolphin, Electron et rcheevos/RetroAchievements. Hommage de fans à but non lucratif : la musique, les sons, les illustrations et les marques appartiennent à leurs propriétaires.
+**Crédits :** Dionixu's Launcher par Dionixu. **Développé avec l'aide de Claude (Anthropic).** **Portage Linux & corrections de contrôles :** daetrox ([@daetrox](https://github.com/daetrox)). Pack HD de Matrix2525. Musique du launcher : « Toberu mono » de Nobuo Uematsu (voix : Kanon, arrangement : Yoshitaka Suzuki), tirée de *The Last Story Original Soundtrack* (Dog Ear Records). Aussi Dolphin, Electron et rcheevos/RetroAchievements. Hommage de fans à but non lucratif : la musique, les sons, les illustrations et les marques appartiennent à leurs propriétaires.
