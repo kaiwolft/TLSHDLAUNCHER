@@ -31,6 +31,13 @@ Launcher e instaladores para Windows y Linux que convierten **tu copia original*
 - Menú de pausa con L3 + R3 o Esc, con volumen del juego en vivo y opción de volver al launcher.
 - Ventana sin bordes, cursor personalizado y sin la pantalla de la correa del Wiimote.
 
+## Capturas
+
+| Launcher | Instalador |
+|---|---|
+| ![Menú del launcher](docs/capturas/es_1_launcher_menu.jpg) | ![Instalador: tus copias originales](docs/capturas/es_3_instalador_copias.jpg) |
+| ![Ajustes: controles de teclado y ratón](docs/capturas/es_2_launcher_controles.jpg) | ![Instalador: progreso](docs/capturas/es_4_instalador_progreso.jpg) |
+
 ## Descargas
 
 Los instaladores están en **Releases**:
@@ -116,6 +123,13 @@ To build the installers, run `scripts\12_CREAR_INSTALADORES.bat` on Windows. The
 ☕ **Buy me a coffee:** https://ko-fi.com/dionixu838824
 
 **Credits:** Dionixu's Launcher by Dionixu. **Built with the help of Claude (Anthropic).** **Linux porting & controller fixes:** daetrox ([@daetrox](https://github.com/daetrox)). HD pack by Matrix2525. Launcher music: “Toberu mono” by Nobuo Uematsu (vocals: Kanon, arrangement: Yoshitaka Suzuki), from *The Last Story Original Soundtrack* (Dog Ear Records). Also Dolphin, Electron and rcheevos/RetroAchievements. *The Last Story* © Nintendo / Mistwalker / AQ Interactive. Non-profit fan tribute: all music, sounds, artwork and trademarks belong to their owners, and rights holders can request removal through an issue.
+
+### Screenshots
+
+| Launcher | Installer |
+|---|---|
+| ![Launcher menu](docs/capturas/en_1_launcher_menu.jpg) | ![Installer: your original copies](docs/capturas/en_3_instalador_copias.jpg) |
+| ![Settings: keyboard and mouse controls](docs/capturas/en_2_launcher_controles.jpg) | ![Installer: progress](docs/capturas/en_4_instalador_progreso.jpg) |
 
 ## Français
 
