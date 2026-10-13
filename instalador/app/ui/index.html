@@ -185,7 +185,7 @@ label.chk input{width:18px;height:18px;accent-color:var(--blue)}
       doneTitle: '¡LISTO!', doneSub: 'The Last Story HD está instalado. El launcher se abrirá en una ventana.', countdown: 'Abriendo en {0}…', launch: 'ABRIR AHORA', openFolder: 'ABRIR CARPETA',
       failTitle: 'NO SE PUDO INSTALAR', failSub: 'No se ha modificado nada fuera de la carpeta de instalación. Revisa el aviso y vuelve a intentarlo.',
       e: { id: 'La imagen {0} no es la versión correcta (ID {1}).', verify: 'La copia {0} no coincide con el disco original sin modificar. Solo se admite tu copia oficial.',
-        space: 'No hay espacio suficiente: se necesitan unos {0} GB libres.', extract: 'DolphinTool no pudo leer la imagen: {0}', patch: 'No se pudo aplicar el parche de sonido.', payload: 'Faltan archivos del instalador (carpeta payload).' },
+        space: 'No hay espacio suficiente: se necesitan unos {0} GB libres.', extract: 'DolphinTool no pudo leer la imagen: {0}', patch: 'No se pudo aplicar el parche de sonido.', payload: 'Faltan archivos del instalador (carpeta payload).', launcherExe: 'No se encontró TheLastStory.exe en la carpeta del launcher. Vuelve a ejecutar el instalador completo (sin moverlo de su carpeta).' },
       us: 'americana', jp: 'japonesa', pfWin: 'Windows · Dolphin incluido', pfLin: 'Linux (Debian/Ubuntu) · usa tu propio Dolphin'
     },
     en: {
@@ -214,7 +214,7 @@ label.chk input{width:18px;height:18px;accent-color:var(--blue)}
       doneTitle: 'ALL SET!', doneSub: 'The Last Story HD is installed. The launcher will open in a window.', countdown: 'Opening in {0}…', launch: 'OPEN NOW', openFolder: 'OPEN FOLDER',
       failTitle: 'INSTALLATION FAILED', failSub: 'Nothing outside the install folder was changed. Check the notice and try again.',
       e: { id: 'The {0} image is not the right version (ID {1}).', verify: 'The {0} copy does not match the original, unmodified disc. Only your official copy is supported.',
-        space: 'Not enough space: about {0} GB free is needed.', extract: 'DolphinTool could not read the image: {0}', patch: 'The sound patch could not be applied.', payload: 'Installer files are missing (payload folder).' },
+        space: 'Not enough space: about {0} GB free is needed.', extract: 'DolphinTool could not read the image: {0}', patch: 'The sound patch could not be applied.', payload: 'Installer files are missing (payload folder).', launcherExe: 'TheLastStory.exe was not found in the launcher folder. Run the full installer again (without moving it out of its folder).' },
       us: 'US', jp: 'Japanese', pfWin: 'Windows · Dolphin included', pfLin: 'Linux (Debian/Ubuntu) · uses your own Dolphin'
     },
     fr: {
@@ -243,7 +243,7 @@ label.chk input{width:18px;height:18px;accent-color:var(--blue)}
       doneTitle: 'TERMINÉ !', doneSub: 'The Last Story HD est installé. Le launcher va s\'ouvrir dans une fenêtre.', countdown: 'Ouverture dans {0}…', launch: 'OUVRIR', openFolder: 'OUVRIR LE DOSSIER',
       failTitle: "L'INSTALLATION A ÉCHOUÉ", failSub: "Rien n'a été modifié en dehors du dossier d'installation. Relisez l'avertissement et réessayez.",
       e: { id: "L'image {0} n'est pas la bonne version (ID {1}).", verify: 'La copie {0} ne correspond pas au disque original non modifié. Seule votre copie officielle est acceptée.',
-        space: "Espace insuffisant : environ {0} Go libres sont nécessaires.", extract: "DolphinTool n'a pas pu lire l'image : {0}", patch: "Le patch audio n'a pas pu être appliqué.", payload: "Des fichiers de l'installateur sont manquants (dossier payload)." },
+        space: "Espace insuffisant : environ {0} Go libres sont nécessaires.", extract: "DolphinTool n'a pas pu lire l'image : {0}", patch: "Le patch audio n'a pas pu être appliqué.", payload: "Des fichiers de l'installateur sont manquants (dossier payload).", launcherExe: "TheLastStory.exe est introuvable dans le dossier du launcher. Relance l'installateur complet (sans le sortir de son dossier)." },
       us: 'américaine', jp: 'japonaise', pfWin: 'Windows · Dolphin inclus', pfLin: 'Linux (Debian/Ubuntu) · utilise votre propre Dolphin'
     }
   };
@@ -320,7 +320,7 @@ label.chk input{width:18px;height:18px;accent-color:var(--blue)}
   const errText = (msg) => {
     const [k, a, b] = String(msg || '').split(':');
     if (k === 'id') return t('e.id', t(a), b); if (k === 'verify') return t('e.verify', t(a)); if (k === 'space') return t('e.space', a);
-    if (k === 'extract') return t('e.extract', String(msg).slice(8)); if (k === 'patch') return t('e.patch'); if (k === 'payload') return t('e.payload');
+    if (k === 'extract') return t('e.extract', String(msg).slice(8)); if (k === 'patch') return t('e.patch'); if (k === 'payload') return t('e.payload'); if (k === 'launcherExe') return t('e.launcherExe');
     return msg;
   };
   if (host) host.addEventListener('message', (ev) => {

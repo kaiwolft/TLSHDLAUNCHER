@@ -195,12 +195,13 @@ async function install(o) {
   const runtime = IS_WIN ? ROOT : ROOT;   // Electron del propio instalador
   copyDir(runtime, L_DIR, (s, e) => {
     const rel = path.relative(runtime, s);
-    return !(rel === 'resources' && e.isDirectory()) && rel !== 'payload' && !/\.txt$/i.test(rel) && !/^instalar/i.test(rel);
+    return !(rel === 'resources' && e.isDirectory()) && rel !== 'payload' && !/\.txt$/i.test(rel) && !/^instalar.*\.sh$/i.test(rel);   // ojo: el .exe del instalador SÍ se copia (es el motor que se renombra a TheLastStory.exe)
   });
   // el ejecutable se renombra
   const exeSrc = IS_WIN ? fs.readdirSync(L_DIR).find((f) => /\.exe$/i.test(f) && !/crashpad|squirrel/i.test(f)) : 'electron';
   const exeName = IS_WIN ? 'TheLastStory.exe' : 'thelaststory';
   if (exeSrc && exeSrc !== exeName) fs.renameSync(path.join(L_DIR, exeSrc), path.join(L_DIR, exeName));
+  if (!exists(path.join(L_DIR, exeName))) throw new Error('launcherExe');   // nunca terminar "bien" sin el ejecutable del launcher
   copyDir(path.join(PAYLOAD, 'launcher', 'app'), path.join(L_DIR, 'resources', 'app'));
   copyDir(path.join(PAYLOAD, 'launcher', 'ui'), path.join(L_DIR, 'ui'));
   copyDir(path.join(PAYLOAD, 'launcher', 'data'), path.join(L_DIR, 'data'));
@@ -306,10 +307,12 @@ ipcMain.on('msg', async (_e, raw) => {
         break;
       case 'launch':
         if (lastInstall) {
+          if (!exists(lastInstall.exe)) { send('fail', { error: 'launcherExe' }); break; }
           const p = spawn(lastInstall.exe, ['--windowed', ...(IS_LINUX ? ['--no-sandbox'] : [])], { cwd: lastInstall.dir, detached: true, stdio: 'ignore' });
+          const quit = setTimeout(() => app.quit(), 600);
+          p.on('error', (e) => { clearTimeout(quit); log('ERROR al abrir el launcher: ' + e.message); send('fail', { error: 'launcherExe' }); });
           p.unref();
-        }
-        setTimeout(() => app.quit(), 600);
+        } else setTimeout(() => app.quit(), 600);
         break;
       case 'openFolder': if (lastInstall) shell.openPath(path.dirname(lastInstall.dir)); break;
       case 'minimize': win.minimize(); break;
