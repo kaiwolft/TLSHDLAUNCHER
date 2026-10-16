@@ -57,6 +57,9 @@ El script crea `Documentos\The Last Story HD PC\INSTALADOR\Windows` y `\Linux`.
 - **Windows:** sigue `instalador/docs/INSTRUCCIONES_Windows.txt`. Se abre con `Instalar The Last Story HD.exe`.
 - **Linux** (Debian 12, Ubuntu 22.04, Mint 21 o más nuevos): sigue `instalador/docs/INSTRUCCIONES_Linux.txt`. Se abre con `bash instalar.sh`. Necesitas tu propio Dolphin, instalado con `apt` o con Flatpak.
 
+## Agregar a Steam (opcional, Windows)
+En la carpeta [`steam/`](steam/) está **`AGREGAR_A_STEAM.bat`**: copia `AGREGAR_A_STEAM.bat`, `AGREGAR_A_STEAM.ps1` y la carpeta `arte` dentro de la carpeta del juego y haz doble clic. Agrega el juego a Steam como *juego que no es de Steam* con portada, fondo, logo e icono, para **cualquier usuario de Steam** del PC (si no encuentra el juego, te deja elegir el `.exe`). Si ya estaba agregado solo lo actualiza, sin perder tu tiempo de juego. Si el mando no responde: *clic derecho al juego → Propiedades → Mando → Desactivar Steam Input*.
+
 ## Estructura
 
 | Carpeta | Contenido |
@@ -124,6 +127,9 @@ To build the installers, run `scripts\12_CREAR_INSTALADORES.bat` on Windows. The
 
 **Credits:** Dionixu's Launcher by Dionixu. **Built with the help of Claude (Anthropic).** **Linux porting & controller fixes:** daetrox ([@daetrox](https://github.com/daetrox)). HD pack by Matrix2525. Launcher music: “Toberu mono” by Nobuo Uematsu (vocals: Kanon, arrangement: Yoshitaka Suzuki), from *The Last Story Original Soundtrack* (Dog Ear Records). Also Dolphin, Electron and rcheevos/RetroAchievements. *The Last Story* © Nintendo / Mistwalker / AQ Interactive. Non-profit fan tribute: all music, sounds, artwork and trademarks belong to their owners, and rights holders can request removal through an issue.
 
+### Add to Steam (optional, Windows)
+The [`steam/`](steam/) folder contains **`AGREGAR_A_STEAM.bat`**: copy `AGREGAR_A_STEAM.bat`, `AGREGAR_A_STEAM.ps1` and the `arte` folder into the game folder and double-click it. It adds the game to Steam as a *non-Steam game* with cover, background, logo and icon, for **any Steam account** on the PC (if it cannot find the game it lets you pick the `.exe`). If it was already added it is only updated, keeping your play time. If the controller does not respond: *right-click the game → Properties → Controller → Disable Steam Input*.
+
 ### Screenshots
 
 | Launcher | Installer |
@@ -152,3 +158,6 @@ Launcher et installateurs Windows/Linux qui transforment **ta copie originale** 
 ☕ **Offre-moi un café :** https://ko-fi.com/dionixu838824
 
 **Crédits :** Dionixu's Launcher par Dionixu. **Développé avec l'aide de Claude (Anthropic).** **Portage Linux & corrections de contrôles :** daetrox ([@daetrox](https://github.com/daetrox)). Pack HD de Matrix2525. Musique du launcher : « Toberu mono » de Nobuo Uematsu (voix : Kanon, arrangement : Yoshitaka Suzuki), tirée de *The Last Story Original Soundtrack* (Dog Ear Records). Aussi Dolphin, Electron et rcheevos/RetroAchievements. Hommage de fans à but non lucratif : la musique, les sons, les illustrations et les marques appartiennent à leurs propriétaires.
+
+### Ajouter à Steam (optionnel, Windows)
+Le dossier [`steam/`](steam/) contient **`AGREGAR_A_STEAM.bat`** : copiez `AGREGAR_A_STEAM.bat`, `AGREGAR_A_STEAM.ps1` et le dossier `arte` dans le dossier du jeu, puis double-cliquez. Le jeu est ajouté à Steam (*jeu non-Steam*) avec jaquette, fond, logo et icône, pour **n'importe quel compte Steam** du PC. Si la manette ne répond pas : *clic droit sur le jeu → Propriétés → Manette → Désactiver Steam Input*.
