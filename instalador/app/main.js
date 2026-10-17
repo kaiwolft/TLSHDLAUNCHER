@@ -223,11 +223,11 @@ async function install(o) {
     for (const f of [exeName, 'chrome_crashpad_handler', 'chrome-sandbox', path.join('resources', 'app', 'tls_bridge'), path.join('resources', 'app', 'tls_logros')])
       try { fs.chmodSync(path.join(L_DIR, f), 0o755); } catch (e) {}
   }
-  // Steam: AGREGAR_A_STEAM.bat (Windows) o agregar_a_steam.sh (Linux / Steam Deck) + arte
+  // Steam: AGREGAR_A_STEAM.bat (Windows) y agregar_a_steam.sh (Linux / Steam Deck) + arte
   if (exists(path.join(PAYLOAD, 'steam'))) {
     try {
       copyDir(path.join(path.join(PAYLOAD, 'steam'), 'arte'), path.join(dir, 'steam'));
-      const sf = IS_WIN ? ['AGREGAR_A_STEAM.bat', 'AGREGAR_A_STEAM.ps1'] : ['agregar_a_steam.sh', 'agregar_a_steam.py'];
+      const sf = ['AGREGAR_A_STEAM.bat', 'AGREGAR_A_STEAM.ps1', 'agregar_a_steam.sh', 'agregar_a_steam.py'];   // los dos: Windows y Linux / Steam Deck
       for (const f of sf.concat('LEEME - README.txt')) if (exists(path.join(path.join(PAYLOAD, 'steam'), f))) {
         fs.copyFileSync(path.join(path.join(PAYLOAD, 'steam'), f), path.join(dir, f));
         if (!IS_WIN && /\.(sh|py)$/.test(f)) try { fs.chmodSync(path.join(dir, f), 0o755); } catch (e) {}
