@@ -76,6 +76,8 @@ function Add-Payload($pay, [bool]$win) {
   if (Test-Path $tr) { CopyF $tr (Join-Path $pd 'logros\traducciones.json') }
   CopyF $patch (Join-Path $pay 'patch\brsar_voces_jp.tlsp')
   RC $tex (Join-Path $pay 'textures\SLSEXJ') @((Join-Path $tex 'Botones'))
+  # Steam: AGREGAR_A_STEAM (Windows) y agregar_a_steam.sh (Linux) + arte; el instalador copia los de cada sistema
+  $st = Join-Path $proj 'steam'; if (Test-Path $st) { RC $st (Join-Path $pay 'steam') }
 }
 
 # ---------------------------------------------------------------- Windows
